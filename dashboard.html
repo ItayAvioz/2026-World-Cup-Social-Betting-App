@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚽ Dashboard — WC2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .dash-wrap { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
+    .dash-avatar { width: 72px; height: 72px; border-radius: 50%; background: rgba(245,197,24,.12); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1.2rem; }
+    .dash-username { font-family: 'Oswald', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--accent); margin-bottom: .3rem; }
+    .dash-email { font-size: .85rem; color: var(--muted); margin-bottom: 2.5rem; }
+    .dash-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 18px; padding: 2.5rem 3rem; max-width: 420px; width: 100%; }
+    .dash-pill { display: inline-block; background: rgba(245,197,24,.1); border: 1px solid rgba(245,197,24,.3); color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: .3rem 1rem; border-radius: 50px; margin-bottom: 1.2rem; }
+    .dash-title { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; margin-bottom: .7rem; }
+    .dash-sub { color: var(--muted); font-size: .9rem; line-height: 1.6; margin-bottom: 2rem; }
+    .coming-list { list-style: none; text-align: left; margin-bottom: 2rem; display: flex; flex-direction: column; gap: .6rem; }
+    .coming-list li { display: flex; align-items: center; gap: .8rem; font-size: .9rem; color: var(--muted); background: var(--bg2); border-radius: 8px; padding: .7rem 1rem; }
+    .coming-list li span.icon { font-size: 1.1rem; }
+    .coming-list li span.label { font-weight: 500; color: var(--text); }
+    .btn-logout { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: .7rem 1.8rem; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: .85rem; cursor: pointer; transition: all .18s; }
+    .btn-logout:hover { border-color: var(--red); color: var(--red); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">⚽ WC2026</div>
+  <button class="btn btn-outline" id="btn-logout" style="font-size:.82rem;padding:.5rem 1.1rem">Logout</button>
+</nav>
+
+<div class="dash-wrap">
+  <div class="dash-card">
+    <div class="dash-avatar">⚽</div>
+    <div class="dash-username" id="dash-username">Loading…</div>
+    <div class="dash-email" id="dash-email"></div>
+    <div class="dash-pill">Coming Soon</div>
+    <div class="dash-title">Your Dashboard</div>
+    <div class="dash-sub">You're in! The prediction game launches June 11, 2026. Here's what's coming:</div>
+    <ul class="coming-list">
+      <li><span class="icon">🎯</span><span class="label">Predict every match result</span></li>
+      <li><span class="icon">🏆</span><span class="label">Pick your champion & top scorer</span></li>
+      <li><span class="icon">📊</span><span class="label">Live leaderboard vs friends</span></li>
+      <li><span class="icon">🤖</span><span class="label">Nightly AI roast summaries</span></li>
+    </ul>
+    <button class="btn-logout" id="btn-logout-card">Sign out</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase.js"></script>
+<script>
+  (async () => {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session) { window.location.href = 'index.html'; return; }
+
+    const meta = session.user.user_metadata;
+    document.getElementById('dash-username').textContent = meta.username || 'Player';
+    document.getElementById('dash-email').textContent = session.user.email;
+
+    async function logout() {
+      await _supabase.auth.signOut();
+      window.location.href = 'index.html';
+    }
+    document.getElementById('btn-logout').addEventListener('click', logout);
+    document.getElementById('btn-logout-card').addEventListener('click', logout);
+  })();
+</script>
+</body>
+</html>

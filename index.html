@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚽ WorldCup 2026 — Predict & Win</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">⚽ WC2026</div>
+  <div class="nav-links">
+    <a href="#register-section"><button class="btn btn-outline">Login</button></a>
+    <a href="#register-section"><button class="btn btn-gold">Sign Up</button></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-badge">🏆 Official Prediction Game</div>
+  <h1 class="hero-title">WORLD CUP<br><span class="gold">2026</span></h1>
+  <p class="hero-sub">Predict. Compete. Dominate the leaderboard.</p>
+  <div class="countdown">
+    <div class="cd-block"><span class="cd-num" id="cd-days">--</span><div class="cd-label">Days</div></div>
+    <span class="cd-sep">:</span>
+    <div class="cd-block"><span class="cd-num" id="cd-hours">--</span><div class="cd-label">Hours</div></div>
+    <span class="cd-sep">:</span>
+    <div class="cd-block"><span class="cd-num" id="cd-mins">--</span><div class="cd-label">Minutes</div></div>
+    <span class="cd-sep">:</span>
+    <div class="cd-block"><span class="cd-num" id="cd-secs">--</span><div class="cd-label">Seconds</div></div>
+  </div>
+  <div class="kickoff-bar">
+    <span class="kb-icon">🏟️</span>
+    <div class="kb-text">
+      <div class="kb-main">Opening Match: Mexico vs South Africa</div>
+      <div class="kb-detail">Thu, June 11, 2026 &nbsp;·&nbsp; 22:00 IDT &nbsp;·&nbsp; Estadio Azteca, Mexico City</div>
+    </div>
+  </div>
+  <div class="hero-cta">
+    <a href="#register-section"><button class="btn btn-gold btn-lg">Join the Game</button></a>
+    <a href="#about"><button class="btn btn-outline btn-lg">Learn More</button></a>
+  </div>
+
+  <div class="hero-hosts">
+    <div class="host-card" data-host="United States">
+      <div class="host-flag">🇺🇸</div>
+      <div class="host-info">
+        <div class="host-name">United States</div>
+        <div class="host-detail"><strong>11</strong> cities · <strong>78</strong> matches</div>
+      </div>
+    </div>
+    <div class="host-card" data-host="Canada">
+      <div class="host-flag">🇨🇦</div>
+      <div class="host-info">
+        <div class="host-name">Canada</div>
+        <div class="host-detail"><strong>2</strong> cities · <strong>13</strong> matches</div>
+      </div>
+    </div>
+    <div class="host-card" data-host="Mexico">
+      <div class="host-flag">🇲🇽</div>
+      <div class="host-info">
+        <div class="host-name">Mexico</div>
+        <div class="host-detail"><strong>3</strong> cities · <strong>13</strong> matches</div>
+      </div>
+    </div>
+  </div>
+
+  <a href="#about" class="scroll-hint">↓</a>
+</section>
+
+<!-- ABOUT -->
+<div id="about">
+  <div class="section">
+    <div class="section-pill">The Tournament</div>
+    <h2 class="section-title">A Historic World Cup</h2>
+    <p class="section-desc">For the first time, the FIFA World Cup is hosted by three nations across two continents. 48 teams. 104 matches. One champion.</p>
+
+<div class="stats-bar">
+      <div class="stat-item"><div class="stat-num">48</div><div class="stat-desc">Teams</div></div>
+      <div class="stat-item"><div class="stat-num">104</div><div class="stat-desc">Matches</div></div>
+      <div class="stat-item"><div class="stat-num">12</div><div class="stat-desc">Groups</div></div>
+      <div class="stat-item"><div class="stat-num">3</div><div class="stat-desc">Host Nations</div></div>
+    </div>
+
+    <div class="section-pill">New Format</div>
+    <h2 class="section-title">What Changed?</h2>
+    <p class="section-desc">The biggest expansion in World Cup history.</p>
+    <div class="format-grid">
+      <div class="format-card">
+        <div class="format-icon">👥</div>
+        <div class="format-title">12 Groups of 4 Teams</div>
+        <div class="format-desc">12 groups, each team plays 3 group-stage matches. Classic round-robin, just bigger.</div>
+      </div>
+      <div class="format-card">
+        <div class="format-icon">🌍</div>
+        <div class="format-title">48 Nations Qualify</div>
+        <div class="format-desc">Up from 32. First-timers include Venezuela, Curaçao, Cape Verde, Jordan, and Uzbekistan.</div>
+      </div>
+      <div class="format-card">
+        <div class="format-icon">⚡</div>
+        <div class="format-title">32 Teams Advance</div>
+        <div class="format-desc">Top 2 per group + 8 best third-place teams → a brand-new Round of 32 knockout stage.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GROUPS -->
+<section id="groups-section">
+  <div class="groups-header">
+    <div class="section-pill">Draw — December 5, 2025 · Washington D.C.</div>
+    <h2 class="section-title" style="text-align:center">All 12 Groups</h2>
+    <p style="color:var(--muted);font-size:.93rem;text-align:center;margin-bottom:2.5rem">Click any team to see their World Cup history</p>
+  </div>
+  <div class="groups-grid" id="groups-grid"></div>
+  <p style="text-align:center;color:var(--muted);font-size:.76rem;margin-top:1.5rem;max-width:740px;margin-left:auto;margin-right:auto;padding:0 1rem">
+    * 6 spots via UEFA Playoffs (A,B,C,D) and FIFA Intercontinental Playoffs (1,2) — March 2026.
+    Opening match: Mexico vs South Africa · Estadio Azteca, Mexico City · June 11, 2026.
+  </p>
+</section>
+
+<!-- WORLD MAP -->
+<section id="globe-section">
+  <div class="globe-header">
+    <div class="section-pill">Interactive World Map</div>
+    <h2 class="section-title" style="text-align:center">48 Nations on the Map</h2>
+    <p style="color:var(--muted);font-size:.93rem">Hover to highlight · Click a flag for team info</p>
+  </div>
+  <div id="globe-container"></div>
+  <div class="globe-legend">
+    <span>Gold border = Host nation</span>
+    <span>·</span>
+    <span>Click any flag for team details & schedule</span>
+  </div>
+</section>
+
+<!-- REGISTER -->
+<section id="register-section">
+  <div class="reg-header">
+    <div class="section-pill" style="text-align:center">Join Now</div>
+    <h2 class="section-title" style="text-align:center">Start Predicting</h2>
+    <p style="color:var(--muted);text-align:center">Create an account and compete with friends</p>
+  </div>
+  <div class="reg-card">
+    <h3 class="reg-title" id="form-title">Create Account</h3>
+    <p class="reg-sub" id="form-sub">Join thousands of fans predicting the 2026 World Cup</p>
+    <form id="form-register">
+      <div class="form-group"><label>Username</label><input type="text" id="reg-username" placeholder="e.g. Messi_Fan_10" required></div>
+      <div class="form-group"><label>Email</label><input type="email" id="reg-email" placeholder="you@example.com" required></div>
+      <div class="form-group"><label>Password</label><input type="password" id="reg-password" placeholder="Min. 8 characters" required minlength="8"></div>
+      <button type="submit" class="btn btn-gold btn-full">Create Account →</button>
+    </form>
+    <form id="form-login" style="display:none">
+      <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com" required></div>
+      <div class="form-group"><label>Password</label><input type="password" id="login-password" placeholder="Your password" required></div>
+      <button type="submit" class="btn btn-gold btn-full">Login →</button>
+    </form>
+    <div class="form-footer">
+      <span id="toggle-text">Already have an account? </span>
+      <a href="#" id="toggle-link">Sign In</a>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <img class="modal-flag-img" id="m-flag-img" src="" alt="" onerror="this.style.display='none'">
+    <div class="modal-name" id="m-name"></div>
+    <div class="modal-badges">
+      <span class="conf-tag" id="m-conf"></span>
+      <span class="group-tag" id="m-group"></span>
+    </div>
+    <div class="host-row" id="m-host" style="display:none">🏠 2026 Host Nation</div>
+    <div id="m-stats-section">
+      <div class="modal-grid">
+        <div class="modal-stat"><div class="mstat-label">Best Achievement</div><div class="mstat-value gold" id="m-best"></div></div>
+        <div class="modal-stat"><div class="mstat-label">FIFA Rank</div><div class="mstat-value" id="m-rank"></div></div>
+        <div class="modal-stat"><div class="mstat-label">Times Achieved</div><div class="mstat-value" id="m-times"></div></div>
+        <div class="modal-stat"><div class="mstat-label">Last Achieved</div><div class="mstat-value" id="m-last-achieved"></div></div>
+        <div class="modal-stat full"><div class="mstat-label">Last World Cup</div><div class="mstat-value" id="m-lastwc"></div></div>
+      </div>
+    </div>
+    <div id="m-nation-section">
+      <div class="modal-section-label">About the Nation</div>
+      <div class="modal-grid">
+        <div class="modal-stat"><div class="mstat-label">Population</div><div class="mstat-value" id="m-pop"></div></div>
+        <div class="modal-stat"><div class="mstat-label">WC Appearances</div><div class="mstat-value" id="m-wc-apps"></div></div>
+        <div class="modal-stat full"><div class="mstat-label">Football Fact</div><div class="mstat-value fact" id="m-football-fact"></div></div>
+        <div class="modal-stat full"><div class="mstat-label">Fun Fact</div><div class="mstat-value fact" id="m-nonfootball-fact"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOST SCHEDULE MODAL -->
+<div class="modal-overlay" id="host-modal">
+  <div class="modal host-sched-modal" style="padding:0">
+    <button class="modal-close" onclick="closeHostModal()" style="top:.8rem;right:.8rem">✕</button>
+    <div class="hs-header">
+      <img class="hs-flag-img" id="hs-flag-img" src="" alt="" onerror="this.style.display='none'">
+      <div class="hs-meta">
+        <div class="hs-country-name" id="hs-country-name"></div>
+        <div class="hs-stats-row" id="hs-stats-row"></div>
+        <div class="hs-cities-row" id="hs-cities-row"></div>
+      </div>
+    </div>
+    <div id="hs-games-container"></div>
+    <div class="hs-foot-note">⁺¹ Next calendar day (Israel time) · All times IDT = UTC+3 · Knockout opponents TBD · Knockout venue assignments approximate · Subject to FIFA confirmation</div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toast-icon">✓</span><span id="toast-msg">Done!</span></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
