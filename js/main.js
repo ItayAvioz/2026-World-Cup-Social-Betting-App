@@ -210,7 +210,7 @@ const flagUrl = (code, w=40) => `https://flagcdn.com/w${w}/${code}.png`;
     const card = document.createElement('div');
     card.className = 'group-card';
 
-    let html = `<div class="group-header">GROUP ${letter}</div><div class="group-teams">`;
+    let html = `<div class="group-header">GROUP ${letter}<button class="grp-map-btn" data-filter="${letter}" title="Show on map">📍</button></div><div class="group-teams">`;
     groupTeams.forEach(team => {
       const idx = TEAMS.indexOf(team);
       html += `
@@ -241,10 +241,22 @@ const flagUrl = (code, w=40) => `https://flagcdn.com/w${w}/${code}.png`;
     container.appendChild(card);
   });
 
-  // Event delegation — click any team row
+  // Event delegation — click team row, map button, or group header (accordion on mobile)
   container.addEventListener('click', e => {
     const row = e.target.closest('[data-team-idx]');
-    if (row) openModal(TEAMS[+row.dataset.teamIdx], 'stats');
+    if (row) { location.href = 'team.html?code=' + TEAMS[+row.dataset.teamIdx].code + '&mode=stats'; return; }
+    const mapBtn = e.target.closest('.grp-map-btn');
+    if (mapBtn) {
+      e.stopPropagation();
+      filterGlobe(mapBtn.dataset.filter);
+      document.getElementById('globe-section').scrollIntoView({ behavior:'smooth' });
+      return;
+    }
+    const header = e.target.closest('.group-header');
+    if (header) {
+      const card = header.closest('.group-card');
+      if (card) card.classList.toggle('open');
+    }
   });
 })();
 
@@ -282,6 +294,7 @@ const flagUrl = (code, w=40) => `https://flagcdn.com/w${w}/${code}.png`;
 
     var wrap = document.createElement('div');
     wrap.title = d.name + ' · Group ' + d.group;
+    wrap.dataset.teamGroup = d.group;
     wrap.style.cssText = [
       'position:absolute',
       'left:' + p.x + '%',
@@ -290,7 +303,9 @@ const flagUrl = (code, w=40) => `https://flagcdn.com/w${w}/${code}.png`;
       'cursor:pointer',
       'z-index:' + (big ? 15 : 10),
       'transition:transform .18s',
-      'pointer-events:auto'
+      'pointer-events:auto',
+      'padding:6px',        /* larger touch target — 26px flag + 12px padding = 38px tap area */
+      '-webkit-tap-highlight-color:transparent'
     ].join(';');
 
     var img = document.createElement('img');
@@ -325,13 +340,34 @@ const flagUrl = (code, w=40) => `https://flagcdn.com/w${w}/${code}.png`;
     };
 
     wrap.appendChild(img);
-    wrap.addEventListener('click',      function() { openModal(d, 'nation'); });
+    wrap.addEventListener('click', function() { location.href = 'team.html?code=' + d.code + '&mode=nation'; });
+    // hover scale (desktop only — touch devices use click)
     wrap.addEventListener('mouseenter', function() { this.style.transform='translate(-50%,-50%) scale(1.55)'; this.style.zIndex='40'; });
     wrap.addEventListener('mouseleave', function() { this.style.transform='translate(-50%,-50%) scale(1)';   this.style.zIndex= big ? '15' : '10'; });
+    // touch: brief visual feedback
+    wrap.addEventListener('touchstart', function() { this.style.transform='translate(-50%,-50%) scale(1.4)'; }, { passive:true });
+    wrap.addEventListener('touchend',   function() { this.style.transform='translate(-50%,-50%) scale(1)'; },  { passive:true });
 
     container.appendChild(wrap);
   });
 })();
+
+// ── GLOBE FILTER ─────────────────────────────────────────────
+var _activeGroupFilter = null;
+function filterGlobe(letter) {
+  _activeGroupFilter = (_activeGroupFilter === letter) ? null : letter;
+  var wrappers = document.querySelectorAll('#globe-container > div[data-team-group]');
+  wrappers.forEach(function(el) {
+    var match = !_activeGroupFilter || el.dataset.teamGroup === _activeGroupFilter;
+    el.style.opacity        = match ? '1' : '0.1';
+    el.style.pointerEvents  = match ? 'auto' : 'none';
+    el.style.transition     = 'opacity .3s';
+  });
+  var bar    = document.getElementById('globe-filter-bar');
+  var letter_el = document.getElementById('globe-filter-letter');
+  if (bar) bar.style.display = _activeGroupFilter ? 'flex' : 'none';
+  if (letter_el) letter_el.textContent = _activeGroupFilter || '';
+}
 
 // ── MODAL ────────────────────────────────────────────────────
 function openModal(team, mode) {
@@ -377,16 +413,24 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
 
 // ── FORM TOGGLE ──────────────────────────────────────────────
 let isReg = true;
-document.getElementById('toggle-link').addEventListener('click', e => {
-  e.preventDefault();
-  isReg = !isReg;
+function switchForm(toReg) {
+  isReg = toReg;
   document.getElementById('form-register').style.display = isReg ? 'block' : 'none';
   document.getElementById('form-login').style.display    = isReg ? 'none'  : 'block';
-  document.getElementById('form-title').textContent = isReg ? 'Create Account' : 'Welcome Back';
-  document.getElementById('form-sub').textContent   = isReg ? 'Join thousands of fans predicting the 2026 World Cup' : 'Log in to see your predictions and ranking';
-  document.getElementById('toggle-text').textContent = isReg ? 'Already have an account? ' : "Don't have an account? ";
-  document.getElementById('toggle-link').textContent = isReg ? 'Sign In' : 'Create one';
-});
+  document.getElementById('form-title').textContent      = isReg ? 'Create Account' : 'Welcome Back';
+  document.getElementById('form-sub').textContent        = isReg ? 'Join thousands of fans predicting the 2026 World Cup' : 'Log in to see your predictions and ranking';
+  document.getElementById('toggle-text').textContent     = isReg ? 'Already have an account? ' : "Don't have an account? ";
+  document.getElementById('toggle-link').textContent     = isReg ? 'Sign In' : 'Create one';
+  document.getElementById('tab-signup').classList.toggle('active', isReg);
+  document.getElementById('tab-signin').classList.toggle('active', !isReg);
+}
+document.getElementById('toggle-link').addEventListener('click', e => { e.preventDefault(); switchForm(!isReg); });
+function togglePw(id, btn) {
+  const inp = document.getElementById(id);
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.textContent = show ? 'Hide' : 'Show';
+}
 document.getElementById('form-register').addEventListener('submit', async e => {
   e.preventDefault();
   const u  = document.getElementById('reg-username').value.trim();
@@ -614,7 +658,7 @@ document.getElementById('host-modal').addEventListener('click', function(e) {
 
 document.querySelectorAll('.host-card').forEach(function(card) {
   card.addEventListener('click', function() {
-    openHostSchedule(card.dataset.host);
+    location.href = 'host.html?name=' + encodeURIComponent(card.dataset.host);
   });
 });
 

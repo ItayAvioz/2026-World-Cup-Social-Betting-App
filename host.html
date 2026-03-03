@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Host Schedule — WC2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="page-nav">
+  <button class="page-back" onclick="history.back()">← Back</button>
+  <div class="nav-logo">⚽ WC2026</div>
+  <div style="width:60px"></div>
+</nav>
+
+<div class="page-body" id="page-body">
+  <div style="display:flex;align-items:center;justify-content:center;min-height:60vh;color:var(--muted)">Loading…</div>
+</div>
+
+<script>
+const flagUrl = (code, w=40) => `https://flagcdn.com/w${w}/${code}.png`;
+
+const VENUE_CAP = {
+  'Estadio Azteca':'87,500', 'Estadio Akron':'49,850', 'Estadio BBVA':'53,500',
+  'SoFi Stadium':'70,240', "Levi's Stadium":'68,500', 'MetLife Stadium':'82,500',
+  'Gillette Stadium':'65,878', 'NRG Stadium':'72,220', 'AT&T Stadium':'80,000',
+  'Lincoln Financial Field':'69,796', 'Mercedes-Benz Stadium':'71,000',
+  'Lumen Field':'68,740', 'Hard Rock Stadium':'64,767', 'Arrowhead Stadium':'76,416',
+  'BMO Field':'45,000', 'BC Place':'54,500',
+};
+
+const HOST_SCHEDULES = {
+  'Mexico': {
+    code:'mx', cities:3, totalGames:13,
+    cityList:'Mexico City · Guadalajara · Monterrey',
+    games:[
+      { phase:'group', round:'Group A · MD1', date:'Thu, Jun 11', idt:'22:00', idtDate:'Jun 11',     home:'Mexico',       hCode:'mx', away:'South Africa', aCode:'za', venue:'Estadio Azteca',  city:'Mexico City' },
+      { phase:'group', round:'Group A · MD1', date:'Thu, Jun 11', idt:'05:00', idtDate:'Jun 12 ⁺¹', home:'South Korea',  hCode:'kr', away:'UEFA PO-D',    aCode:null, venue:'Estadio Akron',   city:'Guadalajara' },
+      { phase:'group', round:'Group F · MD1', date:'Sun, Jun 14', idt:'05:00', idtDate:'Jun 15 ⁺¹', home:'UEFA PO-B',    hCode:null, away:'Tunisia',      aCode:'tn', venue:'Estadio BBVA',    city:'Monterrey' },
+      { phase:'group', round:'Group K · MD1', date:'Wed, Jun 17', idt:'06:00', idtDate:'Jun 18 ⁺¹', home:'Uzbekistan',   hCode:'uz', away:'Colombia',     aCode:'co', venue:'Estadio Azteca',  city:'Mexico City' },
+      { phase:'group', round:'Group A · MD2', date:'Thu, Jun 18', idt:'06:00', idtDate:'Jun 19 ⁺¹', home:'Mexico',       hCode:'mx', away:'South Korea',  aCode:'kr', venue:'Estadio Akron',   city:'Guadalajara' },
+      { phase:'group', round:'Group F · MD2', date:'Sat, Jun 20', idt:'07:00', idtDate:'Jun 21 ⁺¹', home:'Tunisia',      hCode:'tn', away:'Japan',        aCode:'jp', venue:'Estadio BBVA',    city:'Monterrey' },
+      { phase:'group', round:'Group K · MD2', date:'Tue, Jun 23', idt:'05:00', idtDate:'Jun 24 ⁺¹', home:'Colombia',     hCode:'co', away:'IC PO-1',      aCode:null, venue:'Estadio Akron',   city:'Guadalajara' },
+      { phase:'group', round:'Group A · MD3', date:'Wed, Jun 24', idt:'04:00', idtDate:'Jun 25 ⁺¹', home:'Mexico',       hCode:'mx', away:'UEFA PO-D',    aCode:null, venue:'Estadio Azteca',  city:'Mexico City' },
+      { phase:'group', round:'Group A · MD3', date:'Wed, Jun 24', idt:'04:00', idtDate:'Jun 25 ⁺¹', home:'South Africa', hCode:'za', away:'South Korea',  aCode:'kr', venue:'Estadio BBVA',    city:'Monterrey' },
+      { phase:'group', round:'Group H · MD3', date:'Fri, Jun 26', idt:'03:00', idtDate:'Jun 27 ⁺¹', home:'Uruguay',      hCode:'uy', away:'Spain',        aCode:'es', venue:'Estadio Akron',   city:'Guadalajara' },
+      { phase:'knockout', round:'Round of 32', date:'Mon, Jun 29', idt:'05:00', idtDate:'Jun 30 ⁺¹', home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Estadio BBVA',    city:'Monterrey' },
+      { phase:'knockout', round:'Round of 32', date:'Tue, Jun 30', idt:'04:00', idtDate:'Jul 1 ⁺¹',  home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Estadio Azteca',  city:'Mexico City' },
+      { phase:'knockout', round:'Round of 16', date:'Sun, Jul 5',  idt:'03:00', idtDate:'Jul 6 ⁺¹',  home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Estadio Azteca',  city:'Mexico City' },
+    ]
+  },
+  'Canada': {
+    code:'ca', cities:2, totalGames:13,
+    cityList:'Toronto · Vancouver',
+    games:[
+      { phase:'group', round:'Group B · MD1', date:'Fri, Jun 12', idt:'22:00', idtDate:'Jun 12',     home:'Canada',      hCode:'ca', away:'UEFA PO-A',   aCode:null, venue:'BMO Field', city:'Toronto' },
+      { phase:'group', round:'Group D · MD1', date:'Fri, Jun 12', idt:'07:00', idtDate:'Jun 13 ⁺¹', home:'Australia',   hCode:'au', away:'UEFA PO-C',   aCode:null, venue:'BC Place',  city:'Vancouver' },
+      { phase:'group', round:'Group L · MD1', date:'Wed, Jun 17', idt:'02:00', idtDate:'Jun 18 ⁺¹', home:'Ghana',       hCode:'gh', away:'Panama',      aCode:'pa', venue:'BMO Field', city:'Toronto' },
+      { phase:'group', round:'Group B · MD2', date:'Wed, Jun 18', idt:'01:00', idtDate:'Jun 19 ⁺¹', home:'Canada',      hCode:'ca', away:'Qatar',       aCode:'qa', venue:'BC Place',  city:'Vancouver' },
+      { phase:'group', round:'Group E · MD2', date:'Sat, Jun 20', idt:'23:00', idtDate:'Jun 20',     home:'Germany',     hCode:'de', away:'Ivory Coast', aCode:'ci', venue:'BMO Field', city:'Toronto' },
+      { phase:'group', round:'Group G · MD2', date:'Sun, Jun 21', idt:'04:00', idtDate:'Jun 22 ⁺¹', home:'New Zealand', hCode:'nz', away:'Egypt',       aCode:'eg', venue:'BC Place',  city:'Vancouver' },
+      { phase:'group', round:'Group L · MD2', date:'Tue, Jun 23', idt:'02:00', idtDate:'Jun 24 ⁺¹', home:'Croatia',     hCode:'hr', away:'Panama',      aCode:'pa', venue:'BMO Field', city:'Toronto' },
+      { phase:'group', round:'Group B · MD3', date:'Wed, Jun 24', idt:'22:00', idtDate:'Jun 24',     home:'Canada',      hCode:'ca', away:'Switzerland', aCode:'ch', venue:'BC Place',  city:'Vancouver' },
+      { phase:'group', round:'Group I · MD3', date:'Fri, Jun 26', idt:'22:00', idtDate:'Jun 26',     home:'Senegal',     hCode:'sn', away:'IC PO-2',     aCode:null, venue:'BMO Field', city:'Toronto' },
+      { phase:'group', round:'Group G · MD3', date:'Fri, Jun 26', idt:'06:00', idtDate:'Jun 27 ⁺¹', home:'New Zealand', hCode:'nz', away:'Belgium',     aCode:'be', venue:'BC Place',  city:'Vancouver' },
+      { phase:'knockout', round:'Round of 32', date:'Thu, Jul 2', idt:'02:00', idtDate:'Jul 3 ⁺¹', home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'BMO Field', city:'Toronto' },
+      { phase:'knockout', round:'Round of 32', date:'Thu, Jul 2', idt:'06:00', idtDate:'Jul 3 ⁺¹', home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'BC Place',  city:'Vancouver' },
+      { phase:'knockout', round:'Round of 16', date:'Tue, Jul 7', idt:'23:00', idtDate:'Jul 7',    home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'BC Place',  city:'Vancouver' },
+    ]
+  },
+  'United States': {
+    code:'us', cities:11, totalGames:78,
+    cityList:'New York/NJ · Los Angeles · Dallas · Seattle · San Francisco · Miami · Kansas City · Boston · Philadelphia · Atlanta · Houston',
+    games:[
+      { phase:'group', round:'Group D · MD1', date:'Fri, Jun 12', idt:'04:00', idtDate:'Jun 13 ⁺¹', home:'United States', hCode:'us',     away:'Paraguay',      aCode:'py',     venue:'SoFi Stadium',            city:'Inglewood, CA' },
+      { phase:'group', round:'Group B · MD1', date:'Sat, Jun 13', idt:'22:00', idtDate:'Jun 13',     home:'Qatar',         hCode:'qa',     away:'Switzerland',   aCode:'ch',     venue:"Levi's Stadium",          city:'Santa Clara, CA' },
+      { phase:'group', round:'Group C · MD1', date:'Sat, Jun 13', idt:'01:00', idtDate:'Jun 14 ⁺¹', home:'Brazil',        hCode:'br',     away:'Morocco',       aCode:'ma',     venue:'MetLife Stadium',         city:'E. Rutherford, NJ' },
+      { phase:'group', round:'Group C · MD1', date:'Sat, Jun 13', idt:'04:00', idtDate:'Jun 14 ⁺¹', home:'Haiti',         hCode:'ht',     away:'Scotland',      aCode:'gb-sct', venue:'Gillette Stadium',        city:'Foxborough, MA' },
+      { phase:'group', round:'Group E · MD1', date:'Sun, Jun 14', idt:'20:00', idtDate:'Jun 14',     home:'Germany',       hCode:'de',     away:'Curaçao',       aCode:'cw',     venue:'NRG Stadium',             city:'Houston, TX' },
+      { phase:'group', round:'Group F · MD1', date:'Sun, Jun 14', idt:'23:00', idtDate:'Jun 14',     home:'Netherlands',   hCode:'nl',     away:'Japan',         aCode:'jp',     venue:'AT&T Stadium',            city:'Arlington, TX' },
+      { phase:'group', round:'Group E · MD1', date:'Sun, Jun 14', idt:'02:00', idtDate:'Jun 15 ⁺¹', home:'Ivory Coast',   hCode:'ci',     away:'Ecuador',       aCode:'ec',     venue:'Lincoln Financial Field',  city:'Philadelphia, PA' },
+      { phase:'group', round:'Group H · MD1', date:'Mon, Jun 15', idt:'19:00', idtDate:'Jun 15',     home:'Spain',         hCode:'es',     away:'Cape Verde',    aCode:'cv',     venue:'Mercedes-Benz Stadium',   city:'Atlanta, GA' },
+      { phase:'group', round:'Group G · MD1', date:'Mon, Jun 15', idt:'22:00', idtDate:'Jun 15',     home:'Belgium',       hCode:'be',     away:'Egypt',         aCode:'eg',     venue:'Lumen Field',             city:'Seattle, WA' },
+      { phase:'group', round:'Group H · MD1', date:'Mon, Jun 15', idt:'01:00', idtDate:'Jun 16 ⁺¹', home:'Saudi Arabia',  hCode:'sa',     away:'Uruguay',       aCode:'uy',     venue:'Hard Rock Stadium',       city:'Miami Gardens, FL' },
+      { phase:'group', round:'Group G · MD1', date:'Mon, Jun 15', idt:'04:00', idtDate:'Jun 16 ⁺¹', home:'Iran',          hCode:'ir',     away:'New Zealand',   aCode:'nz',     venue:'SoFi Stadium',            city:'Inglewood, CA' },
+      { phase:'group', round:'Group I · MD1', date:'Tue, Jun 16', idt:'22:00', idtDate:'Jun 16',     home:'France',        hCode:'fr',     away:'Senegal',       aCode:'sn',     venue:'MetLife Stadium',         city:'E. Rutherford, NJ' },
+      { phase:'group', round:'Group I · MD1', date:'Tue, Jun 16', idt:'01:00', idtDate:'Jun 17 ⁺¹', home:'IC PO-2',       hCode:null,     away:'Norway',        aCode:'no',     venue:'Gillette Stadium',        city:'Foxborough, MA' },
+      { phase:'group', round:'Group J · MD1', date:'Tue, Jun 16', idt:'04:00', idtDate:'Jun 17 ⁺¹', home:'Argentina',     hCode:'ar',     away:'Algeria',       aCode:'dz',     venue:'Arrowhead Stadium',       city:'Kansas City, MO' },
+      { phase:'group', round:'Group J · MD1', date:'Tue, Jun 16', idt:'07:00', idtDate:'Jun 17 ⁺¹', home:'Austria',       hCode:'at',     away:'Jordan',        aCode:'jo',     venue:"Levi's Stadium",          city:'Santa Clara, CA' },
+      { phase:'group', round:'Group K · MD1', date:'Tue, Jun 17', idt:'20:00', idtDate:'Jun 17',     home:'Portugal',      hCode:'pt',     away:'IC PO-1',       aCode:null,     venue:'NRG Stadium',             city:'Houston, TX' },
+      { phase:'group', round:'Group L · MD1', date:'Tue, Jun 17', idt:'23:00', idtDate:'Jun 17',     home:'England',       hCode:'gb-eng', away:'Croatia',       aCode:'hr',     venue:'AT&T Stadium',            city:'Arlington, TX' },
+      { phase:'group', round:'Group A · MD2', date:'Thu, Jun 18', idt:'19:00', idtDate:'Jun 18',     home:'UEFA PO-D',     hCode:null,     away:'South Africa',  aCode:'za',     venue:'Mercedes-Benz Stadium',   city:'Atlanta, GA' },
+      { phase:'group', round:'Group B · MD2', date:'Thu, Jun 18', idt:'22:00', idtDate:'Jun 18',     home:'Switzerland',   hCode:'ch',     away:'UEFA PO-A',     aCode:null,     venue:'SoFi Stadium',            city:'Inglewood, CA' },
+      { phase:'group', round:'Group D · MD2', date:'Thu, Jun 19', idt:'22:00', idtDate:'Jun 19',     home:'United States', hCode:'us',     away:'Australia',     aCode:'au',     venue:'Lumen Field',             city:'Seattle, WA' },
+      { phase:'group', round:'Group C · MD2', date:'Thu, Jun 19', idt:'01:00', idtDate:'Jun 20 ⁺¹', home:'Scotland',      hCode:'gb-sct', away:'Morocco',       aCode:'ma',     venue:'Gillette Stadium',        city:'Foxborough, MA' },
+      { phase:'group', round:'Group C · MD2', date:'Thu, Jun 19', idt:'04:00', idtDate:'Jun 20 ⁺¹', home:'Brazil',        hCode:'br',     away:'Haiti',         aCode:'ht',     venue:'Lincoln Financial Field',  city:'Philadelphia, PA' },
+      { phase:'group', round:'Group D · MD2', date:'Thu, Jun 19', idt:'07:00', idtDate:'Jun 20 ⁺¹', home:'UEFA PO-C',     hCode:null,     away:'Paraguay',      aCode:'py',     venue:"Levi's Stadium",          city:'Santa Clara, CA' },
+      { phase:'group', round:'Group F · MD2', date:'Sat, Jun 20', idt:'20:00', idtDate:'Jun 20',     home:'Netherlands',   hCode:'nl',     away:'UEFA PO-B',     aCode:null,     venue:'NRG Stadium',             city:'Houston, TX' },
+      { phase:'group', round:'Group E · MD2', date:'Sat, Jun 20', idt:'03:00', idtDate:'Jun 21 ⁺¹', home:'Ecuador',       hCode:'ec',     away:'Curaçao',       aCode:'cw',     venue:'Arrowhead Stadium',       city:'Kansas City, MO' },
+      { phase:'group', round:'Group H · MD2', date:'Sun, Jun 21', idt:'19:00', idtDate:'Jun 21',     home:'Spain',         hCode:'es',     away:'Saudi Arabia',  aCode:'sa',     venue:'Mercedes-Benz Stadium',   city:'Atlanta, GA' },
+      { phase:'group', round:'Group G · MD2', date:'Sun, Jun 21', idt:'22:00', idtDate:'Jun 21',     home:'Belgium',       hCode:'be',     away:'Iran',          aCode:'ir',     venue:'SoFi Stadium',            city:'Inglewood, CA' },
+      { phase:'group', round:'Group H · MD2', date:'Sun, Jun 21', idt:'01:00', idtDate:'Jun 22 ⁺¹', home:'Uruguay',       hCode:'uy',     away:'Cape Verde',    aCode:'cv',     venue:'Hard Rock Stadium',       city:'Miami Gardens, FL' },
+      { phase:'group', round:'Group J · MD2', date:'Sun, Jun 22', idt:'20:00', idtDate:'Jun 22',     home:'Argentina',     hCode:'ar',     away:'Austria',       aCode:'at',     venue:'AT&T Stadium',            city:'Arlington, TX' },
+      { phase:'group', round:'Group I · MD2', date:'Sun, Jun 22', idt:'00:00', idtDate:'Jun 23 ⁺¹', home:'France',        hCode:'fr',     away:'IC PO-2',       aCode:null,     venue:'Lincoln Financial Field',  city:'Philadelphia, PA' },
+      { phase:'group', round:'Group I · MD2', date:'Sun, Jun 22', idt:'03:00', idtDate:'Jun 23 ⁺¹', home:'Norway',        hCode:'no',     away:'Senegal',       aCode:'sn',     venue:'MetLife Stadium',         city:'E. Rutherford, NJ' },
+      { phase:'group', round:'Group J · MD2', date:'Sun, Jun 22', idt:'06:00', idtDate:'Jun 23 ⁺¹', home:'Jordan',        hCode:'jo',     away:'Algeria',       aCode:'dz',     venue:"Levi's Stadium",          city:'Santa Clara, CA' },
+      { phase:'group', round:'Group K · MD2', date:'Mon, Jun 23', idt:'20:00', idtDate:'Jun 23',     home:'Portugal',      hCode:'pt',     away:'Uzbekistan',    aCode:'uz',     venue:'NRG Stadium',             city:'Houston, TX' },
+      { phase:'group', round:'Group L · MD2', date:'Mon, Jun 23', idt:'23:00', idtDate:'Jun 23',     home:'England',       hCode:'gb-eng', away:'Ghana',         aCode:'gh',     venue:'Gillette Stadium',        city:'Foxborough, MA' },
+      { phase:'group', round:'Group B · MD3', date:'Wed, Jun 24', idt:'22:00', idtDate:'Jun 24',     home:'UEFA PO-A',     hCode:null,     away:'Qatar',         aCode:'qa',     venue:'Lumen Field',             city:'Seattle, WA' },
+      { phase:'group', round:'Group C · MD3', date:'Wed, Jun 24', idt:'01:00', idtDate:'Jun 25 ⁺¹', home:'Scotland',      hCode:'gb-sct', away:'Brazil',        aCode:'br',     venue:'Hard Rock Stadium',       city:'Miami Gardens, FL' },
+      { phase:'group', round:'Group C · MD3', date:'Wed, Jun 24', idt:'01:00', idtDate:'Jun 25 ⁺¹', home:'Morocco',       hCode:'ma',     away:'Haiti',         aCode:'ht',     venue:'Mercedes-Benz Stadium',   city:'Atlanta, GA' },
+      { phase:'group', round:'Group E · MD3', date:'Thu, Jun 25', idt:'23:00', idtDate:'Jun 25',     home:'Ecuador',       hCode:'ec',     away:'Germany',       aCode:'de',     venue:'MetLife Stadium',         city:'E. Rutherford, NJ' },
+      { phase:'group', round:'Group E · MD3', date:'Thu, Jun 25', idt:'23:00', idtDate:'Jun 25',     home:'Curaçao',       hCode:'cw',     away:'Ivory Coast',   aCode:'ci',     venue:'Lincoln Financial Field',  city:'Philadelphia, PA' },
+      { phase:'group', round:'Group F · MD3', date:'Thu, Jun 25', idt:'02:00', idtDate:'Jun 26 ⁺¹', home:'Japan',         hCode:'jp',     away:'UEFA PO-B',     aCode:null,     venue:'AT&T Stadium',            city:'Arlington, TX' },
+      { phase:'group', round:'Group F · MD3', date:'Thu, Jun 25', idt:'02:00', idtDate:'Jun 26 ⁺¹', home:'Tunisia',       hCode:'tn',     away:'Netherlands',   aCode:'nl',     venue:'Arrowhead Stadium',       city:'Kansas City, MO' },
+      { phase:'group', round:'Group D · MD3', date:'Thu, Jun 25', idt:'05:00', idtDate:'Jun 26 ⁺¹', home:'UEFA PO-C',     hCode:null,     away:'United States', aCode:'us',     venue:'SoFi Stadium',            city:'Inglewood, CA' },
+      { phase:'group', round:'Group D · MD3', date:'Thu, Jun 25', idt:'05:00', idtDate:'Jun 26 ⁺¹', home:'Paraguay',      hCode:'py',     away:'Australia',     aCode:'au',     venue:"Levi's Stadium",          city:'Santa Clara, CA' },
+      { phase:'group', round:'Group I · MD3', date:'Fri, Jun 26', idt:'22:00', idtDate:'Jun 26',     home:'Norway',        hCode:'no',     away:'France',        aCode:'fr',     venue:'Gillette Stadium',        city:'Foxborough, MA' },
+      { phase:'group', round:'Group H · MD3', date:'Fri, Jun 26', idt:'03:00', idtDate:'Jun 27 ⁺¹', home:'Cape Verde',    hCode:'cv',     away:'Saudi Arabia',  aCode:'sa',     venue:'NRG Stadium',             city:'Houston, TX' },
+      { phase:'group', round:'Group G · MD3', date:'Fri, Jun 26', idt:'06:00', idtDate:'Jun 27 ⁺¹', home:'Egypt',         hCode:'eg',     away:'Iran',          aCode:'ir',     venue:'Lumen Field',             city:'Seattle, WA' },
+      { phase:'group', round:'Group L · MD3', date:'Sat, Jun 27', idt:'00:00', idtDate:'Jun 28 ⁺¹', home:'Panama',        hCode:'pa',     away:'England',       aCode:'gb-eng', venue:'MetLife Stadium',         city:'E. Rutherford, NJ' },
+      { phase:'group', round:'Group L · MD3', date:'Sat, Jun 27', idt:'00:00', idtDate:'Jun 28 ⁺¹', home:'Croatia',       hCode:'hr',     away:'Ghana',         aCode:'gh',     venue:'Lincoln Financial Field',  city:'Philadelphia, PA' },
+      { phase:'group', round:'Group K · MD3', date:'Sat, Jun 27', idt:'02:30', idtDate:'Jun 28 ⁺¹', home:'Colombia',      hCode:'co',     away:'Portugal',      aCode:'pt',     venue:'Hard Rock Stadium',       city:'Miami Gardens, FL' },
+      { phase:'group', round:'Group K · MD3', date:'Sat, Jun 27', idt:'02:30', idtDate:'Jun 28 ⁺¹', home:'IC PO-1',       hCode:null,     away:'Uzbekistan',    aCode:'uz',     venue:'Mercedes-Benz Stadium',   city:'Atlanta, GA' },
+      { phase:'group', round:'Group J · MD3', date:'Sat, Jun 27', idt:'05:00', idtDate:'Jun 28 ⁺¹', home:'Algeria',       hCode:'dz',     away:'Austria',       aCode:'at',     venue:'Arrowhead Stadium',       city:'Kansas City, MO' },
+      { phase:'group', round:'Group J · MD3', date:'Sat, Jun 27', idt:'05:00', idtDate:'Jun 28 ⁺¹', home:'Jordan',        hCode:'jo',     away:'Argentina',     aCode:'ar',     venue:'AT&T Stadium',            city:'Arlington, TX' },
+      // Round of 32
+      { phase:'knockout', round:'Round of 32', date:'Sun, Jun 28', idt:'22:00', idtDate:'Jun 28',     home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'SoFi Stadium',            city:'Inglewood, CA' },
+      { phase:'knockout', round:'Round of 32', date:'Mon, Jun 29', idt:'20:00', idtDate:'Jun 29',     home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'NRG Stadium',             city:'Houston, TX' },
+      { phase:'knockout', round:'Round of 32', date:'Mon, Jun 29', idt:'23:30', idtDate:'Jun 29',     home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Gillette Stadium',        city:'Foxborough, MA' },
+      { phase:'knockout', round:'Round of 32', date:'Tue, Jun 30', idt:'20:00', idtDate:'Jun 30',     home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'AT&T Stadium',            city:'Arlington, TX' },
+      { phase:'knockout', round:'Round of 32', date:'Tue, Jun 30', idt:'00:00', idtDate:'Jul 1 ⁺¹',  home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'MetLife Stadium',         city:'E. Rutherford, NJ' },
+      { phase:'knockout', round:'Round of 32', date:'Wed, Jul 1',  idt:'19:00', idtDate:'Jul 1',      home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Mercedes-Benz Stadium',   city:'Atlanta, GA' },
+      { phase:'knockout', round:'Round of 32', date:'Wed, Jul 1',  idt:'23:00', idtDate:'Jul 1',      home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Lumen Field',             city:'Seattle, WA' },
+      { phase:'knockout', round:'Round of 32', date:'Wed, Jul 1',  idt:'03:00', idtDate:'Jul 2 ⁺¹',  home:'TBD', hCode:null, away:'TBD', aCode:null, venue:"Levi's Stadium",          city:'Santa Clara, CA' },
+      { phase:'knockout', round:'Round of 32', date:'Thu, Jul 2',  idt:'22:00', idtDate:'Jul 2',      home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'SoFi Stadium',            city:'Inglewood, CA' },
+      { phase:'knockout', round:'Round of 32', date:'Fri, Jul 3',  idt:'21:00', idtDate:'Jul 3',      home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'AT&T Stadium',            city:'Arlington, TX' },
+      { phase:'knockout', round:'Round of 32', date:'Fri, Jul 3',  idt:'01:00', idtDate:'Jul 4 ⁺¹',  home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Hard Rock Stadium',       city:'Miami Gardens, FL' },
+      { phase:'knockout', round:'Round of 32', date:'Fri, Jul 3',  idt:'04:30', idtDate:'Jul 4 ⁺¹',  home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Arrowhead Stadium',       city:'Kansas City, MO' },
+      // Round of 16
+      { phase:'knockout', round:'Round of 16', date:'Sat, Jul 4',  idt:'20:00', idtDate:'Jul 4',      home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'NRG Stadium',             city:'Houston, TX' },
+      { phase:'knockout', round:'Round of 16', date:'Sat, Jul 4',  idt:'00:00', idtDate:'Jul 5 ⁺¹',  home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Lincoln Financial Field',  city:'Philadelphia, PA' },
+      { phase:'knockout', round:'Round of 16', date:'Sun, Jul 5',  idt:'23:00', idtDate:'Jul 5',      home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'MetLife Stadium',         city:'E. Rutherford, NJ' },
+      { phase:'knockout', round:'Round of 16', date:'Mon, Jul 6',  idt:'22:00', idtDate:'Jul 6',      home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'AT&T Stadium',            city:'Arlington, TX' },
+      { phase:'knockout', round:'Round of 16', date:'Mon, Jul 6',  idt:'03:00', idtDate:'Jul 7 ⁺¹',  home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Lumen Field',             city:'Seattle, WA' },
+      { phase:'knockout', round:'Round of 16', date:'Tue, Jul 7',  idt:'19:00', idtDate:'Jul 7',      home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Mercedes-Benz Stadium',   city:'Atlanta, GA' },
+      // Quarter-Finals
+      { phase:'knockout', round:'Quarter-Final', date:'Thu, Jul 9',  idt:'23:00', idtDate:'Jul 9',      home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Gillette Stadium',     city:'Foxborough, MA' },
+      { phase:'knockout', round:'Quarter-Final', date:'Fri, Jul 10', idt:'22:00', idtDate:'Jul 10',     home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'SoFi Stadium',         city:'Inglewood, CA' },
+      { phase:'knockout', round:'Quarter-Final', date:'Sat, Jul 11', idt:'00:00', idtDate:'Jul 12 ⁺¹', home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Hard Rock Stadium',     city:'Miami Gardens, FL' },
+      { phase:'knockout', round:'Quarter-Final', date:'Sat, Jul 11', idt:'04:00', idtDate:'Jul 12 ⁺¹', home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Arrowhead Stadium',     city:'Kansas City, MO' },
+      // Semi-Finals
+      { phase:'knockout', round:'Semi-Final',    date:'Tue, Jul 14', idt:'22:00', idtDate:'Jul 14',     home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'AT&T Stadium',         city:'Arlington, TX' },
+      { phase:'knockout', round:'Semi-Final',    date:'Wed, Jul 15', idt:'22:00', idtDate:'Jul 15',     home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Mercedes-Benz Stadium', city:'Atlanta, GA' },
+      // 3rd + Final
+      { phase:'knockout', round:'🥉 3rd Place',  date:'Sat, Jul 18', idt:'00:00', idtDate:'Jul 19 ⁺¹', home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'Hard Rock Stadium',     city:'Miami Gardens, FL' },
+      { phase:'knockout', round:'🏆 Final',      date:'Sun, Jul 19', idt:'22:00', idtDate:'Jul 19',     home:'TBD', hCode:null, away:'TBD', aCode:null, venue:'MetLife Stadium',       city:'E. Rutherford, NJ' },
+    ]
+  }
+};
+
+// ── RENDER ────────────────────────────────────────────────────
+(function() {
+  const params = new URLSearchParams(location.search);
+  const name   = params.get('name');
+  const data   = HOST_SCHEDULES[name];
+
+  if (!data) {
+    document.getElementById('page-body').innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:1rem;color:var(--muted)">' +
+      '<div style="font-size:3rem">🤷</div><div>Host not found</div>' +
+      '<button class="btn btn-outline" onclick="history.back()">← Go back</button></div>';
+    return;
+  }
+
+  document.title = name + ' — Host Schedule · WC2026';
+
+  // Build game cards
+  let html = '';
+  let lastPhase = '';
+  data.games.forEach(g => {
+    if (g.phase !== lastPhase) {
+      const label = g.phase === 'group' ? '⚽ Group Stage' : '🏆 Knockout Rounds';
+      html += `<div class="phase-divider">${label}</div>`;
+      lastPhase = g.phase;
+    }
+
+    const hFlag = g.hCode
+      ? `<img class="hg-flag" src="${flagUrl(g.hCode, 40)}" alt="${g.home}">`
+      : `<div class="hg-flag-ph"></div>`;
+    const aFlag = g.aCode
+      ? `<img class="hg-flag" src="${flagUrl(g.aCode, 40)}" alt="${g.away}">`
+      : `<div class="hg-flag-ph"></div>`;
+
+    const timeCell = g.idt === 'TBD'
+      ? `<span style="color:var(--muted);font-size:.85rem">TBD</span>`
+      : `<span class="host-game-time">${g.idt}</span>`;
+
+    html += `
+      <div class="host-game-card">
+        <div class="host-game-top">
+          <span class="host-game-round ${g.phase}">${g.round}</span>
+          <span class="host-game-date">${g.date}</span>
+        </div>
+        <div class="host-game-matchup">
+          <div class="hg-team">${hFlag}<span class="hg-name">${g.home}</span></div>
+          <div class="hg-vs">VS</div>
+          <div class="hg-team right">${aFlag}<span class="hg-name">${g.away}</span></div>
+        </div>
+        <div class="host-game-meta">
+          <span class="host-game-venue">${g.venue} · ${g.city}${VENUE_CAP[g.venue] ? ' · ' + VENUE_CAP[g.venue] : ''}</span>
+          ${timeCell}
+        </div>
+      </div>`;
+  });
+
+  document.getElementById('page-body').innerHTML = `
+    <div class="host-hero">
+      <img class="host-flag-lg" src="${flagUrl(data.code, 160)}" alt="${name}"
+           onerror="this.style.display='none'">
+      <div class="host-hero-meta">
+        <div class="host-hero-name">${name}</div>
+        <div class="host-hero-tag">🏠 Host Nation · ${data.cities} cities · ${data.totalGames} matches</div>
+        <div class="host-hero-cities">${data.cityList}</div>
+      </div>
+    </div>
+    ${html}
+    <div style="padding:.8rem 1.2rem 2rem;font-size:.62rem;color:#555;line-height:1.6;">
+      ⁺¹ Next calendar day (Israel time) · All times IDT = UTC+3 · Knockout opponents TBD · Subject to FIFA confirmation
+    </div>
+  `;
+})();
+</script>
+</body>
+</html>
