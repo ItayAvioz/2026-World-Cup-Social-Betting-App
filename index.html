@@ -129,135 +129,39 @@
     <h2 class="section-title" style="text-align:center">48 Nations on the Map</h2>
     <p style="color:var(--muted);font-size:.93rem">Hover to highlight · Click a flag for team info</p>
   </div>
-  <div id="globe-scroll-wrap">
-    <div id="globe-container"></div>
-  </div>
-  <div id="globe-filter-bar" style="display:none">
-    <span>Group <strong id="globe-filter-letter"></strong> only</span>
-    <button onclick="filterGlobe(null)" style="background:none;border:1px solid var(--accent);color:var(--accent);padding:.2rem .7rem;border-radius:6px;cursor:pointer;font-size:.78rem">Show all</button>
-  </div>
+  <div id="globe-container"></div>
   <div class="globe-legend">
     <span>Gold border = Host nation</span>
     <span>·</span>
-    <span>Tap 🗺️ on any group to highlight its teams</span>
+    <span>Click any flag for team details & schedule</span>
   </div>
-  <p class="globe-scroll-hint">← Scroll to explore · Tap 🗺️ on a group above to filter →</p>
 </section>
 
 <!-- REGISTER -->
 <section id="register-section">
-  <div class="reg-wrap">
-
-    <!-- LEFT: value props -->
-    <div class="reg-left">
-      <div class="section-pill">Free to play · No ads</div>
-      <h2 class="reg-left-title">Play the<br><span class="gold">prediction game</span></h2>
-      <p class="reg-left-desc">Predict every match, compete with friends, and let AI roast whoever dropped the ball.</p>
-
-      <div class="reg-features">
-        <div class="reg-feature">
-          <div class="rf-icon">🎯</div>
-          <div class="rf-body">
-            <div class="rf-title">104 Matches to Predict</div>
-            <div class="rf-desc">From the group stage opener to the final — pick every score</div>
-          </div>
-        </div>
-        <div class="reg-feature">
-          <div class="rf-icon">👥</div>
-          <div class="rf-body">
-            <div class="rf-title">Private Friend Groups</div>
-            <div class="rf-desc">Invite your crew, own leaderboard, own rivalry</div>
-          </div>
-        </div>
-        <div class="reg-feature">
-          <div class="rf-icon">🤖</div>
-          <div class="rf-body">
-            <div class="rf-title">Nightly AI Roasts</div>
-            <div class="rf-desc">AI-generated group recaps — funny, savage, social</div>
-          </div>
-        </div>
-        <div class="reg-feature">
-          <div class="rf-icon">🏆</div>
-          <div class="rf-body">
-            <div class="rf-title">Champion &amp; Top Scorer</div>
-            <div class="rf-desc">Lock in your picks before June 11 — big points on the line</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="reg-scoring-box">
-        <div class="rsb-label">Scoring System</div>
-        <div class="rsb-rows">
-          <div class="rsb-row"><span class="rsb-pts gold">+3</span><span>Exact scoreline</span></div>
-          <div class="rsb-row"><span class="rsb-pts">+1</span><span>Correct outcome (W / D / L)</span></div>
-          <div class="rsb-row"><span class="rsb-pts gold">+10</span><span>Correct champion pick</span></div>
-          <div class="rsb-row"><span class="rsb-pts gold">+10</span><span>Correct top scorer pick</span></div>
-        </div>
-      </div>
+  <div class="reg-header">
+    <div class="section-pill" style="text-align:center">Join Now</div>
+    <h2 class="section-title" style="text-align:center">Start Predicting</h2>
+    <p style="color:var(--muted);text-align:center">Create an account and compete with friends</p>
+  </div>
+  <div class="reg-card">
+    <h3 class="reg-title" id="form-title">Create Account</h3>
+    <p class="reg-sub" id="form-sub">Join thousands of fans predicting the 2026 World Cup</p>
+    <form id="form-register">
+      <div class="form-group"><label>Username</label><input type="text" id="reg-username" placeholder="e.g. Messi_Fan_10" required></div>
+      <div class="form-group"><label>Email</label><input type="email" id="reg-email" placeholder="you@example.com" required></div>
+      <div class="form-group"><label>Password</label><input type="password" id="reg-password" placeholder="Min. 8 characters" required minlength="8"></div>
+      <button type="submit" class="btn btn-gold btn-full">Create Account →</button>
+    </form>
+    <form id="form-login" style="display:none">
+      <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com" required></div>
+      <div class="form-group"><label>Password</label><input type="password" id="login-password" placeholder="Your password" required></div>
+      <button type="submit" class="btn btn-gold btn-full">Login →</button>
+    </form>
+    <div class="form-footer">
+      <span id="toggle-text">Already have an account? </span>
+      <a href="#" id="toggle-link">Sign In</a>
     </div>
-
-    <!-- RIGHT: form -->
-    <div class="reg-right">
-      <div class="reg-card">
-        <div class="reg-tabs">
-          <button class="reg-tab active" id="tab-signup" onclick="switchForm(true)">Sign Up</button>
-          <button class="reg-tab" id="tab-signin" onclick="switchForm(false)">Sign In</button>
-        </div>
-
-        <h3 class="reg-title" id="form-title">Create Account</h3>
-        <p class="reg-sub" id="form-sub">Join thousands of fans predicting the 2026 World Cup</p>
-
-        <form id="form-register">
-          <div class="form-group">
-            <label>Username</label>
-            <input type="text" id="reg-username" placeholder="e.g. Messi_Fan_10" required autocomplete="username">
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="reg-email" placeholder="you@example.com" required autocomplete="email">
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <div class="input-pw-wrap">
-              <input type="password" id="reg-password" placeholder="Min. 8 characters" required minlength="8" autocomplete="new-password">
-              <button type="button" class="pw-eye" onclick="togglePw('reg-password',this)">Show</button>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-gold btn-full">Create Account →</button>
-        </form>
-
-        <form id="form-login" style="display:none">
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <div class="input-pw-wrap">
-              <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
-              <button type="button" class="pw-eye" onclick="togglePw('login-password',this)">Show</button>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-gold btn-full">Sign In →</button>
-        </form>
-
-        <div class="form-footer">
-          <span id="toggle-text">Already have an account? </span>
-          <a href="#" id="toggle-link">Sign In</a>
-        </div>
-      </div>
-
-      <div class="reg-proof">
-        <span class="rp-item">🎯 104 games</span>
-        <span class="rp-dot">·</span>
-        <span class="rp-item">👥 Friend groups</span>
-        <span class="rp-dot">·</span>
-        <span class="rp-item">🤖 AI roasts</span>
-        <span class="rp-dot">·</span>
-        <span class="rp-item">🏆 Big picks</span>
-      </div>
-    </div>
-
   </div>
 </section>
 
