@@ -36,7 +36,7 @@ const TEAMS = [
   { name:'South Korea',  code:'kr', group:'A', conf:'AFC',      host:false, lat:37.6, lng:127.0,
     fifaRank:22, best:'4th Place', times:'1×', lastAchieved:'2002 (Japan/Korea)', lastWC:'2022 (Qatar) — Round of 16' },
   // GROUP B
-  { name:'Canada', code:'ca', group:'B', conf:'CONCACAF', host:true, lat:43.7, lng:-79.4,
+  { name:'Canada', code:'ca', group:'B', conf:'CONCACAF', host:true, lat:57.0, lng:-96.0,
     fifaRank:29, best:'Group Stage', times:'2 appearances', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — Group Stage',
     schedule:[
       { phase:'group', label:'Group B', date:'Fri, Jun 12', opponent:'UEFA PO-A TBD', oppCode:null, venue:'BMO Field',  city:'Toronto',    idt:'22:00', idtLabel:'Jun 12' },
@@ -45,21 +45,21 @@ const TEAMS = [
       { phase:'knockout', label:'Round of 32', date:'Thu, Jul 2', opponent:'TBD (if advancing)', oppCode:null, venue:'BC Place', city:'Vancouver', idt:'TBD', idtLabel:'Jul 2' },
     ]
   },
-  { name:'Qatar',       code:'qa', group:'B', conf:'AFC',  host:false, lat:26.0, lng:50.5,
+  { name:'Qatar',       code:'qa', group:'B', conf:'AFC',  host:false, lat:25.3, lng:51.2,
     fifaRank:51, best:'Group Stage (host)', times:'1×', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — Group Stage (as host)' },
   { name:'Switzerland', code:'ch', group:'B', conf:'UEFA', host:false, lat:46.9, lng:7.4,
     fifaRank:18, best:'Quarter-Finals', times:'3×', lastAchieved:'1954 (Switzerland)', lastWC:'2022 (Qatar) — Round of 16' },
   // GROUP C
   { name:'Brazil',   code:'br', group:'C', conf:'CONMEBOL', host:false, lat:-15.8, lng:-47.9,
     fifaRank:5,  best:'World Champion', times:'5×', lastAchieved:'2002 (Japan/Korea)', lastWC:'2022 (Qatar) — Quarter-Finals' },
-  { name:'Morocco',  code:'ma', group:'C', conf:'CAF',      host:false, lat:34.0, lng:-6.8,
+  { name:'Morocco',  code:'ma', group:'C', conf:'CAF',      host:false, lat:33.0, lng:-5.5,
     fifaRank:8, best:'4th Place', times:'1×', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — 4th Place' },
   { name:'Haiti',    code:'ht', group:'C', conf:'CONCACAF', host:false, lat:19.0, lng:-72.3,
     fifaRank:84, best:'Group Stage', times:'1 appearance', lastAchieved:'1974 (West Germany)', lastWC:'1974 (West Germany) — Group Stage' },
   { name:'Scotland', code:'gb-sct', group:'C', conf:'UEFA', host:false, lat:55.9, lng:-3.2,
     fifaRank:38, best:'Group Stage', times:'8 appearances', lastAchieved:'1998 (France)', lastWC:'1998 (France) — Group Stage' },
   // GROUP D
-  { name:'United States', code:'us', group:'D', conf:'CONCACAF', host:true, lat:38.9, lng:-77.0,
+  { name:'United States', code:'us', group:'D', conf:'CONCACAF', host:true, lat:39.5, lng:-98.5,
     fifaRank:15, best:'3rd Place', times:'1×', lastAchieved:'1930 (Uruguay)', lastWC:'2022 (Qatar) — Round of 16',
     schedule:[
       { phase:'group', label:'Group D', date:'Fri, Jun 12', opponent:'Paraguay',       oppCode:'py', venue:'SoFi Stadium', city:'Inglewood, CA', idt:'04:00', idtLabel:'Jun 13 ⁺¹' },
@@ -70,23 +70,23 @@ const TEAMS = [
   },
   { name:'Paraguay',  code:'py', group:'D', conf:'CONMEBOL', host:false, lat:-25.3, lng:-57.6,
     fifaRank:40, best:'Quarter-Finals', times:'1×', lastAchieved:'2010 (South Africa)', lastWC:'2010 (South Africa) — Quarter-Finals' },
-  { name:'Australia', code:'au', group:'D', conf:'AFC',      host:false, lat:-33.9, lng:151.2,
+  { name:'Australia', code:'au', group:'D', conf:'AFC',      host:false, lat:-25.3, lng:133.8,
     fifaRank:27, best:'Round of 16', times:'2×', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — Round of 16' },
   // GROUP E
   { name:'Germany',     code:'de', group:'E', conf:'UEFA',     host:false, lat:52.5, lng:13.4,
     fifaRank:10, best:'World Champion', times:'4×', lastAchieved:'2014 (Brazil)', lastWC:'2022 (Qatar) — Group Stage' },
-  { name:'Curaçao',     code:'cw', group:'E', conf:'CONCACAF', host:false, lat:10.5, lng:-66.9,
+  { name:'Curaçao',     code:'cw', group:'E', conf:'CONCACAF', host:false, lat:12.1, lng:-68.9,
     fifaRank:82, best:'First World Cup!', times:'First time', lastAchieved:'2026 (debut)', lastWC:'2026 — First World Cup ever' },
-  { name:'Ivory Coast', code:'ci', group:'E', conf:'CAF',      host:false, lat:5.4, lng:-4.0,
+  { name:'Ivory Coast', code:'ci', group:'E', conf:'CAF',      host:false, lat:7.5, lng:-6.5,
     fifaRank:37, best:'Group Stage', times:'3 appearances', lastAchieved:'2014 (Brazil)', lastWC:'2014 (Brazil) — Group Stage' },
   { name:'Ecuador',     code:'ec', group:'E', conf:'CONMEBOL', host:false, lat:-0.2, lng:-78.5,
     fifaRank:23, best:'Round of 16', times:'1×', lastAchieved:'2006 (Germany)', lastWC:'2022 (Qatar) — Group Stage' },
   // GROUP F
-  { name:'Netherlands', code:'nl', group:'F', conf:'UEFA', host:false, lat:52.4, lng:4.9,
+  { name:'Netherlands', code:'nl', group:'F', conf:'UEFA', host:false, lat:52.2, lng:5.5,
     fifaRank:7,  best:'Runner-Up', times:'3×', lastAchieved:'2010 (South Africa)', lastWC:'2022 (Qatar) — Quarter-Finals' },
   { name:'Japan',       code:'jp', group:'F', conf:'AFC',  host:false, lat:35.7, lng:139.7,
     fifaRank:19, best:'Round of 16', times:'4×', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — Round of 16' },
-  { name:'Tunisia',     code:'tn', group:'F', conf:'CAF',  host:false, lat:36.8, lng:10.2,
+  { name:'Tunisia',     code:'tn', group:'F', conf:'CAF',  host:false, lat:34.0, lng:9.0,
     fifaRank:47, best:'Group Stage', times:'6 appearances', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — Group Stage' },
   // GROUP G
   { name:'Belgium',     code:'be', group:'G', conf:'UEFA', host:false, lat:50.8, lng:4.4,
@@ -104,19 +104,19 @@ const TEAMS = [
     fifaRank:68, best:'First World Cup!', times:'First time', lastAchieved:'2026 (debut)', lastWC:'2026 — First World Cup ever' },
   { name:'Saudi Arabia', code:'sa', group:'H', conf:'AFC',      host:false, lat:24.7, lng:46.7,
     fifaRank:60, best:'Round of 16', times:'1×', lastAchieved:'1994 (USA)', lastWC:'2022 (Qatar) — Group Stage' },
-  { name:'Uruguay',      code:'uy', group:'H', conf:'CONMEBOL', host:false, lat:-34.9, lng:-56.2,
+  { name:'Uruguay',      code:'uy', group:'H', conf:'CONMEBOL', host:false, lat:-32.5, lng:-56.0,
     fifaRank:17, best:'World Champion', times:'2×', lastAchieved:'1950 (Brazil)', lastWC:'2022 (Qatar) — Group Stage' },
   // GROUP I
   { name:'France',  code:'fr', group:'I', conf:'UEFA', host:false, lat:48.9, lng:2.3,
     fifaRank:3,  best:'World Champion', times:'2×', lastAchieved:'2018 (Russia)', lastWC:'2022 (Qatar) — Runner-Up' },
   { name:'Senegal', code:'sn', group:'I', conf:'CAF',  host:false, lat:14.5, lng:-14.5,
     fifaRank:12, best:'Quarter-Finals', times:'1×', lastAchieved:'2002 (Japan/Korea)', lastWC:'2022 (Qatar) — Round of 16' },
-  { name:'Norway',  code:'no', group:'I', conf:'UEFA', host:false, lat:59.9, lng:10.8,
+  { name:'Norway',  code:'no', group:'I', conf:'UEFA', host:false, lat:62.0, lng:9.5,
     fifaRank:32, best:'Round of 16', times:'2×', lastAchieved:'1998 (France)', lastWC:'1998 (France) — Round of 16' },
   // GROUP J
-  { name:'Argentina', code:'ar', group:'J', conf:'CONMEBOL', host:false, lat:-34.6, lng:-58.4,
+  { name:'Argentina', code:'ar', group:'J', conf:'CONMEBOL', host:false, lat:-31.5, lng:-64.0,
     fifaRank:2,  best:'World Champion', times:'3×', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — 🏆 Champion' },
-  { name:'Algeria',   code:'dz', group:'J', conf:'CAF',      host:false, lat:36.7, lng:3.0,
+  { name:'Algeria',   code:'dz', group:'J', conf:'CAF',      host:false, lat:28.0, lng:2.5,
     fifaRank:28, best:'Round of 16', times:'1×', lastAchieved:'2014 (Brazil)', lastWC:'2014 (Brazil) — Round of 16' },
   { name:'Austria',   code:'at', group:'J', conf:'UEFA',     host:false, lat:48.2, lng:16.4,
     fifaRank:24, best:'3rd Place', times:'1×', lastAchieved:'1954 (Switzerland)', lastWC:'1998 (France) — Group Stage',
@@ -124,9 +124,9 @@ const TEAMS = [
   { name:'Jordan',    code:'jo', group:'J', conf:'AFC',      host:false, lat:31.9, lng:35.9,
     fifaRank:66, best:'First World Cup!', times:'First time', lastAchieved:'2026 (debut)', lastWC:'2026 — First World Cup ever' },
   // GROUP K
-  { name:'Portugal',   code:'pt', group:'K', conf:'UEFA',     host:false, lat:38.7, lng:-9.1,
+  { name:'Portugal',   code:'pt', group:'K', conf:'UEFA',     host:false, lat:39.6, lng:-8.0,
     fifaRank:6,  best:'3rd Place', times:'1×', lastAchieved:'1966 (England)', lastWC:'2022 (Qatar) — Quarter-Finals' },
-  { name:'Uzbekistan', code:'uz', group:'K', conf:'AFC',      host:false, lat:41.3, lng:69.3,
+  { name:'Uzbekistan', code:'uz', group:'K', conf:'AFC',      host:false, lat:41.0, lng:63.0,
     fifaRank:52, best:'First World Cup!', times:'First time', lastAchieved:'2026 (debut)', lastWC:'2026 — First World Cup ever' },
   { name:'Colombia',   code:'co', group:'K', conf:'CONMEBOL', host:false, lat:4.7, lng:-74.1,
     fifaRank:14, best:'Quarter-Finals', times:'1×', lastAchieved:'2014 (Brazil)', lastWC:'2018 (Russia) — Round of 16' },
@@ -135,9 +135,9 @@ const TEAMS = [
     fifaRank:4,  best:'World Champion', times:'1×', lastAchieved:'1966 (England)', lastWC:'2022 (Qatar) — Quarter-Finals' },
   { name:'Croatia', code:'hr',     group:'L', conf:'UEFA',     host:false, lat:45.8, lng:16.0,
     fifaRank:11, best:'Runner-Up', times:'1×', lastAchieved:'2018 (Russia)', lastWC:'2022 (Qatar) — 3rd Place' },
-  { name:'Ghana',   code:'gh',     group:'L', conf:'CAF',      host:false, lat:5.6, lng:-0.2,
+  { name:'Ghana',   code:'gh',     group:'L', conf:'CAF',      host:false, lat:8.0, lng:-1.5,
     fifaRank:72, best:'Quarter-Finals', times:'1×', lastAchieved:'2010 (South Africa)', lastWC:'2022 (Qatar) — Group Stage' },
-  { name:'Panama',  code:'pa',     group:'L', conf:'CONCACAF', host:false, lat:8.9, lng:-79.5,
+  { name:'Panama',  code:'pa',     group:'L', conf:'CONCACAF', host:false, lat:8.5, lng:-80.0,
     fifaRank:33, best:'Group Stage', times:'1 appearance', lastAchieved:'2018 (Russia)', lastWC:'2018 (Russia) — Group Stage' },
 ];
 
@@ -260,25 +260,21 @@ const flagUrl = (code, w=40) => `https://flagcdn.com/w${w}/${code}.png`;
   });
 })();
 
-// ── WORLD MAP (flat equirectangular) ─────────────────────────
+// ── WORLD MAP (earth-dark texture + SVG gold borders) ────────
 (function() {
   var container = document.getElementById('globe-container');
 
-  // Background map — object-fit:fill keeps exact equirectangular alignment (no crop/shift)
+  // Background: NASA equirectangular earth-dark texture
   var mapImg = document.createElement('img');
   mapImg.className = 'map-bg';
   mapImg.alt = '';
-  // earth-dark.jpg is guaranteed equirectangular (designed for globe.gl)
   mapImg.src = 'https://unpkg.com/three-globe/example/img/earth-dark.jpg';
   mapImg.onerror = function() {
     this.src = 'https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-dark.jpg';
   };
   container.appendChild(mapImg);
 
-  var W = container.offsetWidth  || 900;
-  var H = container.offsetHeight || 560;
-
-  // Equirectangular: lng→x, lat→y
+  // Equirectangular projection — same formula as the texture
   function proj(lat, lng) {
     return {
       x: ((lng + 180) / 360) * 100,
@@ -286,6 +282,199 @@ const flagUrl = (code, w=40) => `https://flagcdn.com/w${w}/${code}.png`;
     };
   }
 
+  // ── Gold host-country borders (SVG overlay, same viewBox as texture) ──
+  (function() {
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:6';
+    svg.setAttribute('viewBox', '0 0 360 180');
+    svg.setAttribute('preserveAspectRatio', 'none');
+    container.appendChild(svg);
+
+    function draw(d) {
+      var el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      el.setAttribute('d', d);
+      el.setAttribute('fill', 'rgba(245,197,24,0.10)');
+      el.setAttribute('stroke', '#f5c518');
+      el.setAttribute('stroke-width', '1.2');
+      el.setAttribute('stroke-linejoin', 'round');
+      el.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(el);
+    }
+
+    function poly2path(pts) {
+      return pts.map(function(p, i) {
+        return (i === 0 ? 'M' : 'L') + (p[0]+180).toFixed(1) + ',' + (90-p[1]).toFixed(1);
+      }).join('') + 'Z';
+    }
+
+    function fallback() {
+      draw(poly2path([[-124,49],[-110,49],[-95,49],[-89.5,48],[-87,47],[-84,46.5],[-82,45.5],[-83,42],[-80,42.5],[-76,44],[-67,47],[-64,44],[-60,46],[-53,47],[-53,52],[-58,60],[-62,63],[-68,63],[-75,63],[-80,63],[-87,65],[-90,63],[-100,63],[-110,63],[-120,63],[-130,63],[-135,60],[-130,54],[-126,50],[-124,49]]));
+      draw(poly2path([[-124,48.5],[-124,43],[-124,39],[-122,37.5],[-120,34.5],[-117,32.5],[-114,32.5],[-111,31.5],[-108,31.5],[-106,32],[-104,29.5],[-100,28],[-97,26],[-94,29.5],[-90,29],[-88,30],[-85,30],[-84,29.5],[-82.5,29.5],[-82,28],[-81.5,26.5],[-81.5,25],[-80.5,25],[-80,25.5],[-80,28],[-80,30.5],[-76,35],[-74,38.5],[-72,41],[-70,42],[-67,44.5],[-67,47],[-76,44],[-80,42.5],[-83,42],[-83,44],[-82,45.5],[-84,46.5],[-87,47],[-88,48],[-89.5,48],[-95,49],[-100,49],[-110,49],[-122,49],[-124,48.5]]));
+      draw(poly2path([[-117,32.5],[-116.5,31],[-115.5,30],[-114.5,28],[-113,26.5],[-110.5,24],[-109.8,22.9],[-110.3,24],[-111,26],[-112.5,27.5],[-113.5,29],[-114.8,32],[-117,32.5]]));
+      draw(poly2path([[-114.8,32],[-111,31.5],[-108,31.5],[-106,32],[-104,29.5],[-100,28],[-97,26],[-97,22],[-94.5,18.5],[-91.5,18.5],[-90.4,21],[-86.9,21.5],[-87.5,18.5],[-87.8,16.5],[-88.5,15.5],[-92,15.5],[-94,16],[-99.5,16.5],[-103,19],[-105,21],[-107,23],[-108.5,25.5],[-110.5,27.5],[-112,29],[-114,31],[-114.8,32]]));
+    }
+
+    function ringPath(ring) {
+      return ring.map(function(pt, i) {
+        return (i === 0 ? 'M' : 'L') + (pt[0]+180).toFixed(2) + ',' + (90-pt[1]).toFixed(2);
+      }).join('') + 'Z';
+    }
+    function isContiUSA(poly) {
+      var outer = poly[0], n = outer.length, cx = 0, cy = 0;
+      for (var i = 0; i < n; i++) { cx += outer[i][0]; cy += outer[i][1]; }
+      cx /= n; cy /= n;
+      return cy >= 24 && cy <= 50 && cx >= -128 && cx <= -65;
+    }
+    function buildPath(geom, id) {
+      var d = '';
+      if (geom.type === 'Polygon') {
+        geom.coordinates.forEach(function(ring) { d += ringPath(ring); });
+      } else if (geom.type === 'MultiPolygon') {
+        geom.coordinates.forEach(function(poly) {
+          if (id !== '840' || isContiUSA(poly))
+            poly.forEach(function(ring) { d += ringPath(ring); });
+        });
+      }
+      return d;
+    }
+
+    if (typeof topojson === 'undefined') { fallback(); return; }
+    var HOST_IDS = { '840': true, '124': true, '484': true };
+
+    // Safe path builder — skips rings that cross the antimeridian (Russia, USA-Alaska etc.)
+    function buildPathSafe(geom) {
+      var d = '';
+      var polys = geom.type === 'Polygon' ? [geom.coordinates] : geom.coordinates;
+      polys.forEach(function(poly) {
+        poly.forEach(function(ring) {
+          for (var i = 1; i < ring.length; i++) {
+            if (Math.abs(ring[i][0] - ring[i-1][0]) > 180) return;
+          }
+          d += ringPath(ring);
+        });
+      });
+      return d;
+    }
+
+    // Continent path builder — splits antimeridian-crossing rings into open segments
+    // instead of skipping them, so Russia/Pacific-territory seams don't leave gaps
+    function buildContPath(geom) {
+      var d = '';
+      var polys = geom.type === 'Polygon' ? [geom.coordinates] : geom.coordinates;
+      polys.forEach(function(poly) {
+        poly.forEach(function(ring) {
+          var hasCross = false;
+          for (var i = 1; i < ring.length; i++) {
+            if (Math.abs(ring[i][0] - ring[i-1][0]) > 180) { hasCross = true; break; }
+          }
+          if (!hasCross) { d += ringPath(ring); return; }
+          // Split ring at each antimeridian crossing → open path segments
+          var seg = [];
+          for (var i = 0; i < ring.length; i++) {
+            if (i > 0 && Math.abs(ring[i][0] - ring[i-1][0]) > 180) {
+              if (seg.length >= 2) {
+                d += seg.map(function(p, j) {
+                  return (j===0?'M':'L') + (p[0]+180).toFixed(2)+','+(90-p[1]).toFixed(2);
+                }).join('');
+              }
+              seg = [ring[i]];
+            } else {
+              seg.push(ring[i]);
+            }
+          }
+          if (seg.length >= 2) {
+            d += seg.map(function(p, j) {
+              return (j===0?'M':'L') + (p[0]+180).toFixed(2)+','+(90-p[1]).toFixed(2);
+            }).join('');
+          }
+        });
+      });
+      return d;
+    }
+
+    // Ocean labels — 2-row, italic blue, subtle
+    function addOceanLabels() {
+      var oceans = [
+        { l1:'PACIFIC',  l2:'OCEAN', x:38,  y:76  },
+        { l1:'ATLANTIC', l2:'OCEAN', x:143, y:63  },
+        { l1:'INDIAN',   l2:'OCEAN', x:258, y:103 },
+        { l1:'SOUTHERN', l2:'OCEAN', x:180, y:146 },
+        { l1:'ARCTIC',   l2:'OCEAN', x:180, y:10  }
+      ];
+      oceans.forEach(function(o) {
+        var t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        t.setAttribute('text-anchor', 'middle');
+        t.setAttribute('fill', 'rgba(140,185,235,0.40)');
+        t.setAttribute('font-size', '3.8');
+        t.setAttribute('font-family', 'sans-serif');
+        t.setAttribute('letter-spacing', '0.7');
+        t.setAttribute('font-style', 'italic');
+        var s1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+        s1.setAttribute('x', o.x); s1.setAttribute('y', o.y);
+        s1.textContent = o.l1;
+        var s2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+        s2.setAttribute('x', o.x); s2.setAttribute('dy', '4.5');
+        s2.textContent = o.l2;
+        t.appendChild(s1); t.appendChild(s2);
+        svg.appendChild(t);
+      });
+    }
+
+    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+      .then(function(r) { return r.json(); })
+      .then(function(topo) {
+        var features = topojson.feature(topo, topo.objects.countries).features;
+        // Country borders — very subtle lines, no fill
+        features.forEach(function(f) {
+          var d = buildPathSafe(f.geometry);
+          if (!d) return;
+          var el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          el.setAttribute('d', d);
+          el.setAttribute('fill', 'none');
+          el.setAttribute('stroke', 'rgba(160,170,150,0.22)');
+          el.setAttribute('stroke-width', '0.3');
+          svg.appendChild(el);
+        });
+        // ── Continent outlines — bold perimeters ─────────────────────────
+        var CONT_IDS = {
+          AFRICA:        {12:1,24:1,204:1,72:1,854:1,108:1,120:1,132:1,140:1,148:1,174:1,180:1,178:1,384:1,262:1,818:1,232:1,231:1,266:1,270:1,288:1,324:1,624:1,404:1,426:1,430:1,434:1,450:1,454:1,466:1,478:1,480:1,504:1,508:1,516:1,562:1,566:1,646:1,678:1,686:1,694:1,706:1,710:1,728:1,729:1,748:1,834:1,768:1,788:1,800:1,894:1,716:1},
+          SOUTH_AMERICA: {76:1,32:1,152:1,604:1,170:1,862:1,68:1,218:1,600:1,858:1,328:1,740:1,254:1},
+          EUROPE:        {8:1,20:1,40:1,112:1,56:1,70:1,100:1,191:1,203:1,208:1,233:1,246:1,250:1,276:1,300:1,348:1,352:1,372:1,380:1,428:1,438:1,440:1,442:1,807:1,470:1,498:1,492:1,499:1,528:1,578:1,616:1,620:1,642:1,688:1,703:1,705:1,724:1,752:1,756:1,804:1,826:1},
+          ASIA:          {4:1,50:1,64:1,96:1,116:1,156:1,356:1,360:1,364:1,368:1,376:1,392:1,400:1,398:1,414:1,417:1,418:1,422:1,458:1,462:1,496:1,104:1,524:1,408:1,512:1,586:1,275:1,608:1,634:1,682:1,702:1,410:1,144:1,760:1,158:1,762:1,764:1,626:1,792:1,795:1,784:1,860:1,704:1,887:1,51:1,31:1,268:1,643:1},
+          NORTH_AMERICA: {840:1,124:1,484:1,304:1,320:1,84:1,340:1,222:1,558:1,188:1,591:1,192:1,332:1,214:1,388:1,780:1,44:1,28:1,662:1,670:1,659:1,212:1,308:1},
+          OCEANIA:       {36:1,554:1,598:1,242:1,548:1,90:1,584:1,585:1,520:1,776:1,798:1}
+        };
+        ['AFRICA','SOUTH_AMERICA','EUROPE','ASIA','NORTH_AMERICA','OCEANIA'].forEach(function(cont) {
+          var ids = CONT_IDS[cont];
+          var geoms = topo.objects.countries.geometries.filter(function(g) { return ids[+g.id]; });
+          if (!geoms.length) return;
+          var merged = topojson.merge(topo, geoms);
+          // Europe & Asia have antimeridian-crossing rings (Russia, France's Pacific territories)
+          // — use buildContPath which splits those rings into open segments instead of skipping them
+          var d = (cont === 'EUROPE' || cont === 'ASIA') ? buildContPath(merged) : buildPathSafe(merged);
+          if (!d) return;
+          var el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          el.setAttribute('d', d);
+          el.setAttribute('fill', 'none');
+          el.setAttribute('stroke', 'rgba(200,205,195,0.5)');
+          el.setAttribute('stroke-width', '0.8');
+          el.setAttribute('stroke-linejoin', 'round');
+          el.setAttribute('stroke-linecap', 'round');
+          svg.appendChild(el);
+        });
+        // Host nations on top — gold tint + gold border
+        features.forEach(function(f) {
+          var id = '' + f.id;
+          if (!HOST_IDS[id]) return;
+          var d = buildPath(f.geometry, id);
+          if (d) draw(d);
+        });
+        addOceanLabels();
+      })
+      .catch(function() { fallback(); addOceanLabels(); });
+  })();
+
+  // ── FLAG MARKERS ──
   TEAMS.forEach(function(d) {
     var p   = proj(d.lat, d.lng);
     var big = d.host;
@@ -304,7 +493,7 @@ const flagUrl = (code, w=40) => `https://flagcdn.com/w${w}/${code}.png`;
       'z-index:' + (big ? 15 : 10),
       'transition:transform .18s',
       'pointer-events:auto',
-      'padding:6px',        /* larger touch target — 26px flag + 12px padding = 38px tap area */
+      'padding:6px',
       '-webkit-tap-highlight-color:transparent'
     ].join(';');
 
@@ -341,72 +530,13 @@ const flagUrl = (code, w=40) => `https://flagcdn.com/w${w}/${code}.png`;
 
     wrap.appendChild(img);
     wrap.addEventListener('click', function() { if (window.innerWidth > 768) { openModal(d, 'nation'); } else { location.href = 'team.html?code=' + d.code + '&mode=nation'; } });
-    // hover scale (desktop only — touch devices use click)
     wrap.addEventListener('mouseenter', function() { this.style.transform='translate(-50%,-50%) scale(1.55)'; this.style.zIndex='40'; });
     wrap.addEventListener('mouseleave', function() { this.style.transform='translate(-50%,-50%) scale(1)';   this.style.zIndex= big ? '15' : '10'; });
-    // touch: brief visual feedback
     wrap.addEventListener('touchstart', function() { this.style.transform='translate(-50%,-50%) scale(1.4)'; }, { passive:true });
     wrap.addEventListener('touchend',   function() { this.style.transform='translate(-50%,-50%) scale(1)'; },  { passive:true });
 
     container.appendChild(wrap);
   });
-
-  // ── HOST COUNTRY BORDERS (SVG overlay) ───────────────────────
-  (function() {
-    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:6';
-    svg.setAttribute('viewBox', '0 0 360 180');
-    svg.setAttribute('preserveAspectRatio', 'none');
-
-    function mkPoly(pts) {
-      var el = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-      el.setAttribute('points', pts.map(function(p) {
-        return (p[0]+180).toFixed(1)+','+(90-p[1]).toFixed(1);
-      }).join(' '));
-      el.setAttribute('fill', 'rgba(245,197,24,0.07)');
-      el.setAttribute('stroke', '#f5c518');
-      el.setAttribute('stroke-width', '0.8');
-      el.setAttribute('stroke-linejoin', 'round');
-      return el;
-    }
-
-    // Canada
-    svg.appendChild(mkPoly([
-      [-124,49],[-122,49],[-110,49],[-95,49],[-89.5,48],[-88,48],[-87,47],
-      [-84,46.5],[-82,45.5],[-83,44],[-83,42],[-80,42.5],[-76,44],[-67,47],
-      [-64,44],[-60,46],[-53,47],
-      [-53,52],[-58,60],[-62,63],[-68,63],[-75,63],[-80,63],
-      [-87,65],[-90,63],[-96,63],[-100,63],[-110,63],[-120,63],
-      [-130,63],[-135,60],[-130,54],[-126,50],[-124,49]
-    ]));
-
-    // Continental USA
-    svg.appendChild(mkPoly([
-      [-124,48.5],[-124,46],[-124,43],[-124,39],[-122,38],[-120,35],[-117,32.5],
-      [-114,32.5],[-111,31.5],[-108,31.5],[-106,32],[-104,29.5],[-100,28],[-97,26],
-      [-94,29],[-90,29],[-88,30],[-85,30],[-81.5,25],[-80,25.5],
-      [-80,28],[-80,31],[-76,35],[-74,38.5],[-72,41],[-70,42],[-67,44.5],
-      [-67,47],[-76,44],[-80,42.5],[-83,42],[-83,44],[-82,45.5],[-84,46.5],
-      [-87,47],[-88,48],[-89.5,48],[-95,49],[-100,49],[-110,49],[-122,49],[-124,48.5]
-    ]));
-
-    // Mexico — Baja California peninsula
-    svg.appendChild(mkPoly([
-      [-117,32.5],[-115,30],[-114,28],[-113,26],[-110,24],[-109.5,22.9],
-      [-110,25],[-113.5,29],[-114.8,32],[-117,32.5]
-    ]));
-
-    // Mexico — Mainland
-    svg.appendChild(mkPoly([
-      [-114.8,32],[-111,31.5],[-108,31.5],[-106,32],[-104,29.5],[-100,28],[-97,26],
-      [-97,22],[-94.5,18.5],[-91.5,18.5],
-      [-90.4,21],[-90,21.5],[-86.9,21.5],[-87,20.5],[-87.5,18.5],[-87.8,16.5],
-      [-88.5,15.5],[-90.5,15.5],[-92,15.5],
-      [-94,16],[-99.5,16.5],[-103,19],[-105,21],[-109,23.5],[-110,24.5],[-112,27],[-114.5,30],[-114.8,32]
-    ]));
-
-    container.appendChild(svg);
-  })();
 
 })();
 

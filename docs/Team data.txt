@@ -1,0 +1,46 @@
+===========================================================================================================================================
+NATIONAL TEAM   | POPULATION | WC APPS | FOOTBALL FACT                         | NON-FOOTBALL FACT                                       
+===========================================================================================================================================
+USA             | 340M       | 12      | Hosting for the 2nd time (1994).      | Has the world's largest highway system.                
+Mexico          | 130M       | 18      | First nation to host/co-host 3 times. | Home to the world's largest pyramid (Cholula).         
+Canada          | 40M        | 3       | This is their first time hosting.     | Has more lakes than the rest of the world combined.    
+Argentina       | 46M        | 19      | Entering as defending 2022 Champions. | Invented the world's first animated feature film.      
+Brazil          | 215M       | 23      | Only team to play in every World Cup. | Largest Japanese population outside of Japan.          
+England         | 69M        | 17      | Won their only title at home in 1966. | Champagne was actually invented here, not France.      
+France          | 68M        | 17      | Reached final in 3 of last 7 WCs.     | The most visited country in the world.                 
+Germany         | 84M        | 21      | Have reached the semi-finals 13 times.| First country to adopt Daylight Saving Time.           
+Spain           | 48M        | 17      | Record for most passes in a WC match. | Produces nearly half of the world's olive oil.         
+Portugal        | 10M        | 9       | Likely Cristiano Ronaldo's final WC.  | The world's largest producer of natural cork.          
+Japan           | 124M       | 8       | Fans famous for cleaning the stadium. | Features over 5 million vending machines.              
+South Korea     | 51M        | 12      | Most WC appearances of any Asian side.| Has the world's fastest average internet speed.        
+Netherlands     | 18M        | 12      | Runners-up 3 times without a trophy.  | One-third of the country is below sea level.          
+Croatia         | 3.8M       | 7       | Reached top 3 in '98, '18, and '22.   | Invented the necktie (originally called cravat).       
+Belgium         | 12M        | 15      | Known as the "Red Devils."            | Has the highest density of castles in the world.       
+Morocco         | 38M        | 7       | First African semi-finalist (2022).   | Home to the world's oldest university.                
+Uruguay         | 3.5M       | 15      | Won the first-ever World Cup (1930).  | First nation to fully legalize marijuana sales.        
+Colombia        | 52M        | 7       | Famous for Higuita's "Scorpion Kick." | Second most biodiverse country on the planet.          
+Ecuador         | 18M        | 5       | Record for most altitude-aided wins.  | First country to give nature legal rights.             
+Australia       | 26M        | 7       | Moved to Asian confederation in 2006. | Home to more than 10,000 unique beaches.               
+Saudi Arabia    | 36M        | 7       | Shocked Argentina in the 2022 opener. | A country with no permanent natural rivers.            
+Iran            | 89M        | 7       | Have never passed the group stage.    | Home to the world's oldest continuous civilization.    
+Egypt           | 112M       | 4       | First African team to play a WC (1934)| Home to the last of the Ancient Wonders (Giza).        
+Senegal         | 18M        | 4       | Known as the "Lions of Teranga."      | Features a bright pink lake (Lake Retba).              
+Ivory Coast     | 28M        | 4       | Won the 2024 AFCON tournament.        | The world's largest producer of cocoa beans.           
+Ghana           | 34M        | 5       | Cruelly denied a semi-final in 2010.  | First sub-Saharan nation to gain independence.         
+South Africa    | 60M        | 4       | Hosted the first African WC in 2010.  | The only country with three capital cities.            
+Tunisia         | 12M        | 7       | 1st African team to win a WC match.   | Location of the ancient city-state of Carthage.        
+Algeria         | 45M        | 5       | Part of the "Disgrace of Gijon" (1982)| The largest country in Africa by land area.            
+Norway          | 5.6M       | 4       | Erling Haaland's first-ever WC debut. | Home to the world's longest road tunnel (24.5km).      
+Scotland        | 5.5M       | 9       | First World Cup appearance since 1998.| The national animal of Scotland is the Unicorn.        
+Switzerland     | 9M         | 13      | Reached R16 in 4 of last 5 tournaments| Has no official capital (Bern is de facto).           
+Austria         | 9M         | 8       | Best finish was 3rd place in 1954.    | Home to the world's oldest zoo (Tiergarten).           
+Qatar           | 3M         | 2       | Qualified "on merit" for first time.  | One of two places where the desert meets sea.          
+Uzbekistan      | 36M        | 1       | **Debut:** Longest wait for a debut.  | One of only two "doubly landlocked" countries.         
+Jordan          | 11M        | 1       | **Debut:** Qualified through AFC.     | Contains the Dead Sea (lowest point on Earth).         
+Panama          | 4.5M       | 2       | Debuted in 2018; return for 2026.     | Only place to see sun rise over Pacific Ocean.         
+Haiti           | 11.7M      | 2       | Returning since their 1974 debut.     | First black-led republic in the world.                 
+Curaçao         | 150K       | 1       | **Debut:** Smallest nation to qualify.| Most residents speak at least 4 languages.              
+Paraguay        | 7M         | 9       | Qualified on the final day of CONMEBOL| Shares the world's largest hydroelectric plant.         
+Cape Verde      | 590K       | 1       | **Debut:** Smallest African island.   | Charles Darwin studied the local flora here.           
+New Zealand     | 5.2M       | 3       | Only unbeaten team in 2010 World Cup. | First country to allow women to vote (1893).           
+===========================================================================================================================================
