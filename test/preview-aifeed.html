@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Feed Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body { max-width: 420px; margin: 0 auto; padding: 1rem; background: var(--bg); }
+    .mock-header { display:flex; align-items:center; justify-content:center; padding:.75rem 1rem; border-bottom:1px solid var(--border); margin-bottom:1.25rem; }
+    .mock-title { font-family:'Oswald',sans-serif; font-size:1.1rem; font-weight:600; color:var(--text); }
+  </style>
+</head>
+<body>
+
+<div class="mock-header">
+  <div class="mock-title">AI Feed</div>
+</div>
+
+<!-- Group selector (2+ groups) -->
+<div class="af-selector-row">
+  <select class="group-selector" aria-label="Select group">
+    <option selected>The Lads 🔥</option>
+    <option>Work Group</option>
+  </select>
+</div>
+
+<!-- Summary cards -->
+<div class="af-list">
+
+  <!-- Card 1 — Latest day -->
+  <div class="af-card">
+    <div class="af-card-header">
+      <div class="af-card-date">Tuesday, Jun 17, 2026</div>
+      <div class="af-card-games">4 games</div>
+    </div>
+    <div class="af-card-content">🏆 <strong>Danny</strong> absolutely bossed the day — 3/4 exact scores including the 2-1 Spain shocker. Someone's been watching tape.
+
+😬 <strong>Yonatan</strong> predicted Brazil to win every single game today. Brazil didn't play today, Yonatan. Not once. Zero points. Incredible dedication to the wrong team.
+
+📈 Leaderboard shakeup: <strong>Michal</strong> climbs to 2nd place after calling the Morocco-Portugal draw that no one else dared to predict. Contrarian hero of the week.
+
+🤔 <strong>Guy</strong> and <strong>Tal</strong> both predicted a 0-0 draw for Germany vs Japan. It ended 4-1. A moment of silence for their confidence.</div>
+    <div class="af-card-footer">Generated at 11:47 PM · Jun 17</div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="af-card">
+    <div class="af-card-header">
+      <div class="af-card-date">Monday, Jun 16, 2026</div>
+      <div class="af-card-games">3 games</div>
+    </div>
+    <div class="af-card-content">🎯 <strong>Roni</strong> hit the Argentina 3-0 exact score and is now legally insufferable in the group chat. Congratulations we guess.
+
+💀 The group collectively predicted France would draw with Senegal. France won 2-0. Combined group accuracy for the day: 1 out of 15 predictions. Historic.
+
+🔥 <strong>Michal</strong> is on a 4-game correct outcome streak. Someone call Mossad, this cannot be organic.</div>
+    <div class="af-card-footer">Generated at 11:52 PM · Jun 16</div>
+  </div>
+
+  <!-- Card 3 — Opening day -->
+  <div class="af-card">
+    <div class="af-card-header">
+      <div class="af-card-date">Thursday, Jun 11, 2026</div>
+      <div class="af-card-games">1 game</div>
+    </div>
+    <div class="af-card-content">⚽ The tournament is live! First game: USA 1-1 Mexico. 4 out of 5 of you called the draw — impressive. <strong>Yonatan</strong> went bold with USA 3-0. The USA had one shot on target. One.
+
+🤖 <strong>Guy</strong> missed the deadline and got an auto-predict. The robot picked 0-0. Guy: "honestly fair enough."
+
+Let the games begin. May the odds be ever in your favour. They probably won't be.</div>
+    <div class="af-card-footer">Generated at 11:31 PM · Jun 11</div>
+  </div>
+
+</div>
+
+</body>
+</html>

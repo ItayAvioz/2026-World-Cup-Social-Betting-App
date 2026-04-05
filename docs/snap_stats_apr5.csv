@@ -1,0 +1,10 @@
+snap_label,fixture_id,pulled_at_utc,team1,team1_possession,team1_passes,team1_passes_pct,team1_shots,team1_sot,team1_corners,team1_fouls,team1_yellows,team1_reds,team1_offsides,team2,team2_possession,team2_passes,team2_passes_pct,team2_shots,team2_sot,team2_corners,team2_fouls,team2_yellows,team2_reds,team2_offsides
+passes_verify,1391110,2026-04-05 12:10,Atletico Madrid,33,,80,6,2,1,15,6,1,4,Barcelona,67,,92,22,8,9,11,2,0,3
+passes_verify2,1391110,2026-04-05 12:14,Atletico Madrid,33,307,80,6,2,1,15,6,1,4,Barcelona,67,630,92,22,8,9,11,2,0,3
+snap2_getafe,1391112,2026-04-05 14:30,Getafe,32,227,61,10,6,4,11,3,0,3,Athletic Club,68,520,81,4,0,3,11,1,0,1
+snap3_getafe,1391112,2026-04-05 15:00,Getafe,32,233,61,10,6,4,11,3,0,3,Athletic Club,68,528,81,5,0,3,11,1,0,1
+snap4_getafe,1391112,2026-04-05 15:30,Getafe,32,233,61,10,6,4,11,3,0,3,Athletic Club,68,528,81,5,0,3,11,1,0,1
+snap5_getafe,1391112,2026-04-05 16:00,Getafe,32,233,61,10,6,4,11,3,0,3,Athletic Club,68,528,81,5,0,3,11,1,0,1
+snap2_valencia,1391118,2026-04-05 16:45,Valencia,42,351,81,13,4,6,14,1,0,0,Celta Vigo,58,504,87,9,5,0,21,3,0,2
+snap3_valencia,1391118,2026-04-05 17:15,Valencia,42,351,81,13,4,6,14,1,0,0,Celta Vigo,58,504,87,9,5,0,21,3,0,2
+snap4_valencia,1391118,2026-04-05 17:45,Valencia,42,351,81,13,4,6,14,1,0,0,Celta Vigo,58,504,87,9,5,0,21,3,0,2

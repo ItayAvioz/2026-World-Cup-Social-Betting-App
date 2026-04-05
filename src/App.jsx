@@ -1,0 +1,41 @@
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { useAuth } from './context/AuthContext.jsx'
+import Dashboard from './pages/Dashboard.jsx'
+import Game      from './pages/Game.jsx'
+import Picks     from './pages/Picks.jsx'
+import Groups    from './pages/Groups.jsx'
+import AiFeed    from './pages/AiFeed.jsx'
+
+function AuthGuard({ children }) {
+  const { session, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'center', minHeight:'100vh', color:'var(--muted)' }}>
+        Loading…
+      </div>
+    )
+  }
+
+  if (!session) {
+    window.location.href = './index.html'
+    return null
+  }
+
+  return children
+}
+
+export default function App() {
+  return (
+    <HashRouter>
+      <Routes>
+        <Route path="/dashboard" element={<AuthGuard><Dashboard /></AuthGuard>} />
+        <Route path="/game/:id"  element={<AuthGuard><Game /></AuthGuard>} />
+        <Route path="/picks"     element={<AuthGuard><Picks /></AuthGuard>} />
+        <Route path="/groups"    element={<AuthGuard><Groups /></AuthGuard>} />
+        <Route path="/ai-feed"   element={<AuthGuard><AiFeed /></AuthGuard>} />
+        <Route path="*"          element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </HashRouter>
+  )
+}

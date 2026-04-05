@@ -1,0 +1,51 @@
+THEODDSAPI — WC2026 ODDS DATA,,,,
+sport_key,soccer_fifa_world_cup,,,
+status,ACTIVE ✅,,,
+events_with_odds,27 (as of 2026-04-03),,,
+requests_remaining,499 / 500 (free tier),,,
+,,,,
+SAMPLE — 3 WC2026 FIXTURES,,,,
+fixture,commence_time,bookmaker,home_win,draw,away_win
+Mexico vs South Africa,2026-06-11T19:00:00Z,Marathon Bet,1.55,4.30,6.50
+Mexico vs South Africa,2026-06-11T19:00:00Z,Pinnacle,1.52,4.07,5.99
+South Korea vs Czech Republic,2026-06-12T02:00:00Z,Marathon Bet,2.71,3.18,2.88
+South Korea vs Czech Republic,2026-06-12T02:00:00Z,Coolbet,2.70,3.30,2.80
+Qatar vs Switzerland,2026-06-12T18:00:00Z,Unibet (SE),8.50,5.25,1.30
+Qatar vs Switzerland,2026-06-12T18:00:00Z,LeoVegas (SE),8.50,5.25,1.30
+,,,,
+AVAILABLE SOCCER SPORT KEYS (67 total — active shown),,,,
+sport_key,title,active,,
+soccer_epl,EPL,YES,,
+soccer_germany_bundesliga,Bundesliga - Germany,YES,,
+soccer_spain_la_liga,La Liga - Spain,YES,,
+soccer_italy_serie_a,Serie A - Italy,YES,,
+soccer_france_ligue_one,Ligue 1 - France,YES,,
+soccer_uefa_champs_league,UEFA Champions League,YES,,
+soccer_uefa_europa_league,UEFA Europa League,YES,,
+soccer_brazil_campeonato,Brazil Série A,YES,,
+soccer_usa_mls,MLS,YES,,
+soccer_conmebol_copa_libertadores,Copa Libertadores,YES,,
+soccer_fifa_world_cup,FIFA World Cup,YES ✅,,
+soccer_fifa_world_cup_winner,FIFA World Cup Winner (outright),YES ✅,,
+soccer_africa_cup_of_nations,Africa Cup of Nations,NO,,
+soccer_concacaf_gold_cup,CONCACAF Gold Cup,NO,,
+,,,,
+API COMPARISON — THEODDSAPI vs API FOOTBALL ODDS,,,,
+dimension,TheOddsAPI,API Football,winner
+WC2026 available NOW,YES ✅ (27 games),Not tested for WC2026,TheOddsAPI
+WC2026 sport key,soccer_fifa_world_cup (ACTIVE),/odds?fixture=ID,TheOddsAPI
+Bookmakers per fixture,Multiple (up to 20+ on paid),3 on free / more on Pro,API Football (more depth)
+Markets,h2h only on free tier; more on paid,20-30 markets (Match Winner / Over-Under / HT-FT / Exact Score etc.),API Football (much deeper)
+Request quota (free),500/month — very limited,Included in Pro plan (7500/day),API Football (much more generous)
+WC2026 champion outright,soccer_fifa_world_cup_winner (active!),Not available,TheOddsAPI
+Price format,Decimal,Decimal,Same
+Integration effort,Already built in sync-odds EF,Would need EF update,Same
+Cost,Free (500/month) — could upgrade,Already paid (Pro plan),API Football
+,,,,
+RECOMMENDATION,,,,
+use_case,recommended_source,reason
+Per-game 1X2 odds (our main use case),TheOddsAPI OR API Football,Both work — TheOddsAPI already integrated + WC2026 active NOW
+WC2026 champion outright market,TheOddsAPI,Unique to TheOddsAPI — soccer_fifa_world_cup_winner
+API request budget,API Football,7500/day vs 500/month
+If upgrading TheOddsAPI paid tier,TheOddsAPI,More bookmakers + more markets
+Current setup recommendation,Keep both — TheOddsAPI for WC2026 game odds (working NOW),API Football for stats; TheOddsAPI for odds

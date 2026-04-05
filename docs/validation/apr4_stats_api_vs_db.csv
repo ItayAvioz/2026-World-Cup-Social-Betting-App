@@ -1,0 +1,74 @@
+fixture_id,match,sync_time_utc,sync_version,team,stat,api_now,db_stored,match
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Real Sociedad,shots_on_target,5,5,✅
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Real Sociedad,shots_total,18,18,✅
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Real Sociedad,shots_insidebox,9,9,✅
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Real Sociedad,corners,11,11,✅
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Real Sociedad,fouls,11,9,❌ +2
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Real Sociedad,yellow_cards,2,2,✅
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Real Sociedad,red_cards,null,null,✅
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Real Sociedad,offsides,4,3,❌ +1
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Real Sociedad,xg,2.72,2.72,✅
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Levante,shots_on_target,4,3,❌ +1
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Levante,shots_total,8,7,❌ +1
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Levante,shots_insidebox,4,3,❌ +1
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Levante,corners,5,5,✅
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Levante,fouls,15,14,❌ +1
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Levante,yellow_cards,3,3,✅
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Levante,red_cards,null,null,✅
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Levante,offsides,1,1,✅
+1391116,Real Sociedad vs Levante,14:00 (KO+120),v15,Levante,xg,0.28,0.22,❌ +0.06
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Mallorca,shots_on_target,2,2,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Mallorca,shots_total,6,6,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Mallorca,shots_insidebox,5,5,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Mallorca,corners,6,6,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Mallorca,fouls,16,16,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Mallorca,yellow_cards,3,3,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Mallorca,red_cards,null,0,⚠️ null→0 (fix applied)
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Mallorca,offsides,1,1,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Mallorca,xg,1.22,1.22,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Real Madrid,shots_on_target,6,6,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Real Madrid,shots_total,15,15,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Real Madrid,shots_insidebox,13,13,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Real Madrid,corners,4,4,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Real Madrid,fouls,13,13,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Real Madrid,yellow_cards,2,2,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Real Madrid,red_cards,null,0,⚠️ null→0 (fix applied)
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Real Madrid,offsides,5,5,✅
+1391114,Mallorca vs Real Madrid,16:15 (KO+120),v16,Real Madrid,xg,1.27,1.27,✅
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Real Betis,shots_on_target,6,6,✅
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Real Betis,shots_total,19,18,❌ +1
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Real Betis,shots_insidebox,13,12,❌ +1
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Real Betis,corners,4,4,✅
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Real Betis,fouls,12,12,✅
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Real Betis,yellow_cards,1,1,✅
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Real Betis,red_cards,null,0,⚠️ null→0 (fix applied)
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Real Betis,offsides,1,1,✅
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Real Betis,possession,70,69,❌ +1%
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Real Betis,xg,1.59,1.55,❌ +0.04
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Espanyol,shots_on_target,1,1,✅
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Espanyol,shots_total,8,8,✅
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Espanyol,shots_insidebox,1,1,✅
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Espanyol,corners,3,3,✅
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Espanyol,fouls,18,18,✅
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Espanyol,yellow_cards,3,3,✅
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Espanyol,red_cards,null,0,⚠️ null→0 (fix applied)
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Espanyol,offsides,4,4,✅
+1391111,Real Betis vs Espanyol,18:30 (KO+120),v16,Espanyol,xg,0.20,0.20,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Atletico Madrid,shots_on_target,2,2,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Atletico Madrid,shots_total,6,6,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Atletico Madrid,shots_insidebox,4,4,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Atletico Madrid,corners,1,1,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Atletico Madrid,fouls,15,15,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Atletico Madrid,yellow_cards,6,6,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Atletico Madrid,red_cards,1,1,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Atletico Madrid,offsides,4,4,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Atletico Madrid,xg,0.92,0.92,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Barcelona,shots_on_target,8,8,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Barcelona,shots_total,22,22,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Barcelona,shots_insidebox,15,15,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Barcelona,corners,9,9,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Barcelona,fouls,11,11,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Barcelona,yellow_cards,2,2,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Barcelona,red_cards,1,1,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Barcelona,offsides,3,3,✅
+1391110,Atletico vs Barcelona,21:00 (KO+120),v16,Barcelona,xg,2.22,2.22,✅

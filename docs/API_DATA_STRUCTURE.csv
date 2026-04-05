@@ -1,0 +1,97 @@
+SECTION,ENDPOINT,FIELD,TYPE,EXAMPLE,MAPS_TO_DB,DB_COLUMN,NOTES
+
+=== ACCOUNT STATUS ===,,,,,,,
+account,/status,account.firstname,string,Itay,no,,
+account,/status,account.lastname,string,Avioz,no,,
+account,/status,account.email,string,itayavioz1@gmail.com,no,,
+account,/status,subscription.plan,string,Pro,no,,
+account,/status,subscription.end,date,2026-10-01,no,,Covers full WC2026
+account,/status,requests.current,int,4,no,,Calls used today
+account,/status,requests.limit_day,int,7500,no,,Daily quota (Pro plan)
+
+=== FIXTURES ===,,,,,,,
+fixtures,/fixtures?league=39&season=2024,fixture.id,int,1208021,yes,games.api_fixture_id,Primary match key
+fixtures,/fixtures?league=39&season=2024,fixture.date,ISO datetime,2024-08-16T19:00:00+00:00,yes,games.kick_off_time,Kickoff time UTC
+fixtures,/fixtures?league=39&season=2024,fixture.status.short,string,FT,yes,,NS=not started FT=finished AET=after ET PEN=penalties ET=ET in progress P=penalties in progress BT=break time
+fixtures,/fixtures?league=39&season=2024,teams.home.name,string,Manchester United,yes,games.team_home,Home team name
+fixtures,/fixtures?league=39&season=2024,teams.away.name,string,Fulham,yes,games.team_away,Away team name
+fixtures,/fixtures?league=39&season=2024,goals.home,int,1,partial,,Includes ET goals — NOT used for score_home
+fixtures,/fixtures?league=39&season=2024,goals.away,int,0,partial,,Includes ET goals — NOT used for score_away
+fixtures,/fixtures?league=39&season=2024,score.fulltime.home,int,1,yes,games.score_home,90-min only — this is what we write
+fixtures,/fixtures?league=39&season=2024,score.fulltime.away,int,0,yes,games.score_away,90-min only — this is what we write
+fixtures,/fixtures?league=39&season=2024,score.extratime.home,int|null,null,yes,games.et_score_home,NULL if no ET
+fixtures,/fixtures?league=39&season=2024,score.extratime.away,int|null,null,yes,games.et_score_away,NULL if no ET
+fixtures,/fixtures?league=39&season=2024,score.penalty.home,int|null,null,yes,games.penalty_score_home,NULL if no penalties
+fixtures,/fixtures?league=39&season=2024,score.penalty.away,int|null,null,yes,games.penalty_score_away,NULL if no penalties
+
+=== TEAM STATS (per fixture) ===,,,,,,,
+team_stats,/fixtures/statistics?fixture=1208021,team.name,string,Manchester United,yes,game_team_stats.team,
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Ball Possession].value,string%,55%,yes,game_team_stats.possession,Stored as integer 55
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Total Shots].value,int,14,yes,game_team_stats.shots_total,
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Shots on Goal].value,int,5,yes,game_team_stats.shots_on_target,
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Corner Kicks].value,int,7,yes,game_team_stats.corners,
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Fouls].value,int,12,yes,game_team_stats.fouls,
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Yellow Cards].value,int,2,yes,game_team_stats.yellow_cards,
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Red Cards].value,int|null,null,yes,game_team_stats.red_cards,
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Offsides].value,int,3,yes,game_team_stats.offsides,
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Shots insidebox].value,int,7,no,,Not stored
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Shots outsidebox].value,int,7,no,,Not stored
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Blocked Shots].value,int,2,no,,Not stored
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Goalkeeper Saves].value,int,2,no,,Not stored
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Total passes].value,int,482,no,,Not stored
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Passes accurate].value,int,408,no,,Not stored
+team_stats,/fixtures/statistics?fixture=1208021,statistics[Passes %].value,string%,85%,no,,Not stored
+team_stats,/fixtures/statistics?fixture=1208021,statistics[expected_goals].value,float,2.43,no,,Not stored — could add later
+
+=== PLAYER STATS (per fixture) ===,,,,,,,
+player_stats,/fixtures/players?fixture=1208021,player.id,int,526,yes,game_player_stats.api_player_id,Key for top scorer matching
+player_stats,/fixtures/players?fixture=1208021,player.name,string,André Onana,yes,game_player_stats.player_name,
+player_stats,/fixtures/players?fixture=1208021,team.name,string,Manchester United,yes,game_player_stats.team,
+player_stats,/fixtures/players?fixture=1208021,statistics[0].games.minutes,int,90,yes,game_player_stats.minutes_played,NULL if did not play
+player_stats,/fixtures/players?fixture=1208021,statistics[0].goals.total,int|null,null,yes,game_player_stats.goals,null=0 for non-scorers
+player_stats,/fixtures/players?fixture=1208021,statistics[0].goals.assists,int|null,0,yes,game_player_stats.assists,
+player_stats,/fixtures/players?fixture=1208021,statistics[0].cards.yellow,int,0,yes,game_player_stats.yellow_cards,
+player_stats,/fixtures/players?fixture=1208021,statistics[0].cards.red,int,0,yes,game_player_stats.red_cards,
+
+=== TOP SCORERS (season leaderboard) ===,,,,,,,
+top_scorers,/players/topscorers?league=39&season=2024,player.id,int,306,yes,top_scorer_candidates.api_player_id,Use to fill null api_player_ids
+top_scorers,/players/topscorers?league=39&season=2024,player.name,string,Mohamed Salah,yes,top_scorer_candidates.name,Match by name
+top_scorers,/players/topscorers?league=39&season=2024,statistics[0].team.name,string,Liverpool,yes,top_scorer_candidates.team_name,
+top_scorers,/players/topscorers?league=39&season=2024,statistics[0].goals.total,int,29,no,,Not stored — used for fn_calculate_pick_points
+top_scorers,/players/topscorers?league=39&season=2024,statistics[0].goals.assists,int,18,no,,Not stored
+
+=== TODAY'S GAMES SAMPLE (2026-04-03) ===,,,,,,,
+today,/fixtures?date=2026-04-03,Total games today,int,666,no,,Pro plan gives all leagues globally
+today,/fixtures?date=2026-04-03,fixture.id,int,1526489,yes,games.api_fixture_id,
+today,/fixtures?date=2026-04-03,league.name,string,Serie A,no,,League name (not stored)
+today,/fixtures?date=2026-04-03,league.country,string,Brazil,no,,Country (not stored)
+today,/fixtures?date=2026-04-03,fixture.status.short,string,FT / NS / 1H / 2H / HT,yes,,FT=done NS=upcoming 1H/2H=live HT=halftime
+today,/fixtures?date=2026-04-03,teams.home.name,string,RB Bragantino,yes,games.team_home,
+today,/fixtures?date=2026-04-03,goals.home,int|null,3,partial,,Live score during match
+today,/fixtures?date=2026-04-03,goals.away,int|null,0,partial,,Live score during match
+
+=== STATUS CODES ===,,,,,,,
+status_codes,all fixtures,NS,string,,no,,Not Started (upcoming)
+status_codes,all fixtures,1H,string,,no,,First Half (live)
+status_codes,all fixtures,HT,string,,no,,Half Time (live)
+status_codes,all fixtures,2H,string,,no,,Second Half (live)
+status_codes,all fixtures,FT,string,,no,,Full Time (finished — 90min)
+status_codes,all fixtures,ET,string,,no,,Extra Time in progress
+status_codes,all fixtures,BT,string,,no,,Break Time (between ET halves)
+status_codes,all fixtures,P,string,,no,,Penalties in progress
+status_codes,all fixtures,AET,string,,no,,After Extra Time (finished — no pens)
+status_codes,all fixtures,PEN,string,,no,,After Penalties (finished)
+status_codes,all fixtures,PST,string,,no,,Postponed
+status_codes,all fixtures,CANC,string,,no,,Cancelled
+status_codes,all fixtures,ABD,string,,no,,Abandoned
+
+=== API LIMITS (Pro Plan) ===,,,,,,,
+limits,account,daily_requests,int,7500,no,,Per day — resets at midnight UTC
+limits,account,plan_expiry,date,2026-10-01,no,,Covers WC2026 (ends ~Jul 19 2026)
+limits,per_sync_call,calls_per_game,int,3,no,,"1x /fixtures + 1x /statistics + 1x /players"
+limits,per_sync_call,max_games_per_day,int,2500,no,,7500 / 3 = ~2500 game syncs per day (more than enough for 104 games)
+
+=== WHAT WE CANNOT PULL ===,,,,,,,
+not_available,WC2026,fixtures,n/a,,no,,WC2026 fixtures not in API yet — run setup mode when available
+not_available,odds,soccer_fifa_world_cup,n/a,,no,,Odds sport key not active yet — betting not open
+not_available,WC2026,top_scorers,n/a,,no,,Tournament stats won't exist until tournament starts

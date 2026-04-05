@@ -1,0 +1,47 @@
+fixture_id,match,team,player_name,position,minutes_played,rating,goals,assists,yellow_cards,red_cards,gk_saves,gk_conceded
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Florian Lejeune,D,93,8.0,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Andrei Rațiu,D,93,7.9,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Randy Nteka,M,27,7.7,1,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Óscar Valentín,M,66,7.3,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Unai López,M,93,7.3,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Augusto Batalla,G,93,7.2,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Álvaro García,F,84,6.9,0,1,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Jorge de Frutos,F,93,6.9,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Luiz Felipe,D,93,6.9,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Josep Chavarría,D,93,6.9,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Isi Palazón,M,66,6.7,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Pedro Díaz,M,27,6.6,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Alfonso Espino,D,9,6.5,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Alemão,F,83,6.3,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Sergio Camello,F,10,6.2,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Abdul Mumin,D,NULL,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Nobel Mendy,D,NULL,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Jozhua Vertrouwd,D,NULL,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Iván Balliu,D,NULL,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Dani Cárdenas,G,NULL,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Adrián Molina,G,NULL,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Gerard Gumbau,M,NULL,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Rayo Vallecano,Carlos Martín,F,0,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Germán Valera,F,93,7.3,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Tete Morente,M,93,7.3,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Marc Aguado,M,77,7.0,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Aleix Febas,M,77,7.0,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Matías Dituro,G,93,7.3,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Álvaro Rodriguez,F,77,6.7,0,0,1,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Yago Santiago,F,10,6.7,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Gonzalo Villar,M,16,6.7,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,David Affengruber,D,93,6.9,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Léo Pétrot,D,93,6.6,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Buba Sangare,M,83,6.6,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,André Silva,F,16,6.6,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Adrià Pedrosa,D,48,6.5,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Rafa Mir,F,45,6.5,0,0,1,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Federico Redondo,M,16,6.5,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Pedro Bigas,D,39,6.3,0,0,2,1,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,David Delgado,D,NULL,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Lucas Cepeda,F,NULL,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Iñaki Peña,G,NULL,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Alejandro Iturbe,G,NULL,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Josan,M,NULL,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Martim Neto,M,NULL,NULL,0,0,0,0,NULL,NULL
+1391115,Rayo Vallecano vs Elche,Elche,Alex Herraiz,M,NULL,NULL,0,0,0,0,NULL,NULL

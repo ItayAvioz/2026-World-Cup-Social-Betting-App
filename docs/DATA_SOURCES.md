@@ -343,3 +343,85 @@ KO + 120min:
 | `sync-odds` | Daily during tournament | ~1 batch | ~60 |
 | **API-Football total** | | | **~616 / month** |
 | **The Odds API total** | | | **~60 / month** |
+
+---
+
+## [FINE-TUNING] Planned Additions — After App Launch + Paid API Plan
+
+> These endpoints are confirmed available on api-football.com (paid plan required for season 2026).
+> Deferred to fine-tuning phase after app is built and tested.
+
+### Priority 1 — `/fixtures/events` (post-game, 1 call/game)
+
+Match timeline: who scored when, cards with minute, substitutions.
+
+| Field | Stored In | DB Column |
+|---|---|---|
+| time.elapsed | game_events | minute |
+| time.extra | game_events | minute_extra |
+| team.name | game_events | team |
+| player.name | game_events | player_name |
+| assist.name | game_events | assist_name |
+| type | game_events | event_type (`"Goal"` \| `"Card"` \| `"subst"` \| `"Var"`) |
+| detail | game_events | detail (`"Normal Goal"`, `"Own Goal"`, `"Penalty"`, `"Yellow Card"`, etc.) |
+
+> Requires new `game_events` table. Write alongside team/player stats in sync mode.
+> For substitutions: `player` = off, `assist` = on.
+
+### Priority 2 — Replace `sync-odds` with api-football `/odds`
+
+**Endpoint:** `GET /odds?fixture={api_fixture_id}&bookmaker={id}&bet=1`
+
+Replaces theoddsapi.com entirely. Advantages: same `api_fixture_id` = zero matching logic, more markets available, one API key.
+
+| Field | Stored In | DB Column |
+|---|---|---|
+| bookmakers[0].id | game_odds | source |
+| bets[0].values["Home"].odd | game_odds | home_win |
+| bets[0].values["Draw"].odd | game_odds | draw |
+| bets[0].values["Away"].odd | game_odds | away_win |
+
+> Drop theoddsapi.com dependency. Update `sync-odds` EF: change base URL + auth header + parse bookmakers[].bets[] instead of bookmakers[].markets[].
+> Bet ID 1 = "Match Winner" (1X2) — same as h2h on theoddsapi.
+
+### Priority 3 — `/predictions` (pre-game, 1 call/game)
+
+Pre-game ML preview: win%, predicted goals, form comparison.
+
+| Field | Stored In | DB Column |
+|---|---|---|
+| predictions.percent.home | game_preview | pct_home |
+| predictions.percent.draw | game_preview | pct_draw |
+| predictions.percent.away | game_preview | pct_away |
+| predictions.goals.home | game_preview | predicted_goals_home |
+| predictions.goals.away | game_preview | predicted_goals_away |
+| predictions.advice | game_preview | advice |
+| predictions.under_over | game_preview | under_over |
+
+> Requires new `game_preview` table. Fetch ~30min before KO (add to verify mode or new pre-game cron).
+
+### Priority 4 — `/fixtures/lineups` (pre-game, ~1hr before KO)
+
+Starting XI + formation. Available only ~1hr before kickoff.
+
+| Field | Stored In | Notes |
+|---|---|---|
+| formation | game_lineup | `"4-3-3"` etc. |
+| startXI[].player.name | game_lineup | one row per player |
+| startXI[].player.number | game_lineup | shirt number |
+| startXI[].player.pos | game_lineup | G/D/M/F |
+| startXI[].player.grid | game_lineup | `"row:col"` — pitch position coords, ready to render |
+| coach.name | game_lineup | per team |
+
+> Requires new `game_lineup` table. Needs a separate cron trigger ~1hr before KO.
+
+### Fine-Tuning Request Budget (with all additions)
+
+| Source | Calls/month |
+|---|---|
+| Current (fixtures + statistics + players) | ~616 |
+| + events (post-game) | +104 |
+| + predictions (pre-game) | +104 |
+| + odds via api-football (replaces theoddsapi) | +~60 |
+| + lineups (~1hr pre-KO) | +104 |
+| **Total** | **~988/month** |

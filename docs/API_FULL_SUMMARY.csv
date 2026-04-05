@@ -1,0 +1,199 @@
+API FULL DATA SUMMARY — WorldCup 2026 App,,,,,,
+Generated: 2026-04-03 | Verified against: WC2022 (64 games) + PL 2024 + live data,,,,,,
+,,,,,,
+=== SECTION 1: APP REQUIREMENTS — VERIFIED ✅ ===,,,,,,
+requirement,source_api,endpoint,field,status,note
+Fixture date + time,API Football,/fixtures?league=1&season=2026,fixture.date,✅ CONFIRMED (WC2022 64 games),ISO datetime UTC
+Home team name,API Football,/fixtures,teams.home.name,✅ CONFIRMED,exact team name
+Away team name,API Football,/fixtures,teams.away.name,✅ CONFIRMED,exact team name
+90-min score home,API Football,/fixtures,score.fulltime.home,✅ CONFIRMED (WC2022 + PL),NOT goals.home (includes ET)
+90-min score away,API Football,/fixtures,score.fulltime.away,✅ CONFIRMED,NOT goals.away (includes ET)
+ET score home,API Football,/fixtures,score.extratime.home,✅ CONFIRMED (Argentina-France final: 3-3 ET),NULL for group stage
+ET score away,API Football,/fixtures,score.extratime.away,✅ CONFIRMED,NULL if no ET
+Penalty score home,API Football,/fixtures,score.penalty.home,✅ CONFIRMED (Argentina 4 pens),NULL if no penalties
+Penalty score away,API Football,/fixtures,score.penalty.away,✅ CONFIRMED (France 2 pens),NULL if no penalties
+Game status,API Football,/fixtures,fixture.status.short,✅ CONFIRMED,FT / AET / PEN / NS / 1H / 2H / HT
+Knockout winner,API Football,/fixtures,derived from score+status,✅ CONFIRMED,EF derives from fulltime+ET+PEN
+api_fixture_id,API Football,/fixtures,fixture.id,✅ CONFIRMED,primary key for sync
+Team possession,API Football,/fixtures/statistics,statistics[Ball Possession].value,✅ CONFIRMED (WC2022),stored as int (strips %)
+Team shots total,API Football,/fixtures/statistics,statistics[Total Shots].value,✅ CONFIRMED,
+Team shots on target,API Football,/fixtures/statistics,statistics[Shots on Goal].value,✅ CONFIRMED,
+Team corners,API Football,/fixtures/statistics,statistics[Corner Kicks].value,✅ CONFIRMED,
+Team fouls,API Football,/fixtures/statistics,statistics[Fouls].value,✅ CONFIRMED,
+Team yellow cards,API Football,/fixtures/statistics,statistics[Yellow Cards].value,✅ CONFIRMED,
+Team red cards,API Football,/fixtures/statistics,statistics[Red Cards].value,✅ CONFIRMED,
+Team offsides,API Football,/fixtures/statistics,statistics[Offsides].value,✅ CONFIRMED,
+Player name,API Football,/fixtures/players,player.name,✅ CONFIRMED (50 players WC2022 final),
+Player team,API Football,/fixtures/players,team.name,✅ CONFIRMED,
+Player goals,API Football,/fixtures/players,statistics[0].goals.total,✅ CONFIRMED (Messi 2 / Mbappé 3),
+Player assists,API Football,/fixtures/players,statistics[0].goals.assists,✅ CONFIRMED,
+Player minutes played,API Football,/fixtures/players,statistics[0].games.minutes,✅ CONFIRMED,NULL = did not play
+Player yellow cards,API Football,/fixtures/players,statistics[0].cards.yellow,✅ CONFIRMED,
+Player red cards,API Football,/fixtures/players,statistics[0].cards.red,✅ CONFIRMED,
+Top scorer candidates (season),API Football,/players/topscorers?league=1&season=2026,player.id + player.name,✅ CONFIRMED (PL: Salah 29 goals),will work for WC2026 during tournament
+Top scorer api_player_id,API Football,/players/topscorers,player.id,✅ CONFIRMED,used for top_scorer_pick matching
+Per-game 1X2 odds,TheOddsAPI,/sports/soccer_fifa_world_cup/odds,h2h market,✅ CONFIRMED (27 WC2026 games live NOW),Pinnacle / Marathon Bet / Unibet etc.
+Champion outright per team,TheOddsAPI,/sports/soccer_fifa_world_cup_winner/odds,outrights market,✅ CONFIRMED (all 48 teams live NOW),Spain 5.5-6 / France 7 / England 7-8.2 / Brazil 9-10
+WC2026 fixture availability,API Football,/fixtures?league=1&season=2026,fixture.id,⏳ NOT YET — expected ~May 2026,same structure as WC2022 confirmed
+WC2026 top scorer availability,API Football,/players/topscorers?league=1&season=2026,player.id,⏳ NOT YET — available once tournament starts,
+,,,,,,
+=== SECTION 2: CURRENTLY STORED vs AVAILABLE ===,,,,,,
+,,,,,,
+--- GAME TABLE ---,,,,,,
+field,stored,db_column,available_in_api,note
+fixture date/time,YES,games.kick_off_time,YES,✅
+home/away team,YES,games.team_home / team_away,YES,✅
+90-min score,YES,games.score_home / score_away,YES,✅ fulltime only
+ET score,YES,games.et_score_home / et_score_away,YES,✅ NULL for group stage
+Penalty score,YES,games.penalty_score_home / penalty_score_away,YES,✅ NULL if no pens
+Knockout winner,YES,games.knockout_winner,YES (derived),✅ EF derives from scores+status
+api_fixture_id,YES,games.api_fixture_id,YES,✅ primary key for sync
+,,,,,,
+--- GAME TEAM STATS ---,,,,,,
+field,stored,db_column,available_in_api,note
+possession,YES,game_team_stats.possession,YES,stored as int
+shots_total,YES,game_team_stats.shots_total,YES,✅
+shots_on_target,YES,game_team_stats.shots_on_target,YES,✅
+corners,YES,game_team_stats.corners,YES,✅
+fouls,YES,game_team_stats.fouls,YES,✅
+yellow_cards,YES,game_team_stats.yellow_cards,YES,✅
+red_cards,YES,game_team_stats.red_cards,YES,✅
+offsides,YES,game_team_stats.offsides,YES,✅
+shots_off_goal,NO,—,YES,could add
+shots_blocked,NO,—,YES,could add
+shots_insidebox,NO,—,YES,better metric than total shots
+shots_outsidebox,NO,—,YES,could add
+gk_saves,NO,—,YES,GK performance — RECOMMENDED
+passes_total,NO,—,YES,low value for social app — SKIP
+passes_accurate,NO,—,YES,low value — SKIP
+passes_%,NO,—,YES,low value — SKIP
+expected_goals (xG),NO,—,YES,great for prediction context — RECOMMENDED
+,,,,,,
+--- GAME PLAYER STATS ---,,,,,,
+field,stored,db_column,available_in_api,note
+api_player_id,YES,game_player_stats.api_player_id,YES,✅ key for top scorer matching
+player_name,YES,game_player_stats.player_name,YES,✅
+team,YES,game_player_stats.team,YES,✅
+minutes_played,YES,game_player_stats.minutes_played,YES,✅
+goals,YES,game_player_stats.goals,YES,✅ (Messi 2 / Mbappé 3 confirmed WC2022)
+assists,YES,game_player_stats.assists,YES,✅
+yellow_cards,YES,game_player_stats.yellow_cards,YES,✅
+red_cards,YES,game_player_stats.red_cards,YES,✅
+position (G/D/M/F),NO,—,YES ✅ CONFIRMED (WC2022),RECOMMENDED — needed for GK/outfield split
+rating (6.3–9.3),NO,—,YES ✅ CONFIRMED (Messi 9.3 / Mbappé 8.3 WC2022),RECOMMENDED — best AI summary stat
+gk_saves,NO,—,YES ✅ CONFIRMED (Lloris 7 saves final),RECOMMENDED — GK performance
+gk_conceded,NO,—,YES ✅ CONFIRMED,RECOMMENDED — pairs with saves
+shots_total,NO,—,YES,could add
+shots_on_target,NO,—,YES,could add
+passes_key,NO,—,YES,creativity metric — RECOMMENDED
+tackles,NO,—,YES,defensive metric — RECOMMENDED
+interceptions,NO,—,YES,defensive metric — RECOMMENDED
+duels_won,NO,—,YES ✅ CONFIRMED,physical dominance
+dribbles_attempts,NO,—,YES,could add
+dribbles_success,NO,—,YES,could add
+,,,,,,
+--- GAME ODDS ---,,,,,,
+field,stored,db_column,available_in_api,note
+home_win (1X2),YES,game_odds.home_win,YES — both APIs ✅,stored from TheOddsAPI
+draw (1X2),YES,game_odds.draw,YES — both APIs ✅,stored from TheOddsAPI
+away_win (1X2),YES,game_odds.away_win,YES — both APIs ✅,stored from TheOddsAPI
+over_2_5 goals,NO,—,YES — both APIs ✅,RECOMMENDED — simple market users understand
+under_2_5 goals,NO,—,YES — both APIs ✅,RECOMMENDED — pair with over_2_5
+champion outright per team,NO,—,YES — TheOddsAPI ONLY ✅ all 48 teams live NOW,RECOMMENDED — show on Picks page next to champion pick
+top scorer per player,NO,—,NO — not available in either API,cannot add
+,,,,,,
+=== SECTION 3: RECOMMENDATIONS (ADDITIONAL DATA) ===,,,,,,
+,,,,,,
+priority,data,api_source,endpoint,effort,value,recommendation
+HIGH,Player position (G/D/M/F),API Football,/fixtures/players → statistics[0].games.position,EF change: 1 field,Needed for GK/outfield split + AI summary,ADD — 1 column game_player_stats.position
+HIGH,Player rating (e.g. 9.3),API Football,/fixtures/players → statistics[0].games.rating,EF change: 1 field,Best single stat for AI roast — "Messi rated 9.3 was MOTM",ADD — 1 column game_player_stats.rating
+HIGH,GK saves + conceded,API Football,/fixtures/players → statistics[0].goalkeeper.saves/conceded,EF change: 2 fields,GK performance metric — "Lloris made 7 saves",ADD — 2 columns game_player_stats.gk_saves + gk_conceded
+HIGH,Over/Under 2.5 goals odds,TheOddsAPI,/sports/soccer_fifa_world_cup/odds?markets=h2h+totals,EF change: 2 fields,Simple bet users understand — show on Game page,ADD — 2 columns game_odds.over_2_5 + under_2_5
+HIGH,WC2026 champion outright odds,TheOddsAPI,/sports/soccer_fifa_world_cup_winner/odds?markets=outrights,New EF call or new DB table,Show odds next to champion pick on Picks page — "Spain 5.5 to win",ADD — new table or FK to teams; pull once daily
+MEDIUM,Expected goals (xG),API Football,/fixtures/statistics → statistics[expected_goals].value,EF change: 1 field per team,Prediction context — "Argentina xG=2.1 vs Saudi Arabia xG=0.3",ADD — 2 columns game_team_stats.xg_home + xg_away
+MEDIUM,Key passes per player,API Football,/fixtures/players → statistics[0].passes.key,EF change: 1 field,Creativity metric — "Lozano 6 key passes",ADD — 1 column game_player_stats.passes_key
+MEDIUM,Tackles per player,API Football,/fixtures/players → statistics[0].tackles.total,EF change: 1 field,Defensive metric — "Casemiro 4 tackles",ADD — 1 column game_player_stats.tackles
+MEDIUM,Interceptions per player,API Football,/fixtures/players → statistics[0].tackles.interceptions,EF change: 1 field,Defensive metric,ADD — 1 column game_player_stats.interceptions
+MEDIUM,Shots inside box (team),API Football,/fixtures/statistics → statistics[Shots insidebox].value,EF change: 1 field,Better attacking quality metric than total shots,ADD — 1 column game_team_stats.shots_insidebox
+LOW,GK saves (team level),API Football,/fixtures/statistics → statistics[Goalkeeper Saves].value,EF change: 1 field,Cross-check with player GK saves,OPTIONAL — covered by player stats
+LOW,Duels won per player,API Football,/fixtures/players → statistics[0].duels.won,EF change: 1 field,Physical dominance metric,OPTIONAL
+LOW,Shots off goal (team),API Football,/fixtures/statistics → statistics[Shots off Goal].value,EF change: 1 field,Low incremental value,SKIP
+LOW,Passes total/accurate (team),API Football,/fixtures/statistics → statistics[Total passes / Passes accurate].value,EF change: 2 fields,Low value for social app,SKIP
+LOW,Dribbles per player,API Football,/fixtures/players → statistics[0].dribbles.attempts/success,EF change: 2 fields,Granular — low social value,SKIP
+,,,,,,
+=== SECTION 4: CHAMPION OUTRIGHT ODDS — LIVE NOW ===,,,,,,
+source,TheOddsAPI,,,,
+sport_key,soccer_fifa_world_cup_winner,,,,
+status,ACTIVE — all 48 qualified teams,,,,
+games_covered,1 event (the full tournament — outright),,,
+team,betfair_odds,williamhill_odds,implied_probability_betfair,note
+Spain,6.0,5.5,16.7%,favourite
+France,7.0,7.0,14.3%,
+England,8.2,7.0,12.2%,
+Brazil,10.0,9.0,10.0%,
+Argentina,10.0,9.0,10.0%,defending champion
+Portugal,13.5,11.0,7.4%,
+Germany,18.0,13.0,5.6%,
+Netherlands,27.0,21.0,3.7%,
+Norway,36.0,29.0,2.8%,Haaland effect
+Belgium,48.0,34.0,2.1%,
+Colombia,48.0,51.0,2.1%,
+Japan,65.0,67.0,1.5%,
+Morocco,75.0,67.0,1.3%,
+USA,80.0,51.0,1.3%,host nation
+Uruguay,85.0,67.0,1.2%,
+Mexico,90.0,81.0,1.1%,host nation
+Turkey,110.0,81.0,0.9%,
+Croatia,110.0,81.0,0.9%,
+Switzerland,110.0,51.0,0.9%,
+Ecuador,110.0,101.0,0.9%,
+Senegal,110.0,101.0,0.9%,
+Sweden,120.0,126.0,0.8%,
+Italy,120.0,120.0,0.8%,
+Australia,170.0,151.0,0.6%,
+Scotland,250.0,151.0,0.4%,
+Canada,270.0,151.0,0.4%,host nation
+South Korea,370.0,301.0,0.3%,
+Czech Republic,350.0,201.0,0.3%,
+Bosnia & Herzegovina,380.0,201.0,0.3%,
+Egypt,400.0,301.0,0.3%,
+Ghana,420.0,251.0,0.2%,
+Algeria,520.0,301.0,0.2%,
+South Africa,1000.0,501.0,0.1%,
+Qatar,1000.0,1001.0,0.1%,
+Saudi Arabia,1000.0,1001.0,0.1%,
+New Zealand,1000.0,1001.0,0.1%,
+Iran,1000.0,501.0,0.1%,
+Curaçao,1000.0,2001.0,0.1%,
+Haiti,1000.0,2001.0,0.1%,
+Panama,1000.0,501.0,0.1%,
+Jamaica,1000.0,,0.1%,
+DR Congo,1000.0,,0.1%,
+Kosovo,1000.0,,0.1%,
+Iraq,1000.0,,0.1%,
+Bolivia,1000.0,,0.1%,
+Cape Verde,1000.0,,0.1%,
+Jordan,1000.0,2001.0,0.1%,
+Uzbekistan,1000.0,1501.0,0.1%,
+,,,,,,
+=== SECTION 5: NOT AVAILABLE IN ANY API ===,,,,,,
+data,note
+Top scorer odds per player,Not a product on TheOddsAPI or API Football — would need Betfair Exchange API
+Player injury status,Not available — would need separate injury API
+Team lineup (starting 11),Available on API Football (/fixtures/lineups) — not currently fetched — could add
+Player market value,Not in either API — would need Transfermarkt
+Tournament bracket (live),Derived from game results in our own DB — no API needed
+,,,,,,
+=== SECTION 6: LINEUPS — AVAILABLE BUT NOT FETCHED ===,,,,,,
+endpoint,/fixtures/lineups?fixture=ID,,,,
+fields_available,formation / startXI (11 players + position) / substitutes,,,,
+example_data,"4-3-3 | Messi (10 / F) / Di María (11 / M) / Álvarez (9 / F) | sub: Dybala",,,,
+value_for_app,Show starting lineup on Game page before kickoff — helps users make predictions,,,,
+effort,New EF call (4th per game — increases API cost from 3→4 calls per fixture),,,,
+recommendation,OPTIONAL — useful but not critical for prediction scoring,,,,
+daily_cost_impact,"104 games × 4 calls = 416 calls — well within 7500/day Pro limit",,,,
+,,,,,,
+=== SECTION 7: API USAGE SUMMARY ===,,,,,,
+api,plan,daily_limit,calls_per_game_sync,max_games_per_day,wc2026_games,buffer
+API Football,Pro (expires 2026-10-01),7500/day,3 (fixtures+stats+players),2500,104,24× headroom
+TheOddsAPI,Free (500/month),~16/day,1 (all games in one call),N/A — 1 call per sync,104,ample for daily sync

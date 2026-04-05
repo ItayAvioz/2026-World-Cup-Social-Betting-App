@@ -1,0 +1,36 @@
+fixture_id,match,snap_label,ef_version,pulled_at_utc,team,stat,value,source,note
+1391110,Atletico vs Barcelona,var_check_apr5 (BEFORE),v17,2026-04-05T09:14:19.993Z,Atletico Madrid,red_cards,1,team_stat_endpoint,correct - actual red card
+1391110,Atletico vs Barcelona,var_check_apr5 (BEFORE),v17,2026-04-05T09:14:19.993Z,Barcelona,red_cards,1,team_stat_endpoint,WRONG - card shown then overturned by VAR
+1391110,Atletico vs Barcelona,var_fix_verify (AFTER),v18,2026-04-05T09:35:00.533Z,Atletico Madrid,red_cards,1,player_sum,correct - actual red card confirmed by player stats
+1391110,Atletico vs Barcelona,var_fix_verify (AFTER),v18,2026-04-05T09:35:00.533Z,Barcelona,red_cards,0,player_sum,FIXED - 0 players have red_card=1 (VAR overturn correctly captured)
+
+fixture_id,match,ef_version,team,stat,db_before_fix,db_after_fix,match
+1391110,Atletico vs Barcelona,v18,Atletico Madrid,red_cards,1,1,✅ unchanged (correct)
+1391110,Atletico vs Barcelona,v18,Barcelona,red_cards,1,0,✅ FIXED (VAR overturn now reflected)
+
+# Player-level verification — Barcelona (all 23 players, red_cards=0 for every player)
+fixture_id,match,player_name,team,red_cards_player,note
+1391110,Atletico vs Barcelona,Marcus Rashford,Barcelona,0,scored 1 goal
+1391110,Atletico vs Barcelona,Pedri,Barcelona,0,
+1391110,Atletico vs Barcelona,Pau Cubarsí,Barcelona,0,
+1391110,Atletico vs Barcelona,Robert Lewandowski,Barcelona,0,scored 1 goal
+1391110,Atletico vs Barcelona,Pablo Gavi,Barcelona,0,
+1391110,Atletico vs Barcelona,Eric García,Barcelona,0,
+1391110,Atletico vs Barcelona,Lamine Yamal,Barcelona,0,
+1391110,Atletico vs Barcelona,Dani Olmo,Barcelona,0,1 assist
+1391110,Atletico vs Barcelona,Jules Koundé,Barcelona,0,
+1391110,Atletico vs Barcelona,Gerard Martín,Barcelona,0,1 yellow card
+1391110,Atletico vs Barcelona,João Cancelo,Barcelona,0,
+1391110,Atletico vs Barcelona,Joan García,Barcelona,0,
+1391110,Atletico vs Barcelona,Fermín López,Barcelona,0,1 yellow card
+1391110,Atletico vs Barcelona,Marc Bernal,Barcelona,0,
+1391110,Atletico vs Barcelona,Ronald Araújo,Barcelona,0,
+1391110,Atletico vs Barcelona,Ferran Torres,Barcelona,0,
+1391110,Atletico vs Barcelona,Wojciech Szczęsny,Barcelona,0,
+1391110,Atletico vs Barcelona,Tomás Marqués,Barcelona,0,
+1391110,Atletico vs Barcelona,Roony Bardghji,Barcelona,0,
+1391110,Atletico vs Barcelona,Xavi Espart,Barcelona,0,
+1391110,Atletico vs Barcelona,Alejandro Balde,Barcelona,0,
+1391110,Atletico vs Barcelona,Eder Aller,Barcelona,0,
+1391110,Atletico vs Barcelona,Marc Casadó,Barcelona,0,
+# SUM of player red_cards for Barcelona = 0 → team_stat red_cards correctly set to 0

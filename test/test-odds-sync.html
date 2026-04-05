@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test — sync-odds</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    body { font-family: monospace; background: #0a0a0a; color: #e0e0e0; padding: 20px; max-width: 960px; }
+    h1 { color: #f0b429; } h2 { color: #aaa; border-bottom: 1px solid #333; padding-bottom: 6px; }
+    input, select { background: #1a1a1a; border: 1px solid #444; color: #e0e0e0; padding: 8px; margin: 4px; border-radius: 4px; }
+    input[type="password"], input[type="text"] { width: 380px; }
+    button { background: #f0b429; color: #000; border: none; padding: 8px 16px; margin: 4px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+    button.sec { background: #4a5568; color: #fff; }
+    button.go  { background: #48bb78; color: #000; }
+    .result { background: #111; border: 1px solid #333; padding: 12px; margin: 8px 0; border-radius: 4px; white-space: pre-wrap; font-size: 13px; min-height: 40px; max-height: 400px; overflow-y: auto; }
+    .ok  { color: #48bb78; } .err { color: #fc8181; } .info { color: #63b3ed; } .warn { color: #f0b429; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th { background: #1a1a1a; color: #aaa; padding: 6px 8px; text-align: left; border: 1px solid #333; }
+    td { padding: 5px 8px; border: 1px solid #222; }
+    tr:hover td { background: #1a1a1a; }
+    section { margin-bottom: 28px; }
+    .note { color: #666; font-size: 12px; margin: 4px 0; }
+    .odds-cell { color: #f0b429; font-weight: bold; }
+  </style>
+</head>
+<body>
+<h1>💰 Test — sync-odds</h1>
+<p class="note">Tests the daily odds sync Edge Function (theoddsapi.com → game_odds table)</p>
+
+<!-- ─── SERVICE KEY ──────────────────────────────────────── -->
+<section>
+  <h2>0. Service Role Key</h2>
+  <input id="service-key" placeholder="Paste service_role_key here" type="password">
+  <button class="sec" onclick="saveKey()">Save</button>
+  <div class="result" id="r-key" style="min-height:20px"></div>
+</section>
+
+<!-- ─── RUN SYNC ─────────────────────────────────────────── -->
+<section>
+  <h2>1. Run Odds Sync</h2>
+  <p class="note">Fetches 1X2 odds from theoddsapi.com for games in the next 3 days and upserts into game_odds.</p>
+  <p class="note">If The Odds API hasn't opened WC2026 betting yet, you'll get a "no_odds_available" response — that's normal.</p>
+  <button class="go" onclick="runSync()">Run sync-odds</button>
+  <div class="result" id="r-sync">Waiting...</div>
+</section>
+
+<!-- ─── VIEW GAME ODDS ───────────────────────────────────── -->
+<section>
+  <h2>2. View game_odds Table</h2>
+  <p class="note">Shows all stored odds. Updated each time sync runs.</p>
+  <button onclick="loadOdds()">Load All Odds</button>
+  <div id="r-odds"></div>
+</section>
+
+<!-- ─── CHECK COVERAGE ──────────────────────────────────────-->
+<section>
+  <h2>3. Odds Coverage — Upcoming Games</h2>
+  <p class="note">Shows which upcoming games have odds stored and which don't.</p>
+  <button onclick="checkCoverage()">Check Coverage</button>
+  <div id="r-coverage"></div>
+</section>
+
+<!-- ─── REGISTER DAILY CRON ─────────────────────────────── -->
+<section>
+  <h2>4. Register Daily Odds Cron</h2>
+  <p class="note">Calls fn_schedule_odds_sync() to register the daily 07:00 UTC cron job. Run once after EF is deployed.</p>
+  <button class="go" onclick="registerCron()">Register Daily Cron</button>
+  <div class="result" id="r-cron">Waiting...</div>
+</section>
+
+<script>
+  const SUPABASE_URL      = 'https://ftryuvfdihmhlzvbpfeu.supabase.co'
+  const SUPABASE_ANON_KEY = 'sb_publishable_hNTtICDrKMNgAclh28BhrQ_bHTeeFB9'
+  const EF_URL            = `${SUPABASE_URL}/functions/v1`
+  const _supabase         = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+  const $ = id => document.getElementById(id)
+  const show = (id, msg, cls = 'info') => { $(id).innerHTML = `<span class="${cls}">${escHtml(msg)}</span>` }
+  function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+  let _serviceKey = ''
+  function saveKey() {
+    _serviceKey = $('service-key').value.trim()
+    show('r-key', _serviceKey ? '✓ Key saved (in memory only)' : '⚠ Key cleared', _serviceKey ? 'ok' : 'warn')
+  }
+
+  // ─── 1. Run sync
+  async function runSync() {
+    show('r-sync', 'Calling sync-odds...', 'info')
+    try {
+      const res = await fetch(`${EF_URL}/sync-odds`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({})
+      })
+      const data = await res.json()
+      if (!res.ok) { show('r-sync', `Error ${res.status}: ${JSON.stringify(data)}`, 'err'); return }
+
+      if (data.status === 'no_upcoming_games') {
+        show('r-sync', '⚠ No upcoming unstarted games in next 3 days', 'warn')
+        return
+      }
+      if (data.status === 'no_odds_available') {
+        show('r-sync', `⚠ No odds available yet\n  ${data.note}`, 'warn')
+        return
+      }
+
+      let msg = `✓ Sync complete\n  Matched  : ${data.matched}\n  Unmatched: ${data.unmatched_count}`
+      if (data.unmatched?.length) {
+        msg += '\n\n⚠ Unmatched events (no DB game found):'
+        data.unmatched.forEach(u => { msg += `\n  ${u}` })
+      }
+      if (data.errors?.length) {
+        msg += '\n\n✗ DB errors:'
+        data.errors.forEach(e => { msg += `\n  ${e}` })
+      }
+      show('r-sync', msg, data.matched > 0 ? 'ok' : 'warn')
+    } catch (e) {
+      show('r-sync', `Fetch error: ${e.message}\n(Is the EF deployed?)`, 'err')
+    }
+  }
+
+  // ─── 2. Load odds
+  async function loadOdds() {
+    const { data, error } = await _supabase
+      .from('game_odds')
+      .select('game_id, source, home_win, draw, away_win, updated_at, games!inner(team_home, team_away, kick_off_time, phase)')
+      .order('updated_at', { ascending: false })
+      .limit(100)
+
+    if (error) { $('r-odds').innerHTML = `<span class="err">Error: ${error.message}</span>`; return }
+    if (!data.length) { $('r-odds').innerHTML = '<span class="info">No odds stored yet — run sync first.</span>'; return }
+
+    $('r-odds').innerHTML = `
+      <p style="color:#aaa;font-size:12px">${data.length} odds row(s)</p>
+      <table>
+        <tr><th>Home</th><th>Away</th><th>Phase</th><th>KO (UTC)</th><th>Source</th><th>Home Win</th><th>Draw/ET</th><th>Away Win</th><th>Updated</th></tr>
+        ${data.map(o => `<tr>
+          <td>${escHtml(o.games?.team_home ?? '—')}</td>
+          <td>${escHtml(o.games?.team_away ?? '—')}</td>
+          <td>${o.games?.phase ?? '—'}</td>
+          <td>${o.games?.kick_off_time?.slice(0,16) ?? '—'}</td>
+          <td>${escHtml(o.source)}</td>
+          <td class="odds-cell">${o.home_win ?? '—'}</td>
+          <td class="odds-cell">${o.draw ?? '—'}</td>
+          <td class="odds-cell">${o.away_win ?? '—'}</td>
+          <td>${o.updated_at?.slice(0,16)}</td>
+        </tr>`).join('')}
+      </table>`
+  }
+
+  // ─── 3. Coverage check
+  async function checkCoverage() {
+    const now = new Date()
+    const soon = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
+
+    const { data: games, error: gErr } = await _supabase
+      .from('games')
+      .select('id, team_home, team_away, kick_off_time, phase')
+      .gt('kick_off_time', now.toISOString())
+      .lt('kick_off_time', soon.toISOString())
+      .is('score_home', null)
+      .order('kick_off_time')
+
+    if (gErr) { $('r-coverage').innerHTML = `<span class="err">${gErr.message}</span>`; return }
+    if (!games.length) { $('r-coverage').innerHTML = '<span class="info">No upcoming games in next 7 days.</span>'; return }
+
+    const { data: odds } = await _supabase
+      .from('game_odds')
+      .select('game_id')
+
+    const oddsGameIds = new Set((odds ?? []).map(o => o.game_id))
+    const withOdds    = games.filter(g => oddsGameIds.has(g.id)).length
+    const withoutOdds = games.length - withOdds
+
+    $('r-coverage').innerHTML = `
+      <p style="color:#aaa;font-size:12px">
+        ${games.length} upcoming games (next 7 days) —
+        <span class="ok">${withOdds} have odds</span> /
+        <span class="warn">${withoutOdds} missing odds</span>
+      </p>
+      <table>
+        <tr><th>Home</th><th>Away</th><th>Phase</th><th>KO (UTC)</th><th>Odds?</th></tr>
+        ${games.map(g => `<tr>
+          <td>${escHtml(g.team_home)}</td>
+          <td>${escHtml(g.team_away)}</td>
+          <td>${g.phase}</td>
+          <td>${g.kick_off_time?.slice(0,16)}</td>
+          <td class="${oddsGameIds.has(g.id) ? 'ok' : 'warn'}">${oddsGameIds.has(g.id) ? '✓ yes' : '— no'}</td>
+        </tr>`).join('')}
+      </table>`
+  }
+
+  // ─── 4. Register cron
+  async function registerCron() {
+    if (!_serviceKey) { show('r-cron', '⚠ Enter service role key to register cron', 'warn'); return }
+    show('r-cron', 'Registering cron...', 'info')
+    const adminSupabase = window.supabase.createClient(SUPABASE_URL, _serviceKey)
+    const { error } = await adminSupabase.rpc('fn_schedule_odds_sync')
+    if (error) { show('r-cron', `Error: ${error.message}`, 'err'); return }
+    show('r-cron', '✓ Daily odds cron registered at 07:00 UTC\n  Verify in Supabase SQL Editor:\n  SELECT jobname, schedule FROM cron.job WHERE jobname = \'sync-odds-daily\';', 'ok')
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+GAME INFO,,,,,,,,,,,,,,,,,,,,,,,,
+fixture_id,league,season,date_utc,home_team,away_team,status,score_home (90min),score_away (90min),et_score_home,et_score_away,pen_score_home,pen_score_away,went_to_et,went_to_pens,knockout_winner,stored_in_db,,,,,,,
+1208021,Premier League,2024,2024-08-16T19:00:00Z,Manchester United,Fulham,FT,1,0,null,null,null,null,false,false,null,YES,,,,,,,
+
+,,,,,,,,,,,,,,,,,,,,,,,,
+TEAM STATS,,,,,,,,,,,,,,,,,,,,,,,,
+team,possession_%,shots_total,shots_on_target,shots_off_goal,shots_blocked,shots_insidebox,shots_outsidebox,corners,fouls,offsides,yellow_cards,red_cards,gk_saves,passes_total,passes_accurate,passes_%,expected_goals,goals_prevented,stored_in_db,could_add,,,
+Manchester United,55,14,5,7,2,7,7,7,12,3,2,0,2,482,408,85,2.43,1,PARTIAL — 8 fields stored,shots_insidebox + shots_outsidebox + shots_blocked + passes + xG + goals_prevented,,,
+Fulham,45,10,2,4,4,6,4,8,10,1,3,0,4,384,306,80,0.44,1,PARTIAL — 8 fields stored,shots_insidebox + shots_outsidebox + shots_blocked + passes + xG + goals_prevented,,,
+
+,,,,,,,,,,,,,,,,,,,,,,,,
+FIELDS STORED vs AVAILABLE — TEAM STATS,,,,,,,,,,,,,,,,,,,,,,,,
+field,stored,db_column,note,,,,,,,,,,,,,,,,,,,,,
+possession,YES,game_team_stats.possession,stored as int (strips %),,,,,,,,,,,,,,,,,,,,,,
+shots_total,YES,game_team_stats.shots_total,,,,,,,,,,,,,,,,,,,,,,,
+shots_on_target,YES,game_team_stats.shots_on_target,,,,,,,,,,,,,,,,,,,,,,,
+corners,YES,game_team_stats.corners,,,,,,,,,,,,,,,,,,,,,,,
+fouls,YES,game_team_stats.fouls,,,,,,,,,,,,,,,,,,,,,,,
+yellow_cards,YES,game_team_stats.yellow_cards,,,,,,,,,,,,,,,,,,,,,,,
+red_cards,YES,game_team_stats.red_cards,,,,,,,,,,,,,,,,,,,,,,,
+offsides,YES,game_team_stats.offsides,,,,,,,,,,,,,,,,,,,,,,,
+shots_off_goal,NO,—,available from API — could add,,,,,,,,,,,,,,,,,,,,,,
+shots_blocked,NO,—,available from API — could add,,,,,,,,,,,,,,,,,,,,,,
+shots_insidebox,NO,—,available from API — could add,,,,,,,,,,,,,,,,,,,,,,
+shots_outsidebox,NO,—,available from API — could add,,,,,,,,,,,,,,,,,,,,,,
+gk_saves,NO,—,available from API — useful to add,,,,,,,,,,,,,,,,,,,,,,
+passes_total,NO,—,available from API — could add,,,,,,,,,,,,,,,,,,,,,,
+passes_accurate,NO,—,available from API — could add,,,,,,,,,,,,,,,,,,,,,,
+passes_%,NO,—,available from API — could add,,,,,,,,,,,,,,,,,,,,,,
+expected_goals (xG),NO,—,available from API — useful for predictions context,,,,,,,,,,,,,,,,,,,,,,
+goals_prevented,NO,—,available from API — GK performance metric,,,,,,,,,,,,,,,,,,,,,,
+
+,,,,,,,,,,,,,,,,,,,,,,,,
+PLAYER STATS — ALL 40 PLAYERS,,,,,,,,,,,,,,,,,,,,,,,,
+player_id,name,team,position,minutes,rating,goals,assists,shots_total,shots_on,passes_total,passes_key,tackles,interceptions,duels_total,duels_won,dribbles_att,dribbles_suc,yellow_cards,red_cards,saves,conceded,stored_in_db,could_add
+526,André Onana,Manchester United,G,90,7.2,0,0,null,null,23,null,null,null,null,null,null,null,0,0,2,0,PARTIAL,rating + position + saves + conceded + dribbles + duels + tackles
+545,Noussair Mazraoui,Manchester United,D,81,7.5,0,0,null,null,38,null,2,3,7,6,null,null,0,0,null,0,PARTIAL,rating + position + tackles + interceptions + duels
+2935,Harry Maguire,Manchester United,D,81,7.3,0,0,null,null,60,null,null,3,9,6,2,1,1,0,null,0,PARTIAL,rating + position + interceptions + duels + dribbles
+2467,Lisandro Martínez,Manchester United,D,90,7.2,0,0,null,null,61,1,3,3,7,3,null,null,0,0,null,0,PARTIAL,rating + position + tackles + interceptions + duels
+886,Diogo Dalot,Manchester United,D,90,7.3,0,0,null,null,52,null,2,1,10,6,1,1,0,0,null,0,PARTIAL,rating + position + tackles + interceptions + duels + dribbles
+747,Casemiro,Manchester United,M,90,8.5,0,0,3,null,53,3,4,1,13,7,1,null,0,0,null,0,PARTIAL,rating + position + key passes + tackles + interceptions + duels + dribbles
+284322,Kobbie Mainoo,Manchester United,M,84,7.7,0,0,1,null,41,null,3,5,25,13,5,4,0,0,null,0,PARTIAL,rating + position + tackles + interceptions + duels + dribbles
+157997,Amad Diallo,Manchester United,M,61,7.2,0,0,null,null,29,1,1,2,5,2,1,1,0,0,null,0,PARTIAL,rating + position + tackles + interceptions + dribbles
+19220,Mason Mount,Manchester United,M,61,6.5,0,0,1,1,15,2,3,null,11,5,2,null,1,0,null,0,PARTIAL,rating + position + key passes + tackles + duels + dribbles
+909,Marcus Rashford,Manchester United,M,90,6.6,0,0,null,null,29,1,null,1,9,2,5,null,0,0,null,0,PARTIAL,rating + position + key passes + interceptions + duels + dribbles
+1485,Bruno Fernandes,Manchester United,F,90,6.6,0,0,4,3,50,null,2,null,9,3,1,1,0,0,null,0,PARTIAL,rating + position + shots + tackles + duels + dribbles
+284324,Alejandro Garnacho,Manchester United,F,29,6.6,0,1,2,null,10,2,1,null,7,3,1,null,0,0,null,0,PARTIAL,rating + position + shots + key passes + tackles + duels
+70100,Joshua Zirkzee,Manchester United,F,29,7.3,1,0,1,1,9,null,null,null,null,null,null,null,0,0,null,0,PARTIAL,rating + position + shots
+532,Matthijs de Ligt,Manchester United,D,9,6.3,0,0,null,null,2,null,null,null,1,null,null,null,0,0,null,0,PARTIAL,rating + position
+18772,Jonny Evans,Manchester United,D,9,6.7,0,0,null,null,6,null,null,null,3,1,null,null,0,0,null,0,PARTIAL,rating + position + duels
+903,Scott McTominay,Manchester United,M,11,6.7,0,0,null,null,4,null,null,null,1,1,null,null,0,0,null,0,PARTIAL,rating + position + duels
+50132,Altay Bayındır,Manchester United,G,null,null,0,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,PARTIAL,did not play
+9971,Antony,Manchester United,F,null,null,0,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,PARTIAL,did not play
+284400,Toby Collyer,Manchester United,M,null,null,0,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,PARTIAL,did not play
+174,Christian Eriksen,Manchester United,M,null,null,0,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,PARTIAL,did not play
+1438,Bernd Leno,Fulham,G,90,6.9,0,0,null,null,39,null,null,null,1,1,null,null,0,0,4,1,PARTIAL,rating + position + saves + conceded + duels
+657,Kenny Tete,Fulham,D,90,7.0,0,0,2,1,24,null,1,3,7,2,null,null,0,0,null,0,PARTIAL,rating + position + shots + tackles + interceptions + duels
+18814,Issa Diop,Fulham,D,90,7.3,0,0,null,null,35,null,4,null,4,4,null,null,0,0,null,0,PARTIAL,rating + position + tackles + duels
+152967,Calvin Bassey,Fulham,D,90,6.3,0,0,1,null,62,null,1,null,6,2,null,null,1,0,null,0,PARTIAL,rating + position + shots + tackles + duels
+19549,Antonee Robinson,Fulham,D,90,7.2,0,0,null,null,33,null,8,2,14,10,1,null,0,0,null,0,PARTIAL,rating + position + tackles + interceptions + duels + dribbles
+899,Andreas Pereira,Fulham,M,89,7.2,0,0,null,null,42,6,null,null,12,5,1,null,1,0,null,0,PARTIAL,rating + position + key passes + duels + dribbles
+2823,Saša Lukić,Fulham,M,89,6.9,0,0,null,null,45,null,3,1,6,4,null,null,0,0,null,0,PARTIAL,rating + position + tackles + interceptions + duels
+18753,Adama Traoré,Fulham,M,78,6.7,0,0,1,null,20,null,1,null,20,10,9,4,0,0,null,0,PARTIAL,rating + position + shots + tackles + duels + dribbles
+1161,Emile Smith Rowe,Fulham,M,64,6.9,0,0,null,null,26,null,1,2,3,3,null,null,0,0,null,0,PARTIAL,rating + position + tackles + interceptions + duels
+1455,Alex Iwobi,Fulham,M,90,6.3,0,0,1,null,25,null,4,null,15,5,5,1,0,0,null,0,PARTIAL,rating + position + shots + tackles + duels + dribbles
+195106,Rodrigo Muniz,Fulham,F,78,7.0,0,0,1,1,6,2,null,1,15,6,1,1,0,0,null,0,PARTIAL,rating + position + shots + key passes + interceptions + duels + dribbles
+19025,Tom Cairney,Fulham,M,26,6.6,0,0,null,null,16,1,null,null,6,3,3,2,1,0,null,0,PARTIAL,rating + position + key passes + duels + dribbles
+19221,Harry Wilson,Fulham,M,12,6.7,0,0,null,null,6,null,null,null,2,2,null,null,0,0,null,0,PARTIAL,rating + position + duels
+2887,Raúl Jiménez,Fulham,F,12,6.3,0,0,null,null,4,null,null,null,3,1,null,null,0,0,null,0,PARTIAL,rating + position + duels
+19480,Harrison Reed,Fulham,M,1,null,0,0,null,null,1,null,1,null,2,1,null,null,0,0,null,0,PARTIAL,rating + position + tackles + duels
+191971,Jay Stansfield,Fulham,F,1,null,0,0,null,null,null,null,null,null,1,null,null,null,0,0,null,0,PARTIAL,rating + position + duels
+19312,Steven Benda,Fulham,G,null,null,0,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,PARTIAL,did not play
+131,Jorge Cuenca,Fulham,D,null,null,0,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,PARTIAL,did not play
+2920,Timothy Castagne,Fulham,D,null,null,0,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,PARTIAL,did not play
+389315,Joshua King,Fulham,M,null,null,0,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,PARTIAL,did not play
+
+,,,,,,,,,,,,,,,,,,,,,,,,
+FIELDS STORED vs AVAILABLE — PLAYER STATS,,,,,,,,,,,,,,,,,,,,,,,,
+field,stored,db_column,note,,,,,,,,,,,,,,,,,,,,,
+api_player_id,YES,game_player_stats.api_player_id,key for top scorer matching,,,,,,,,,,,,,,,,,,,,,,
+player_name,YES,game_player_stats.player_name,,,,,,,,,,,,,,,,,,,,,,,
+team,YES,game_player_stats.team,,,,,,,,,,,,,,,,,,,,,,,
+minutes_played,YES,game_player_stats.minutes_played,null = did not play,,,,,,,,,,,,,,,,,,,,,,
+goals,YES,game_player_stats.goals,,,,,,,,,,,,,,,,,,,,,,,
+assists,YES,game_player_stats.assists,,,,,,,,,,,,,,,,,,,,,,,
+yellow_cards,YES,game_player_stats.yellow_cards,,,,,,,,,,,,,,,,,,,,,,,
+red_cards,YES,game_player_stats.red_cards,,,,,,,,,,,,,,,,,,,,,,,
+position,NO,—,G/D/M/F — available — useful to add,,,,,,,,,,,,,,,,,,,,,,
+rating,NO,—,player rating (6.3–8.5) — available — great for AI summary,,,,,,,,,,,,,,,,,,,,,,
+shots_total,NO,—,available — could add,,,,,,,,,,,,,,,,,,,,,,
+shots_on_target,NO,—,available — could add,,,,,,,,,,,,,,,,,,,,,,
+passes_total,NO,—,available — could add,,,,,,,,,,,,,,,,,,,,,,
+passes_key,NO,—,key passes — available — good for creativity metric,,,,,,,,,,,,,,,,,,,,,,
+tackles,NO,—,available — defensive metric,,,,,,,,,,,,,,,,,,,,,,
+interceptions,NO,—,available — defensive metric,,,,,,,,,,,,,,,,,,,,,,
+duels_total,NO,—,available — physical metric,,,,,,,,,,,,,,,,,,,,,,
+duels_won,NO,—,available + duels_won% derivable,,,,,,,,,,,,,,,,,,,,,,
+dribbles_attempts,NO,—,available — could add,,,,,,,,,,,,,,,,,,,,,,
+dribbles_success,NO,—,available — could add,,,,,,,,,,,,,,,,,,,,,,
+saves,NO,—,GK only — available — useful to add,,,,,,,,,,,,,,,,,,,,,,
+conceded,NO,—,GK only — available — useful to add,,,,,,,,,,,,,,,,,,,,,,
+
+,,,,,,,,,,,,,,,,,,,,,,,,
+ENRICHMENT RECOMMENDATIONS,,,,,,,,,,,,,,,,,,,,,,,,
+priority,field,table,reason,effort,,,,,,,,,,,,,,,,,,,
+HIGH,position (G/D/M/F),game_player_stats,needed to filter GK stats separately and for AI summaries,low — 1 column,,,,,,,,,,,,,,,,,,,,,
+HIGH,rating,game_player_stats,best single stat for AI roast — "Casemiro rated 8.5 was MOTM",low — 1 column,,,,,,,,,,,,,,,,,,,,,
+HIGH,gk_saves + conceded,game_player_stats,GK performance — needed if rating not added,low — 2 columns,,,,,,,,,,,,,,,,,,,,,
+MEDIUM,xG (expected_goals),game_team_stats,great for prediction context ("should have won by more"),low — 1 column,,,,,,,,,,,,,,,,,,,,,
+MEDIUM,passes_key,game_player_stats,creativity metric — good for AI summaries,low — 1 column,,,,,,,,,,,,,,,,,,,,,
+MEDIUM,shots_insidebox,game_team_stats,tells better attacking story than total shots,low — 1 column,,,,,,,,,,,,,,,,,,,,,
+LOW,tackles + interceptions,game_player_stats,defensive stats — nice to have,low — 2 columns,,,,,,,,,,,,,,,,,,,,,
+LOW,duels_total + duels_won,game_player_stats,physical dominance metric,low — 2 columns,,,,,,,,,,,,,,,,,,,,,
+SKIP,passes_total + passes_%,game_team_stats,low value for social app,skip,,,,,,,,,,,,,,,,,,,,,
+SKIP,dribbles_attempts + success,game_player_stats,granular — low value,skip,,,,,,,,,,,,,,,,,,,,,

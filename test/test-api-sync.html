@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test — football-api-sync</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    body { font-family: monospace; background: #0a0a0a; color: #e0e0e0; padding: 20px; max-width: 960px; }
+    h1 { color: #f0b429; } h2 { color: #aaa; border-bottom: 1px solid #333; padding-bottom: 6px; }
+    input, select { background: #1a1a1a; border: 1px solid #444; color: #e0e0e0; padding: 8px; margin: 4px; border-radius: 4px; }
+    input[type="text"], input[type="password"] { width: 380px; }
+    button { background: #f0b429; color: #000; border: none; padding: 8px 16px; margin: 4px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+    button.sec { background: #4a5568; color: #fff; }
+    button.go  { background: #48bb78; color: #000; }
+    button.red { background: #fc8181; color: #000; }
+    .result { background: #111; border: 1px solid #333; padding: 12px; margin: 8px 0; border-radius: 4px; white-space: pre-wrap; font-size: 13px; min-height: 40px; max-height: 400px; overflow-y: auto; }
+    .ok  { color: #48bb78; } .err { color: #fc8181; } .info { color: #63b3ed; } .warn { color: #f0b429; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th { background: #1a1a1a; color: #aaa; padding: 6px 8px; text-align: left; border: 1px solid #333; }
+    td { padding: 5px 8px; border: 1px solid #222; }
+    tr:hover td { background: #1a1a1a; }
+    .mapped { color: #48bb78; } .unmapped { color: #fc8181; }
+    section { margin-bottom: 28px; }
+    .note { color: #666; font-size: 12px; margin: 4px 0; }
+    label { color: #aaa; font-size: 12px; }
+  </style>
+</head>
+<body>
+<h1>⚽ Test — football-api-sync</h1>
+<p class="note">Tests all 3 modes: setup (fixture ID mapping), verify (KO time check), sync (score + stats polling)</p>
+
+<!-- ─── SERVICE KEY ──────────────────────────────────────── -->
+<section>
+  <h2>0. Service Role Key</h2>
+  <p class="note">Required for all EF calls below. Never expose in production.</p>
+  <input id="service-key" placeholder="Paste service_role_key here" type="password">
+  <button class="sec" onclick="saveKey()">Save</button>
+  <div class="result" id="r-key" style="min-height:20px"></div>
+</section>
+
+<!-- ─── SETUP MODE ───────────────────────────────────────── -->
+<section>
+  <h2>1. Setup Mode — Map api_fixture_id</h2>
+  <p class="note">Fetches all WC2026 fixture IDs from api-football.com and maps them to our games table.</p>
+  <p class="note">Run once before tournament, and again when knockout matchups resolve.</p>
+  <button class="go" onclick="runSetup()">Run Setup Mode</button>
+  <div class="result" id="r-setup">Waiting...</div>
+</section>
+
+<!-- ─── GAMES TABLE ──────────────────────────────────────── -->
+<section>
+  <h2>2. Games — api_fixture_id Status</h2>
+  <button onclick="loadGames()">Load Games</button>
+  <input id="games-filter" placeholder="filter by team..." style="width:200px">
+  <div id="r-games"></div>
+</section>
+
+<!-- ─── VERIFY MODE ──────────────────────────────────────── -->
+<section>
+  <h2>3. Verify Mode — KO Time Check</h2>
+  <p class="note">Checks if API kickoff time matches DB. Used 30min before KO.</p>
+  <label>game_id:</label>
+  <input id="verify-game-id" placeholder="paste game UUID">
+  <button class="go" onclick="runVerify()">Run Verify</button>
+  <div class="result" id="r-verify">Waiting...</div>
+</section>
+
+<!-- ─── SYNC MODE ────────────────────────────────────────── -->
+<section>
+  <h2>4. Sync Mode — Score + Stats Poll</h2>
+  <p class="note">Polls the API for score + writes stats. Useful for testing with a past game that has a real api_fixture_id.</p>
+  <p class="note">For testing: use a real past WC fixture ID (e.g. from a WC 2022 game) to verify the stats pipeline.</p>
+  <label>game_id:</label>
+  <input id="sync-game-id" placeholder="paste game UUID">
+  <label>phase:</label>
+  <select id="sync-phase">
+    <option value="group">group</option>
+    <option value="knockout">knockout</option>
+  </select>
+  <label>stage:</label>
+  <select id="sync-stage">
+    <option value="initial">initial</option>
+    <option value="et_followup">et_followup</option>
+  </select>
+  <br>
+  <button class="go" onclick="runSync()">Run Sync</button>
+  <div class="result" id="r-sync">Waiting...</div>
+</section>
+
+<!-- ─── CRON JOBS ────────────────────────────────────────── -->
+<section>
+  <h2>5. Scheduled Cron Jobs</h2>
+  <p class="note">Shows all verify-game-* and sync-game-* jobs currently registered.</p>
+  <button onclick="loadCronJobs()">Load Cron Jobs</button>
+  <div id="r-crons"></div>
+</section>
+
+<!-- ─── SCHEDULE GAME ────────────────────────────────────── -->
+<section>
+  <h2>6. Schedule Game Sync Crons</h2>
+  <p class="note">Manually schedule verify + sync crons for a game (calls fn_schedule_game_sync RPC).</p>
+  <label>game_id:</label>
+  <input id="schedule-game-id" placeholder="paste game UUID">
+  <button class="go" onclick="scheduleGame()">Schedule</button>
+  <div class="result" id="r-schedule">Waiting...</div>
+</section>
+
+<!-- ─── GAME STATS VIEW ──────────────────────────────────── -->
+<section>
+  <h2>7. Game Stats (after sync)</h2>
+  <label>game_id:</label>
+  <input id="stats-game-id" placeholder="paste game UUID">
+  <button onclick="loadStats()">Load Stats</button>
+  <div class="result" id="r-stats">Waiting...</div>
+</section>
+
+<script>
+  const SUPABASE_URL      = 'https://ftryuvfdihmhlzvbpfeu.supabase.co'
+  const SUPABASE_ANON_KEY = 'sb_publishable_hNTtICDrKMNgAclh28BhrQ_bHTeeFB9'
+  const EF_URL            = `${SUPABASE_URL}/functions/v1`
+  const _supabase         = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+  const $ = id => document.getElementById(id)
+  const show = (id, msg, cls = 'info') => { $(id).innerHTML = `<span class="${cls}">${escHtml(msg)}</span>` }
+  function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+  let _serviceKey = ''
+  function saveKey() {
+    _serviceKey = $('service-key').value.trim()
+    show('r-key', _serviceKey ? '✓ Key saved (in memory only)' : '⚠ Key cleared', _serviceKey ? 'ok' : 'warn')
+  }
+
+  // ─── EF call helper
+  async function callEF(path, body) {
+    const res = await fetch(`${EF_URL}/${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    const data = await res.json()
+    return { ok: res.ok, status: res.status, data }
+  }
+
+  // ─── 1. Setup
+  async function runSetup() {
+    show('r-setup', 'Calling setup mode... (may take a few seconds)', 'info')
+    try {
+      const r = await callEF('football-api-sync', { mode: 'setup' })
+      if (!r) return
+      if (!r.ok) {
+        show('r-setup', `Error ${r.status}: ${JSON.stringify(r.data)}`, 'err')
+        return
+      }
+      const d = r.data
+      let msg = `✓ Setup complete\n  Matched : ${d.matched}\n  Skipped : ${d.skipped} (already mapped)\n  Unmatched: ${d.unmatched?.length ?? 0}`
+      if (d.unmatched?.length) {
+        msg += '\n\n⚠ Unmatched (need manual mapping):'
+        d.unmatched.forEach(u => { msg += `\n  ${u.home} vs ${u.away} @ ${u.date}` })
+      }
+      show('r-setup', msg, d.unmatched?.length ? 'warn' : 'ok')
+    } catch (e) {
+      show('r-setup', `Fetch error: ${e.message}\n(Is the EF deployed? Check Supabase → Edge Functions)`, 'err')
+    }
+  }
+
+  // ─── 2. Games table
+  async function loadGames() {
+    const filter = $('games-filter').value.trim().toLowerCase()
+    let q = _supabase.from('games').select('id,team_home,team_away,kick_off_time,api_fixture_id,score_home,score_away,phase').order('kick_off_time')
+    if (filter) q = q.or(`team_home.ilike.%${filter}%,team_away.ilike.%${filter}%`)
+    const { data, error } = await q.limit(50)
+    if (error) { $('r-games').innerHTML = `<span class="err">Error: ${error.message}</span>`; return }
+    const mapped   = data.filter(g => g.api_fixture_id).length
+    const unmapped = data.length - mapped
+    $('r-games').innerHTML = `
+      <p style="color:#aaa;font-size:12px">Showing ${data.length} games —
+        <span class="mapped">${mapped} mapped</span> /
+        <span class="unmapped">${unmapped} unmapped</span></p>
+      <table>
+        <tr><th>Phase</th><th>Home</th><th>Away</th><th>KO (UTC)</th><th>api_fixture_id</th><th>Score</th></tr>
+        ${data.map(g => `<tr>
+          <td>${g.phase}</td>
+          <td>${escHtml(g.team_home)}</td>
+          <td>${escHtml(g.team_away)}</td>
+          <td>${g.kick_off_time?.slice(0,16)}</td>
+          <td class="${g.api_fixture_id ? 'mapped' : 'unmapped'}">${g.api_fixture_id ?? '— not mapped'}</td>
+          <td>${g.score_home !== null ? `${g.score_home}-${g.score_away}` : '—'}</td>
+        </tr>`).join('')}
+      </table>`
+  }
+
+  // ─── 3. Verify
+  async function runVerify() {
+    const game_id = $('verify-game-id').value.trim()
+    if (!game_id) { alert('Enter a game_id'); return }
+    show('r-verify', 'Calling verify mode...', 'info')
+    try {
+      const r = await callEF('football-api-sync', { mode: 'verify', game_id })
+      if (!r) return
+      if (!r.ok) { show('r-verify', `Error ${r.status}: ${JSON.stringify(r.data)}`, 'err'); return }
+      const d = r.data
+      const cls = d.status === 'match' ? 'ok' : 'warn'
+      show('r-verify',
+        d.status === 'match'
+          ? `✓ KO time matches\n  kick_off_time: ${d.kick_off_time}\n  diff: ${d.diff_minutes?.toFixed(2)} min`
+          : `⚠ KO time mismatch — DB updated\n  DB was: ${d.db_time}\n  API has: ${d.api_time}\n  Diff: ${d.diff_minutes?.toFixed(1)} min\n  Crons rescheduled.`,
+        cls)
+    } catch (e) {
+      show('r-verify', `Fetch error: ${e.message}`, 'err')
+    }
+  }
+
+  // ─── 4. Sync
+  async function runSync() {
+    const game_id = $('sync-game-id').value.trim()
+    const phase   = $('sync-phase').value
+    const stage   = $('sync-stage').value
+    if (!game_id) { alert('Enter a game_id'); return }
+    show('r-sync', 'Calling sync mode...', 'info')
+    try {
+      const r = await callEF('football-api-sync', { mode: 'sync', game_id, phase, stage })
+      if (!r) return
+      if (!r.ok) { show('r-sync', `Error ${r.status}: ${JSON.stringify(r.data)}`, 'err'); return }
+      const d = r.data
+      const colors = { done: 'ok', retry_scheduled: 'warn', et_in_progress: 'warn', penalty_in_progress: 'warn', rate_limited_retry_10min: 'warn' }
+      show('r-sync', JSON.stringify(d, null, 2), colors[d.status] ?? 'info')
+    } catch (e) {
+      show('r-sync', `Fetch error: ${e.message}`, 'err')
+    }
+  }
+
+  // ─── 5. Cron jobs
+  async function loadCronJobs() {
+    // Query cron.job via RPC — anonymous users can't access cron schema directly
+    // Use the Supabase admin API or a direct SQL query via service role
+    if (!_serviceKey) { alert('Enter service role key first'); return }
+    const adminSupabase = window.supabase.createClient(SUPABASE_URL, _serviceKey)
+    const { data, error } = await adminSupabase.rpc('get_api_sync_cron_jobs')
+    if (error) {
+      // Fallback: show message about checking Supabase dashboard
+      $('r-crons').innerHTML = `<span class="warn">RPC not available — check cron.job directly in Supabase SQL Editor:\n<code>SELECT jobname, schedule, active FROM cron.job WHERE jobname LIKE 'verify-game-%' OR jobname LIKE 'sync-game-%' OR jobname LIKE 'retry-sync-%' ORDER BY jobname;</code></span>`
+      return
+    }
+    if (!data?.length) { $('r-crons').innerHTML = '<span class="info">No game sync cron jobs registered yet.</span>'; return }
+    $('r-crons').innerHTML = `
+      <table>
+        <tr><th>Job Name</th><th>Schedule</th><th>Active</th></tr>
+        ${data.map(j => `<tr><td>${escHtml(j.jobname)}</td><td>${j.schedule}</td><td>${j.active ? '✓' : '✗'}</td></tr>`).join('')}
+      </table>`
+  }
+
+  // ─── 6. Schedule game
+  async function scheduleGame() {
+    const game_id = $('schedule-game-id').value.trim()
+    if (!game_id) { alert('Enter a game_id'); return }
+    if (!_serviceKey) { alert('Enter service role key first'); return }
+    show('r-schedule', 'Scheduling...', 'info')
+    const adminSupabase = window.supabase.createClient(SUPABASE_URL, _serviceKey)
+    const { data, error } = await adminSupabase.rpc('fn_schedule_game_sync', { p_game_id: game_id })
+    if (error) { show('r-schedule', `Error: ${error.message}`, 'err'); return }
+    show('r-schedule',
+      `✓ Crons registered\n` +
+      `  Verify job : ${data.verify_job}  (${data.verify_cron})\n` +
+      `  Sync job   : ${data.sync_job}  (${data.sync_cron})`,
+      'ok')
+  }
+
+  // ─── 7. Game stats
+  async function loadStats() {
+    const game_id = $('stats-game-id').value.trim()
+    if (!game_id) { alert('Enter a game_id'); return }
+    const [teamRes, playerRes] = await Promise.all([
+      _supabase.from('game_team_stats').select('*').eq('game_id', game_id),
+      _supabase.from('game_player_stats').select('*').eq('game_id', game_id).order('goals', { ascending: false })
+    ])
+    if (teamRes.error)   { show('r-stats', `Team stats error: ${teamRes.error.message}`, 'err'); return }
+    if (playerRes.error) { show('r-stats', `Player stats error: ${playerRes.error.message}`, 'err'); return }
+
+    const teams   = teamRes.data
+    const players = playerRes.data
+
+    if (!teams.length && !players.length) {
+      show('r-stats', 'No stats yet — run sync mode first', 'warn')
+      return
+    }
+
+    let html = ''
+    if (teams.length) {
+      html += `<p class="ok">✓ Team stats (${teams.length} rows)</p>`
+      html += `<table><tr><th>Team</th><th>Poss</th><th>Shots</th><th>On Target</th><th>Corners</th><th>Fouls</th><th>Yellow</th><th>Red</th><th>Offsides</th></tr>`
+      teams.forEach(t => {
+        html += `<tr><td>${escHtml(t.team)}</td><td>${t.possession ?? '—'}%</td><td>${t.shots_total ?? '—'}</td><td>${t.shots_on_target ?? '—'}</td><td>${t.corners ?? '—'}</td><td>${t.fouls ?? '—'}</td><td>${t.yellow_cards ?? '—'}</td><td>${t.red_cards ?? '—'}</td><td>${t.offsides ?? '—'}</td></tr>`
+      })
+      html += '</table>'
+    }
+    if (players.length) {
+      html += `<p class="ok" style="margin-top:12px">✓ Player stats (${players.length} rows)</p>`
+      html += `<table><tr><th>Player</th><th>Team</th><th>Min</th><th>Goals</th><th>Assists</th><th>Yellow</th><th>Red</th></tr>`
+      players.slice(0, 30).forEach(p => {
+        html += `<tr><td>${escHtml(p.player_name)}</td><td>${escHtml(p.team)}</td><td>${p.minutes_played ?? '—'}</td><td>${p.goals}</td><td>${p.assists}</td><td>${p.yellow_cards}</td><td>${p.red_cards}</td></tr>`
+      })
+      if (players.length > 30) html += `<tr><td colspan="7" style="color:#666">... and ${players.length - 30} more</td></tr>`
+      html += '</table>'
+    }
+    $('r-stats').innerHTML = html
+  }
+</script>
+</body>
+</html>

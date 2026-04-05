@@ -1,0 +1,3 @@
+fixture_id,match,score,team,possession,shots_total,shots_on_target,shots_insidebox,corners,fouls,yellow_cards,red_cards,offsides,xg
+1391115,Rayo Vallecano vs Elche,1-0,Rayo Vallecano,60,21,5,11,9,16,0,0,NULL,1.36
+1391115,Rayo Vallecano vs Elche,1-0,Elche,40,9,4,6,4,9,4,1,NULL,0.44
