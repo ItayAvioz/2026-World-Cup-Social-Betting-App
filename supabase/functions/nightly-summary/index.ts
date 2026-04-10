@@ -1,8 +1,9 @@
-// nightly-summary v3
+// nightly-summary v5
 // Generates AI-powered nightly summaries per qualifying group using OpenAI gpt-4o-mini.
 // Triggered by pg_cron 150min after last kickoff of the day.
-// POST body: { date: "YYYY-MM-DD", version_id?: "uuid" }
+// POST body: { date: "YYYY-MM-DD", version_id?: "uuid", model?: "gpt-4o-mini" }
 //   version_id → TEST MODE: uses that prompt version and writes test results back
+//   model → TEST MODE ONLY: override the OpenAI model (defaults to OPENAI_MODEL constant)
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
@@ -33,7 +34,7 @@ const TIMEOUT_MS = 120_000   // abort group loop at 120s (EF hard limit is 150s)
 const GROUP_GAP_MS = 2_000   // sequential gap between groups (rate limiting)
 const OPENAI_MODEL = 'gpt-4o-mini'
 const MAX_TOKENS = 400
-const TEMPERATURE = 0.5
+const TEMPERATURE = 0.6
 const TOP_P = 1
 const SEED = 42
 const MIN_CONTENT_LEN = 50
@@ -63,12 +64,13 @@ async function callOpenAI(
   openai: OpenAI,
   systemPrompt: string,
   userMessage: string,
+  model: string,
 ): Promise<{ content: string; promptTokens: number; completionTokens: number }> {
   for (let attempt = 0; attempt < 2; attempt++) {
     if (attempt > 0) await sleep(5000)
     try {
       const res = await openai.chat.completions.create({
-        model:       OPENAI_MODEL,
+        model,
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user',   content: userMessage },
@@ -359,16 +361,19 @@ serve(async (req) => {
   // 1. Parse body
   let date: string
   let versionId: string | undefined
+  let modelOverride: string | undefined
   try {
     const body = await req.json()
-    date      = body.date
-    versionId = body.version_id
+    date          = body.date
+    versionId     = body.version_id
+    modelOverride = body.model   // test mode only — ignored in production runs
     if (!date) return json({ error: 'date required' }, 400)
   } catch {
     return json({ error: 'invalid JSON body' }, 400)
   }
 
-  const testMode = !!versionId
+  const testMode      = !!versionId
+  const effectiveModel = (testMode && modelOverride) ? modelOverride : OPENAI_MODEL
 
   // Create clients inside handler (not module scope)
   const srk = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
@@ -580,6 +585,7 @@ serve(async (req) => {
         openai,
         promptRow.system_prompt,
         userMessage,
+        effectiveModel,
       )
 
       // 8f. Upsert to ai_summaries
@@ -588,7 +594,7 @@ serve(async (req) => {
         date,
         content,
         games_count:       finishedGames.length,
-        model:             OPENAI_MODEL,
+        model:             effectiveModel,
         prompt_tokens:     promptTokens     || null,
         completion_tokens: completionTokens || null,
         prompt_version_id: promptRow.id,
@@ -632,7 +638,7 @@ serve(async (req) => {
           .update({
             test_input:        payload,
             test_output:       content,
-            test_model:        OPENAI_MODEL,
+            test_model:        effectiveModel,
             test_tokens_in:    promptTokens,
             test_tokens_out:   completionTokens,
             test_temperature:  TEMPERATURE,
