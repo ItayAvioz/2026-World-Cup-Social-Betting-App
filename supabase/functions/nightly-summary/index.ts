@@ -548,12 +548,16 @@ serve(async (req) => {
         await supabase
           .from('prompt_versions')
           .update({
-            test_input:      payload,
-            test_output:     content,
-            test_model:      OPENAI_MODEL,
-            test_tokens_in:  promptTokens,
-            test_tokens_out: completionTokens,
-            tested_at:       new Date().toISOString(),
+            test_input:        payload,
+            test_output:       content,
+            test_model:        OPENAI_MODEL,
+            test_tokens_in:    promptTokens,
+            test_tokens_out:   completionTokens,
+            test_temperature:  TEMPERATURE,
+            test_top_p:        TOP_P,
+            test_max_tokens:   MAX_TOKENS,
+            test_seed:         SEED,
+            tested_at:         new Date().toISOString(),
           })
           .eq('id', versionId!)
       }
