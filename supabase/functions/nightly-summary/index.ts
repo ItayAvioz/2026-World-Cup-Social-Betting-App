@@ -1,4 +1,4 @@
-// nightly-summary v2
+// nightly-summary v3
 // Generates AI-powered nightly summaries per qualifying group using OpenAI gpt-4o-mini.
 // Triggered by pg_cron 150min after last kickoff of the day.
 // POST body: { date: "YYYY-MM-DD", version_id?: "uuid" }
@@ -9,6 +9,16 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import OpenAI from 'npm:openai'
 
 // ─── Constants ───────────────────────────────────────────────────────────────
+
+const PHASE_LABELS: Record<string, string> = {
+  group: 'Group Stage',
+  r32:   'Round of 32',
+  r16:   'Round of 16',
+  qf:    'Quarter-Final',
+  sf:    'Semi-Final',
+  third: 'Third Place',
+  final: 'Final',
+}
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -231,9 +241,34 @@ function buildGroupPayload(opts: {
     const grp  = gameId ? (grpDistByGameId[gameId] ?? null) : null
     const grpN = grp?.n ?? 0
 
+    // group_exact_n: how many members predicted exact score
+    let groupExactN = 0
+    if (fg) {
+      // deno-lint-ignore no-explicit-any
+      for (const m of (groupData.members ?? []) as any[]) {
+        // deno-lint-ignore no-explicit-any
+        const pred = (m.predictions ?? []).find((p: any) => p.game_id === fg.id)
+        if (pred && pred.pred_home === fg.score_home && pred.pred_away === fg.score_away) groupExactN++
+      }
+    }
+
+    // upset: result direction went against majority group prediction
+    let upset = false
+    if (fg && grp && grpN > 0) {
+      const resultDir = fg.score_home > fg.score_away ? 'home'
+                      : fg.score_home < fg.score_away ? 'away'
+                      : 'draw'
+      const majorityDir = grp.home >= grp.draw && grp.home >= grp.away ? 'home'
+                        : grp.away > grp.draw && grp.away > grp.home   ? 'away'
+                        : 'draw'
+      upset = resultDir !== majorityDir
+    }
+
     return {
-      match:  `${game.team_home} ${game.score_home}-${game.score_away} ${game.team_away}`,
-      phase:  game.phase,
+      match:       `${game.team_home} ${game.score_home}-${game.score_away} ${game.team_away}`,
+      phase_label: PHASE_LABELS[game.phase] ?? game.phase,
+      group_exact_n: groupExactN,
+      upset,
       scorers: statsReady ? scorers : null,
       dist_group: grpN > 0 ? (() => {
         const sc = grp!.scores
@@ -536,10 +571,9 @@ serve(async (req) => {
       })
 
       // 8d. Render user message
-      const userMessage = promptRow.user_prompt_template.replace(
-        '{{group_json}}',
-        JSON.stringify(payload),
-      )
+      const userMessage = promptRow.user_prompt_template
+        .replace('{{group_name}}', group.name)
+        .replace('{{group_json}}', JSON.stringify(payload))
 
       // 8e. Call OpenAI
       const { content, promptTokens, completionTokens } = await callOpenAI(
