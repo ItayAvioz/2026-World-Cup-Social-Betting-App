@@ -1,4 +1,4 @@
-// nightly-summary v1
+// nightly-summary v2
 // Generates AI-powered nightly summaries per qualifying group using OpenAI gpt-4o-mini.
 // Triggered by pg_cron 150min after last kickoff of the day.
 // POST body: { date: "YYYY-MM-DD", version_id?: "uuid" }
@@ -23,6 +23,9 @@ const TIMEOUT_MS = 120_000   // abort group loop at 120s (EF hard limit is 150s)
 const GROUP_GAP_MS = 2_000   // sequential gap between groups (rate limiting)
 const OPENAI_MODEL = 'gpt-4o-mini'
 const MAX_TOKENS = 400
+const TEMPERATURE = 0.5
+const TOP_P = 1
+const SEED = 42
 const MIN_CONTENT_LEN = 50
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -55,12 +58,15 @@ async function callOpenAI(
     if (attempt > 0) await sleep(5000)
     try {
       const res = await openai.chat.completions.create({
-        model: OPENAI_MODEL,
+        model:       OPENAI_MODEL,
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user',   content: userMessage },
         ],
-        max_tokens: MAX_TOKENS,
+        max_tokens:  MAX_TOKENS,
+        temperature: TEMPERATURE,
+        top_p:       TOP_P,
+        seed:        SEED,
       })
       const content = res.choices[0]?.message?.content?.trim() ?? ''
       if (content.length >= MIN_CONTENT_LEN) {
@@ -312,14 +318,7 @@ serve(async (req) => {
 
   const startMs = Date.now()
 
-  // 1. Auth — service role key required
-  const srk  = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-  const auth = req.headers.get('Authorization')
-  if (!auth || auth !== `Bearer ${srk}`) {
-    return json({ error: 'Unauthorized' }, 401)
-  }
-
-  // 2. Parse body
+  // 1. Parse body
   let date: string
   let versionId: string | undefined
   try {
@@ -334,8 +333,10 @@ serve(async (req) => {
   const testMode = !!versionId
 
   // Create clients inside handler (not module scope)
+  const srk = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
   const supabase = createClient(Deno.env.get('SUPABASE_URL')!, srk)
-  const openai   = new OpenAI({ apiKey: Deno.env.get('OPENAI_API_KEY')! })
+  const openaiKey = Deno.env.get('OPENAI_API_KEY') || Deno.env.get('AI_Summary_GPT_Key') || ''
+  const openai   = new OpenAI({ apiKey: openaiKey })
 
   const dayStart = `${date}T00:00:00Z`
   const dayEnd   = `${nextUTCDay(date)}T00:00:00Z`
@@ -509,6 +510,11 @@ serve(async (req) => {
         prompt_tokens:     promptTokens     || null,
         completion_tokens: completionTokens || null,
         prompt_version_id: promptRow.id,
+        input_json:        payload,
+        temperature:       TEMPERATURE,
+        top_p:             TOP_P,
+        max_tokens:        MAX_TOKENS,
+        seed:              SEED,
       }
 
       let { error: upsertErr } = await supabase
