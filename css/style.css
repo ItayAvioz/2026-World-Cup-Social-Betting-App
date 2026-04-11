@@ -1250,6 +1250,10 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-i
 .prof-delete-btn:disabled { opacity:.5; cursor:not-allowed; }
 .prof-delete-confirm { font-size:.8rem; color:var(--red); margin-bottom:.6rem; }
 .prof-cancel-link { background:none; border:none; color:var(--muted); font-size:.8rem; cursor:pointer; padding:.5rem 0; font-family:'Inter',sans-serif; display:block; margin-top:.35rem; min-height:40px; }
+@media(max-width:768px) {
+  .prof-sheet { pointer-events:none; }
+  .prof-sheet.open { pointer-events:auto; }
+}
 @media(min-width:769px) {
   .prof-sheet { left:auto; width:380px; }
 }
