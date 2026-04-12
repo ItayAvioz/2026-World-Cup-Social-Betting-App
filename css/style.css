@@ -491,6 +491,8 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-i
 .tg-name { font-family:'Inter',sans-serif; font-size:.82rem; font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .tg-vs-col { display:flex; flex-direction:column; align-items:center; gap:.1rem; flex-shrink:0; }
 .tg-kickoff { font-family:'Oswald',sans-serif; font-size:.95rem; font-weight:700; color:var(--accent); }
+.tg-live-badge { font-family:'Oswald',sans-serif; font-size:.85rem; font-weight:700; color:#fff; background:#e00; border-radius:4px; padding:.1rem .35rem; animation:livePulse 1.2s ease-in-out infinite; }
+@keyframes livePulse { 0%,100%{ opacity:1; } 50%{ opacity:.5; } }
 .tg-vs { font-family:'Inter',sans-serif; font-size:.58rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
 .tg-score { font-family:'Oswald',sans-serif; font-size:1.3rem; font-weight:700; color:var(--text); text-align:center; flex-shrink:0; }
 .tg-score-col { display:flex; flex-direction:column; align-items:center; gap:.1rem; flex-shrink:0; }
@@ -845,8 +847,14 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-i
 .gm-header { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:.85rem; }
 .gm-header-body { padding:1.25rem 1rem 1rem; }
 
+/* Prediction rows — all groups */
+.gm-all-group-preds { width:100%; border-top:1px solid var(--border); margin-top:.65rem; }
+.gm-pred-group-name { font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:.1rem; }
+
 /* Prediction row inside header */
-.gm-header-pred { display:flex; flex-direction:column; align-items:center; gap:.3rem; padding:.7rem 1rem .55rem; border-top:1px solid var(--border); margin-top:.65rem; }
+.gm-header-pred { display:flex; flex-direction:column; align-items:center; gap:.3rem; padding:.7rem 1rem .55rem; border-bottom:1px solid rgba(255,255,255,.04); }
+.gm-header-pred:last-child { border-bottom:none; }
+.gm-all-group-preds + * { border-top:1px solid var(--border); }
 .gm-header-pred-main { display:flex; align-items:center; gap:.6rem; }
 .gm-header-pred .gm-my-pick-label { flex:unset; }
 .gm-header-pred-result { font-size:.78rem; font-weight:600; }
@@ -889,7 +897,8 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-i
 /* ── Section cards ── */
 .gm-section { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:.85rem; }
 .gm-section-head { padding:.7rem 1rem .55rem; border-bottom:1px solid rgba(255,255,255,.06); }
-.gm-section-label { font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--muted); }
+.gm-section-label { font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--muted); display:flex; align-items:center; gap:.5rem; }
+.gm-pred-form-group { color:var(--accent); font-size:.65rem; letter-spacing:.04em; }
 .gm-section-body { padding:.85rem 1rem; }
 
 /* ── Result (finished) ── */
@@ -949,6 +958,12 @@ nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-i
 .gm-gstat-row:last-child { border-bottom:none; }
 .gm-gstat-label { color:var(--muted); font-size:.7rem; text-align:center; }
 .gm-gstat-val { font-family:'Oswald',sans-serif; font-size:.86rem; font-weight:600; color:var(--text); }
+.gm-form { display:flex; flex-wrap:wrap; gap:.2rem; }
+.gm-gstat-val--right .gm-form { justify-content:flex-end; }
+.gm-form-badge { display:inline-flex; align-items:center; justify-content:center; width:1.2rem; height:1.2rem; border-radius:3px; font-size:.62rem; font-weight:700; font-family:'Inter',sans-serif; }
+.gm-form-badge--w { background:#1a7a3a; color:#fff; }
+.gm-form-badge--l { background:#a01c1c; color:#fff; }
+.gm-form-badge--d { background:#555; color:#fff; }
 .gm-gstat-val--right { text-align:right; }
 .gm-gstat-name { font-size:.74rem; font-weight:400; color:var(--text); line-height:1.35; }
 .gm-gstat-name--right { text-align:right; }

@@ -500,6 +500,9 @@ export default function Dashboard() {
               <div className="today-games">
                 {nextGames.map(game => {
                   const finished  = game.score_home !== null
+                  const now       = Date.now()
+                  const ko        = new Date(game.kick_off_time).getTime()
+                  const isLive    = !finished && now >= ko && now <= ko + 120 * 60 * 1000
                   const gamePreds = myPreds[game.id] ?? []
                   const homeCode  = TEAM_CODE[game.team_home]
                   const awayCode  = TEAM_CODE[game.team_away]
@@ -530,6 +533,11 @@ export default function Dashboard() {
                                   {game.went_to_penalties && game.penalty_score_home !== null && `  Pens ${game.penalty_score_home}–${game.penalty_score_away}`}
                                 </div>
                               )}
+                            </div>
+                          ) : isLive ? (
+                            <div className="tg-vs-col">
+                              <div className="tg-live-badge">LIVE</div>
+                              <div className="tg-vs">vs</div>
                             </div>
                           ) : (
                             <div className="tg-vs-col">

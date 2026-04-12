@@ -63,10 +63,13 @@ export default function Game() {
   const [loading,         setLoading]         = useState(true)
   const [error,           setError]           = useState(null)
   const [predInput,       setPredInput]       = useState({ home:'', away:'' })
-  const [editing,         setEditing]         = useState(false)
+  const [editingGroupId,  setEditingGroupId]  = useState(null)  // which group is being edited
   const [submitting,      setSubmitting]      = useState(false)
   // resolvedGroupId: undefined=still resolving, string=group UUID, null=ungrouped user (valid)
   const [resolvedGroupId, setResolvedGroupId] = useState(undefined)
+  const [allGroups,       setAllGroups]       = useState([])   // [{ id, name }]
+  const [allGroupPreds,   setAllGroupPreds]   = useState([])   // [{ groupId, groupName, pred }]
+  const [teamForm,        setTeamForm]        = useState({})   // { teamName: ['W','L','D',...] }
 
   // Resolve which group this prediction belongs to.
   // Priority: (1) ?group= URL param  (2) user's first joined group  (3) null = ungrouped.
@@ -75,18 +78,19 @@ export default function Game() {
     if (!user) return
     let cancelled = false
     async function resolve() {
-      if (urlGroupId) {
-        if (!cancelled) setResolvedGroupId(urlGroupId)
-        return
-      }
-      const { data } = await supabase
+      const { data: memberships } = await supabase
         .from('group_members')
-        .select('group_id')
+        .select('group_id, groups(id, name)')
         .eq('user_id', user.id)
         .order('joined_at', { ascending: true })
-        .limit(1)
-        .maybeSingle()
-      if (!cancelled) setResolvedGroupId(data?.group_id ?? null)
+      if (cancelled) return
+      const groups = (memberships ?? []).map(m => ({ id: m.group_id, name: m.groups?.name ?? m.group_id }))
+      setAllGroups(groups)
+      if (urlGroupId) {
+        setResolvedGroupId(urlGroupId)
+      } else {
+        setResolvedGroupId(groups[0]?.id ?? null)
+      }
     }
     resolve()
     return () => { cancelled = true }
@@ -129,6 +133,47 @@ export default function Game() {
     setMyPred(myPredRes.data ?? null)
     setLoading(false)
 
+    // Load predictions for all groups
+    if (allGroups.length > 0) {
+      const { data: allPreds } = await supabase
+        .from('predictions')
+        .select('group_id, pred_home, pred_away, is_auto, points_earned')
+        .eq('game_id', gameId)
+        .eq('user_id', user.id)
+        .in('group_id', allGroups.map(g => g.id))
+      const mapped = allGroups.map(grp => ({
+        groupId:   grp.id,
+        groupName: grp.name,
+        pred:      (allPreds ?? []).find(p => p.group_id === grp.id) ?? null,
+      }))
+      setAllGroupPreds(mapped)
+    }
+
+    // Load team form (individual results in order)
+    const { data: formGames } = await supabase
+      .from('games')
+      .select('team_home, team_away, score_home, score_away, kick_off_time')
+      .or(`team_home.in.(${[g.team_home, g.team_away].map(t => `"${t}"`).join(',')}),team_away.in.(${[g.team_home, g.team_away].map(t => `"${t}"`).join(',')})`)
+      .not('score_home', 'is', null)
+      .order('kick_off_time', { ascending: true })
+
+    if (formGames) {
+      const form = {}
+      for (const team of [g.team_home, g.team_away]) {
+        form[team] = formGames
+          .filter(fg => fg.team_home === team || fg.team_away === team)
+          .map(fg => {
+            const isHome = fg.team_home === team
+            const scored  = isHome ? fg.score_home : fg.score_away
+            const conceded = isHome ? fg.score_away : fg.score_home
+            if (scored > conceded) return 'W'
+            if (scored < conceded) return 'L'
+            return 'D'
+          })
+      }
+      setTeamForm(form)
+    }
+
     // Load team tournament stats + player stats (finished games only)
     const promises = [
       supabase.from('team_tournament_stats').select('*').in('team', [g.team_home, g.team_away]),
@@ -152,15 +197,16 @@ export default function Game() {
       showToast('Enter a valid score (0 or more for each team)', 'error')
       return
     }
-    if (resolvedGroupId === undefined) return  // still resolving, should be rare
+    const targetGroupId = editingGroupId ?? resolvedGroupId
+    if (targetGroupId === undefined) return
     setSubmitting(true)
     const { data, error: err } = await supabase
       .from('predictions')
       .upsert(
-        { user_id: user.id, game_id: gameId, group_id: resolvedGroupId, pred_home: h, pred_away: a },
+        { user_id: user.id, game_id: gameId, group_id: targetGroupId, pred_home: h, pred_away: a },
         { onConflict: 'user_id,game_id,group_id' }
       )
-      .select('pred_home, pred_away, is_auto, updated_at, points_earned')
+      .select('pred_home, pred_away, is_auto, updated_at, points_earned, group_id')
       .single()
     setSubmitting(false)
     if (err) {
@@ -168,8 +214,13 @@ export default function Game() {
       else showToast('Failed to save prediction', 'error')
       return
     }
-    setMyPred(data)
-    setEditing(false)
+    // Update myPred for the resolved group (legacy)
+    if (targetGroupId === resolvedGroupId) setMyPred(data)
+    // Update allGroupPreds for the edited group
+    setAllGroupPreds(prev => prev.map(gp =>
+      gp.groupId === targetGroupId ? { ...gp, pred: data } : gp
+    ))
+    setEditingGroupId(null)
     setPredInput({ home:'', away:'' })
     showToast('Prediction saved!')
   }
@@ -219,7 +270,7 @@ export default function Game() {
   const awayStats = teamStats.find(s => s.team === game.team_away) ?? null
   const pLabel = pointsLabel(myPred, game)
 
-  const showForm = editing || (!myPred && !pastKO)
+  const showForm = editingGroupId !== null || (!myPred && !pastKO)
 
   return (
     <Layout title={`${game.team_home} vs ${game.team_away}`}>
@@ -277,8 +328,56 @@ export default function Game() {
               )}
             </div>
 
-            {/* Prediction row inside header */}
-            {myPred !== undefined && (myPred || pastKO) && (
+            {/* Prediction rows — one per group */}
+            {allGroupPreds.length > 0 ? (
+              <div className="gm-all-group-preds">
+                {allGroupPreds.map(({ groupId, groupName, pred }) => {
+                  const isResolved = groupId === resolvedGroupId
+                  const gPLabel = pointsLabel(pred, game)
+                  return (
+                    <div key={groupId} className="gm-header-pred">
+                      <div className="gm-pred-group-name">{groupName}</div>
+                      {pred ? (
+                        <>
+                          <div className="gm-header-pred-main">
+                            <span className="gm-my-pick-score">{pred.pred_home}–{pred.pred_away}</span>
+                            <span className="gm-my-pick-label">Your pick</span>
+                            {pred.is_auto && <span className="grp-auto-badge">⚡ Auto</span>}
+                          </div>
+                          {finished ? (
+                            gPLabel && <span className={`gm-header-pred-result ${gPLabel.cls}`}>{gPLabel.text}</span>
+                          ) : pastKO ? (
+                            <span className="gm-locked-msg">🔒 Locked</span>
+                          ) : (
+                            editingGroupId !== groupId && (
+                              <button
+                                className="btn btn-outline"
+                                style={{ fontSize:'.75rem', padding:'4px 12px', minHeight:'unset' }}
+                                onClick={() => { setPredInput({ home: String(pred.pred_home), away: String(pred.pred_away) }); setEditingGroupId(groupId) }}
+                              >
+                                ✏️ Edit
+                              </button>
+                            )
+                          )}
+                        </>
+                      ) : pastKO ? (
+                        <span className="gm-locked-msg">🔒 No prediction submitted</span>
+                      ) : (
+                        editingGroupId !== groupId && (
+                          <button
+                            className="btn btn-outline"
+                            style={{ fontSize:'.75rem', padding:'4px 12px', minHeight:'unset' }}
+                            onClick={() => { setPredInput({ home:'', away:'' }); setEditingGroupId(groupId) }}
+                          >
+                            ⚽ Predict
+                          </button>
+                        )
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            ) : myPred !== undefined && (myPred || pastKO) && (
               <div className="gm-header-pred">
                 {myPred ? (
                   <>
@@ -292,11 +391,11 @@ export default function Game() {
                     ) : pastKO ? (
                       <span className="gm-locked-msg">🔒 Locked</span>
                     ) : (
-                      !editing && (
+                      editingGroupId === null && (
                         <button
                           className="btn btn-outline"
                           style={{ fontSize:'.75rem', padding:'4px 12px', minHeight:'unset' }}
-                          onClick={() => { setPredInput({ home: String(myPred.pred_home), away: String(myPred.pred_away) }); setEditing(true) }}
+                          onClick={() => { setPredInput({ home: String(myPred.pred_home), away: String(myPred.pred_away) }); setEditingGroupId(resolvedGroupId) }}
                         >
                           ✏️ Edit
                         </button>
@@ -383,10 +482,17 @@ export default function Game() {
         })()}
 
         {/* ── Prediction Entry (form only, pre-KO) ──────────────── */}
-        {!pastKO && showForm && (
+        {!pastKO && (editingGroupId !== null || (allGroupPreds.length === 0 && !myPred)) && (
           <div className="gm-section">
             <div className="gm-section-head">
-              <span className="gm-section-label">Your Prediction</span>
+              <span className="gm-section-label">
+                Your Prediction
+                {editingGroupId && allGroups.length > 1 && (
+                  <span className="gm-pred-form-group">
+                    {allGroups.find(g => g.id === editingGroupId)?.name}
+                  </span>
+                )}
+              </span>
             </div>
             <div className="gm-section-body">
               <form onSubmit={submitPred}>
@@ -422,22 +528,20 @@ export default function Game() {
                   <span className="gm-predict-team">{game.team_away}</span>
                 </div>
                 <div className="gm-predict-actions">
-                  {editing && (
-                    <button
-                      type="button"
-                      className="btn btn-outline"
-                      style={{ minHeight:'48px' }}
-                      onClick={() => { setEditing(false); setPredInput({ home:'', away:'' }) }}
-                    >
-                      Cancel
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    className="btn btn-outline"
+                    style={{ minHeight:'48px' }}
+                    onClick={() => { setEditingGroupId(null); setPredInput({ home:'', away:'' }) }}
+                  >
+                    Cancel
+                  </button>
                   <button
                     type="submit"
                     className="btn btn-gold btn-full"
                     disabled={submitting}
                   >
-                    {submitting ? 'Saving…' : myPred ? '⚽ Update Prediction' : '⚽ Predict'}
+                    {submitting ? 'Saving…' : '⚽ Predict'}
                   </button>
                 </div>
               </form>
@@ -516,10 +620,23 @@ export default function Game() {
                 )
                 return (
                   <>
-                    {sr('Record',
-                      h ? `${h.wins ?? 0}W ${h.draws ?? 0}D ${h.losses ?? 0}L` : null,
-                      a ? `${a.wins ?? 0}W ${a.draws ?? 0}D ${a.losses ?? 0}L` : null
-                    )}
+                    <div className="gm-gstat-row" key="Record">
+                      <span className="gm-gstat-val">
+                        <span className="gm-form">
+                          {(teamForm[game.team_home] ?? []).map((r, i) => (
+                            <span key={i} className={`gm-form-badge gm-form-badge--${r.toLowerCase()}`}>{r}</span>
+                          ))}
+                        </span>
+                      </span>
+                      <span className="gm-gstat-label">Record</span>
+                      <span className="gm-gstat-val gm-gstat-val--right">
+                        <span className="gm-form">
+                          {(teamForm[game.team_away] ?? []).map((r, i) => (
+                            <span key={i} className={`gm-form-badge gm-form-badge--${r.toLowerCase()}`}>{r}</span>
+                          ))}
+                        </span>
+                      </span>
+                    </div>
                     {sr('Goals',
                       h ? `${h.avg_goals_scored ?? '—'} / ${h.avg_goals_conceded ?? '—'}` : null,
                       a ? `${a.avg_goals_scored ?? '—'} / ${a.avg_goals_conceded ?? '—'}` : null
