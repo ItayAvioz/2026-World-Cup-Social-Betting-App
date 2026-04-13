@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Info — WC2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="page-nav">
+  <button class="page-back" onclick="history.back()">← Back</button>
+  <div class="nav-logo">⚽ WC2026</div>
+  <div style="width:60px"></div>
+</nav>
+
+<div class="page-body" id="page-body">
+  <div style="display:flex;align-items:center;justify-content:center;min-height:60vh;color:var(--muted)">Loading…</div>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────
+const TEAMS = [
+  // GROUP A
+  { name:'Mexico', code:'mx', group:'A', conf:'CONCACAF', host:true, lat:19.4, lng:-99.1,
+    fifaRank:16, best:'Quarter-Finals', times:'2×', lastAchieved:'1986 (Mexico)', lastWC:'2022 (Qatar) — Group Stage',
+    schedule:[
+      { phase:'group', label:'Group A', date:'Thu, Jun 11', opponent:'South Africa', oppCode:'za', venue:'Estadio Azteca, Mexico City', idt:'22:00', idtLabel:'Jun 11' },
+      { phase:'group', label:'Group A', date:'Thu, Jun 18', opponent:'South Korea',  oppCode:'kr', venue:'Estadio Akron, Guadalajara',  idt:'06:00', idtLabel:'Jun 19 ⁺¹' },
+      { phase:'group', label:'Group A', date:'Wed, Jun 24', opponent:'UEFA PO-D TBD', oppCode:null, venue:'Estadio Azteca, Mexico City', idt:'04:00', idtLabel:'Jun 25 ⁺¹' },
+      { phase:'knockout', label:'Round of 32', date:'Tue, Jun 30', opponent:'TBD (if advancing)', oppCode:null, venue:'Estadio Azteca, Mexico City', idt:'TBD', idtLabel:'Jun 30' },
+    ]
+  },
+  { name:'South Africa', code:'za', group:'A', conf:'CAF', host:false,
+    fifaRank:61, best:'Group Stage', times:'3 appearances', lastAchieved:'2010 (as host)', lastWC:'2010 (South Africa) — Group Stage (as host)' },
+  { name:'South Korea', code:'kr', group:'A', conf:'AFC', host:false,
+    fifaRank:22, best:'4th Place', times:'1×', lastAchieved:'2002 (Japan/Korea)', lastWC:'2022 (Qatar) — Round of 16' },
+  // GROUP B
+  { name:'Canada', code:'ca', group:'B', conf:'CONCACAF', host:true,
+    fifaRank:29, best:'Group Stage', times:'2 appearances', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — Group Stage',
+    schedule:[
+      { phase:'group', label:'Group B', date:'Fri, Jun 12', opponent:'UEFA PO-A TBD', oppCode:null, venue:'BMO Field, Toronto',    idt:'22:00', idtLabel:'Jun 12' },
+      { phase:'group', label:'Group B', date:'Thu, Jun 18', opponent:'Qatar',          oppCode:'qa', venue:'BC Place, Vancouver',  idt:'01:00', idtLabel:'Jun 19 ⁺¹' },
+      { phase:'group', label:'Group B', date:'Wed, Jun 24', opponent:'Switzerland',    oppCode:'ch', venue:'BC Place, Vancouver',  idt:'22:00', idtLabel:'Jun 24' },
+      { phase:'knockout', label:'Round of 32', date:'Thu, Jul 2', opponent:'TBD (if advancing)', oppCode:null, venue:'BC Place, Vancouver', idt:'TBD', idtLabel:'Jul 2' },
+    ]
+  },
+  { name:'Qatar', code:'qa', group:'B', conf:'AFC', host:false,
+    fifaRank:51, best:'Group Stage (host)', times:'1×', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — Group Stage (as host)' },
+  { name:'Switzerland', code:'ch', group:'B', conf:'UEFA', host:false,
+    fifaRank:18, best:'Quarter-Finals', times:'3×', lastAchieved:'1954 (Switzerland)', lastWC:'2022 (Qatar) — Round of 16' },
+  // GROUP C
+  { name:'Brazil', code:'br', group:'C', conf:'CONMEBOL', host:false,
+    fifaRank:5, best:'World Champion', times:'5×', lastAchieved:'2002 (Japan/Korea)', lastWC:'2022 (Qatar) — Quarter-Finals' },
+  { name:'Morocco', code:'ma', group:'C', conf:'CAF', host:false,
+    fifaRank:8, best:'4th Place', times:'1×', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — 4th Place' },
+  { name:'Haiti', code:'ht', group:'C', conf:'CONCACAF', host:false,
+    fifaRank:84, best:'Group Stage', times:'1 appearance', lastAchieved:'1974 (West Germany)', lastWC:'1974 (West Germany) — Group Stage' },
+  { name:'Scotland', code:'gb-sct', group:'C', conf:'UEFA', host:false,
+    fifaRank:38, best:'Group Stage', times:'8 appearances', lastAchieved:'1998 (France)', lastWC:'1998 (France) — Group Stage' },
+  // GROUP D
+  { name:'United States', code:'us', group:'D', conf:'CONCACAF', host:true,
+    fifaRank:15, best:'3rd Place', times:'1×', lastAchieved:'1930 (Uruguay)', lastWC:'2022 (Qatar) — Round of 16',
+    schedule:[
+      { phase:'group', label:'Group D', date:'Fri, Jun 12', opponent:'Paraguay',     oppCode:'py', venue:'SoFi Stadium, Inglewood CA', idt:'04:00', idtLabel:'Jun 13 ⁺¹' },
+      { phase:'group', label:'Group D', date:'Fri, Jun 19', opponent:'Australia',    oppCode:'au', venue:'Lumen Field, Seattle',       idt:'22:00', idtLabel:'Jun 19' },
+      { phase:'group', label:'Group D', date:'Thu, Jun 25', opponent:'UEFA PO-C TBD', oppCode:null, venue:'SoFi Stadium, Inglewood CA', idt:'05:00', idtLabel:'Jun 26 ⁺¹' },
+      { phase:'knockout', label:'Round of 32', date:'Sun, Jun 28', opponent:'TBD (if advancing)', oppCode:null, venue:'SoFi Stadium, Inglewood CA', idt:'TBD', idtLabel:'Jun 28' },
+    ]
+  },
+  { name:'Paraguay', code:'py', group:'D', conf:'CONMEBOL', host:false,
+    fifaRank:40, best:'Quarter-Finals', times:'1×', lastAchieved:'2010 (South Africa)', lastWC:'2010 (South Africa) — Quarter-Finals' },
+  { name:'Australia', code:'au', group:'D', conf:'AFC', host:false,
+    fifaRank:27, best:'Round of 16', times:'2×', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — Round of 16' },
+  // GROUP E
+  { name:'Germany', code:'de', group:'E', conf:'UEFA', host:false,
+    fifaRank:10, best:'World Champion', times:'4×', lastAchieved:'2014 (Brazil)', lastWC:'2022 (Qatar) — Group Stage' },
+  { name:'Curaçao', code:'cw', group:'E', conf:'CONCACAF', host:false,
+    fifaRank:82, best:'First World Cup!', times:'First time', lastAchieved:'2026 (debut)', lastWC:'2026 — First World Cup ever' },
+  { name:'Ivory Coast', code:'ci', group:'E', conf:'CAF', host:false,
+    fifaRank:37, best:'Group Stage', times:'3 appearances', lastAchieved:'2014 (Brazil)', lastWC:'2014 (Brazil) — Group Stage' },
+  { name:'Ecuador', code:'ec', group:'E', conf:'CONMEBOL', host:false,
+    fifaRank:23, best:'Round of 16', times:'1×', lastAchieved:'2006 (Germany)', lastWC:'2022 (Qatar) — Group Stage' },
+  // GROUP F
+  { name:'Netherlands', code:'nl', group:'F', conf:'UEFA', host:false,
+    fifaRank:7, best:'Runner-Up', times:'3×', lastAchieved:'2010 (South Africa)', lastWC:'2022 (Qatar) — Quarter-Finals' },
+  { name:'Japan', code:'jp', group:'F', conf:'AFC', host:false,
+    fifaRank:19, best:'Round of 16', times:'4×', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — Round of 16' },
+  { name:'Tunisia', code:'tn', group:'F', conf:'CAF', host:false,
+    fifaRank:47, best:'Group Stage', times:'6 appearances', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — Group Stage' },
+  // GROUP G
+  { name:'Belgium', code:'be', group:'G', conf:'UEFA', host:false,
+    fifaRank:9, best:'3rd Place', times:'1×', lastAchieved:'2018 (Russia)', lastWC:'2022 (Qatar) — Group Stage' },
+  { name:'Egypt', code:'eg', group:'G', conf:'CAF', host:false,
+    fifaRank:31, best:'Group Stage', times:'3 appearances', lastAchieved:'2018 (Russia)', lastWC:'2018 (Russia) — Group Stage' },
+  { name:'Iran', code:'ir', group:'G', conf:'AFC', host:false,
+    fifaRank:20, best:'Group Stage', times:'6 appearances', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — Group Stage' },
+  { name:'New Zealand', code:'nz', group:'G', conf:'OFC', host:false,
+    fifaRank:86, best:'Group Stage (unbeaten!)', times:'1× — 2010 only', lastAchieved:'2010 (South Africa)', lastWC:'2010 (South Africa) — Group Stage (3 draws, 0 losses)' },
+  // GROUP H
+  { name:'Spain', code:'es', group:'H', conf:'UEFA', host:false,
+    fifaRank:1, best:'World Champion', times:'1×', lastAchieved:'2010 (South Africa)', lastWC:'2022 (Qatar) — Round of 16' },
+  { name:'Cape Verde', code:'cv', group:'H', conf:'CAF', host:false,
+    fifaRank:68, best:'First World Cup!', times:'First time', lastAchieved:'2026 (debut)', lastWC:'2026 — First World Cup ever' },
+  { name:'Saudi Arabia', code:'sa', group:'H', conf:'AFC', host:false,
+    fifaRank:60, best:'Round of 16', times:'1×', lastAchieved:'1994 (USA)', lastWC:'2022 (Qatar) — Group Stage' },
+  { name:'Uruguay', code:'uy', group:'H', conf:'CONMEBOL', host:false,
+    fifaRank:17, best:'World Champion', times:'2×', lastAchieved:'1950 (Brazil)', lastWC:'2022 (Qatar) — Group Stage' },
+  // GROUP I
+  { name:'France', code:'fr', group:'I', conf:'UEFA', host:false,
+    fifaRank:3, best:'World Champion', times:'2×', lastAchieved:'2018 (Russia)', lastWC:'2022 (Qatar) — Runner-Up' },
+  { name:'Senegal', code:'sn', group:'I', conf:'CAF', host:false,
+    fifaRank:12, best:'Quarter-Finals', times:'1×', lastAchieved:'2002 (Japan/Korea)', lastWC:'2022 (Qatar) — Round of 16' },
+  { name:'Norway', code:'no', group:'I', conf:'UEFA', host:false,
+    fifaRank:32, best:'Round of 16', times:'2×', lastAchieved:'1998 (France)', lastWC:'1998 (France) — Round of 16' },
+  // GROUP J
+  { name:'Argentina', code:'ar', group:'J', conf:'CONMEBOL', host:false,
+    fifaRank:2, best:'World Champion', times:'3×', lastAchieved:'2022 (Qatar)', lastWC:'2022 (Qatar) — 🏆 Champion' },
+  { name:'Algeria', code:'dz', group:'J', conf:'CAF', host:false,
+    fifaRank:28, best:'Round of 16', times:'1×', lastAchieved:'2014 (Brazil)', lastWC:'2014 (Brazil) — Round of 16' },
+  { name:'Austria', code:'at', group:'J', conf:'UEFA', host:false,
+    fifaRank:24, best:'3rd Place', times:'1×', lastAchieved:'1954 (Switzerland)', lastWC:'1998 (France) — Group Stage',
+    note:'8 qualifications · 7 appearances · missed 1938 (Nazi annexation/Anschluss)' },
+  { name:'Jordan', code:'jo', group:'J', conf:'AFC', host:false,
+    fifaRank:66, best:'First World Cup!', times:'First time', lastAchieved:'2026 (debut)', lastWC:'2026 — First World Cup ever' },
+  // GROUP K
+  { name:'Portugal', code:'pt', group:'K', conf:'UEFA', host:false,
+    fifaRank:6, best:'3rd Place', times:'1×', lastAchieved:'1966 (England)', lastWC:'2022 (Qatar) — Quarter-Finals' },
+  { name:'Uzbekistan', code:'uz', group:'K', conf:'AFC', host:false,
+    fifaRank:52, best:'First World Cup!', times:'First time', lastAchieved:'2026 (debut)', lastWC:'2026 — First World Cup ever' },
+  { name:'Colombia', code:'co', group:'K', conf:'CONMEBOL', host:false,
+    fifaRank:14, best:'Quarter-Finals', times:'1×', lastAchieved:'2014 (Brazil)', lastWC:'2018 (Russia) — Round of 16' },
+  // GROUP L
+  { name:'England', code:'gb-eng', group:'L', conf:'UEFA', host:false,
+    fifaRank:4, best:'World Champion', times:'1×', lastAchieved:'1966 (England)', lastWC:'2022 (Qatar) — Quarter-Finals' },
+  { name:'Croatia', code:'hr', group:'L', conf:'UEFA', host:false,
+    fifaRank:11, best:'Runner-Up', times:'1×', lastAchieved:'2018 (Russia)', lastWC:'2022 (Qatar) — 3rd Place' },
+  { name:'Ghana', code:'gh', group:'L', conf:'CAF', host:false,
+    fifaRank:72, best:'Quarter-Finals', times:'1×', lastAchieved:'2010 (South Africa)', lastWC:'2022 (Qatar) — Group Stage' },
+  { name:'Panama', code:'pa', group:'L', conf:'CONCACAF', host:false,
+    fifaRank:33, best:'Group Stage', times:'1 appearance', lastAchieved:'2018 (Russia)', lastWC:'2018 (Russia) — Group Stage' },
+];
+
+const TEAM_EXTRA = {
+  'mx':     { pop:'130M',  wcApps:17, footballFact:'First nation to host/co-host 3 World Cups.',     nonFootballFact:'Home to the world\'s largest pyramid (Cholula).' },
+  'za':     { pop:'60M',   wcApps:3,  footballFact:'Hosted the first African World Cup in 2010.',    nonFootballFact:'The only country with three capital cities.' },
+  'kr':     { pop:'51M',   wcApps:11, footballFact:'Most World Cup appearances of any Asian side.',  nonFootballFact:'South Koreans eat more instant noodles per person than any other nation on Earth.' },
+  'ca':     { pop:'40M',   wcApps:2,  footballFact:'This is their first time hosting the World Cup.',nonFootballFact:'Has more lakes than the rest of the world combined.' },
+  'qa':     { pop:'3M',    wcApps:1,  footballFact:'Qualified "on merit" for the first time.',       nonFootballFact:'Residents pay zero income tax — it\'s written into the constitution.' },
+  'ch':     { pop:'9M',    wcApps:12, footballFact:'Reached the Round of 16 in 4 of last 5 WCs.',   nonFootballFact:'Has no official capital (Bern is de facto).' },
+  'br':     { pop:'215M',  wcApps:22, footballFact:'Only team to appear in every World Cup.',        nonFootballFact:'Largest Japanese population outside of Japan.' },
+  'ma':     { pop:'38M',   wcApps:6,  footballFact:'First African semi-finalist in WC history (2022).', nonFootballFact:'Home to the world\'s oldest university.' },
+  'ht':     { pop:'11.7M', wcApps:1,  footballFact:'Returning since their 1974 debut.',              nonFootballFact:'First black-led republic in the world.' },
+  'gb-sct': { pop:'5.5M',  wcApps:8,  footballFact:'First World Cup appearance since 1998.',         nonFootballFact:'The national animal of Scotland is the Unicorn.' },
+  'us':     { pop:'340M',  wcApps:11, footballFact:'Hosting for the 2nd time — previously the sole host in 1994.', nonFootballFact:'Has the world\'s largest highway system.' },
+  'py':     { pop:'7M',    wcApps:8,  footballFact:'Qualified on the final matchday of CONMEBOL.',   nonFootballFact:'Shares the world\'s largest hydroelectric plant.' },
+  'au':     { pop:'26M',   wcApps:6,  footballFact:'Moved from OFC to the Asian confederation in 2006.', nonFootballFact:'Home to more than 10,000 unique beaches.' },
+  'de':     { pop:'84M',   wcApps:20, footballFact:'Have reached the semi-finals 13 times.',         nonFootballFact:'First country to adopt Daylight Saving Time.' },
+  'cw':     { pop:'150K',  wcApps:0,  footballFact:'Debut — the smallest nation to qualify.',        nonFootballFact:'Most residents speak at least 4 languages.' },
+  'ci':     { pop:'28M',   wcApps:3,  footballFact:'Won the 2024 Africa Cup of Nations tournament.', nonFootballFact:'The world\'s largest producer of cocoa beans.' },
+  'ec':     { pop:'18M',   wcApps:4,  footballFact:'Record for most altitude-aided home wins in qualifying.', nonFootballFact:'First country to give nature legal rights.' },
+  'nl':     { pop:'18M',   wcApps:12, footballFact:'Runners-up 3 times — never won the trophy.',    nonFootballFact:'One-third of the country is below sea level.' },
+  'jp':     { pop:'124M',  wcApps:7,  footballFact:'Fans world-famous for cleaning the stadium.',    nonFootballFact:'Features over 5 million vending machines.' },
+  'tn':     { pop:'12M',   wcApps:6,  footballFact:'First African team to win a World Cup match.',   nonFootballFact:'Location of the ancient city-state of Carthage.' },
+  'be':     { pop:'12M',   wcApps:14, footballFact:'Known as the "Red Devils."',                    nonFootballFact:'Has the highest density of castles in the world.' },
+  'eg':     { pop:'112M',  wcApps:3,  footballFact:'First African team to play a World Cup (1934).', nonFootballFact:'Home to the last of the Ancient Wonders (Giza).' },
+  'ir':     { pop:'89M',   wcApps:6,  footballFact:'Have never passed the group stage.',             nonFootballFact:'Home to the world\'s oldest continuous civilization.' },
+  'nz':     { pop:'5.2M',  wcApps:2,  footballFact:'Unbeaten at 2010 WC (W0 D3 L0) — only team.',  nonFootballFact:'First country to grant women the right to vote (1893).' },
+  'es':     { pop:'48M',   wcApps:16, footballFact:'Hold the record for most passes in a WC match.', nonFootballFact:'Produces nearly half of the world\'s olive oil.' },
+  'cv':     { pop:'590K',  wcApps:0,  footballFact:'Debut — smallest African island nation to qualify.', nonFootballFact:'Charles Darwin studied the local flora here.' },
+  'sa':     { pop:'36M',   wcApps:6,  footballFact:'Shocked Argentina 2-1 in one of the greatest upsets in 2022 WC history.', nonFootballFact:'A country with no permanent natural rivers.' },
+  'uy':     { pop:'3.5M',  wcApps:14, footballFact:'Won the very first World Cup in 1930.',          nonFootballFact:'First nation to fully legalize marijuana sales.' },
+  'fr':     { pop:'68M',   wcApps:16, footballFact:'Reached the final in 3 of the last 7 WCs.',     nonFootballFact:'The most visited country in the world.' },
+  'sn':     { pop:'18M',   wcApps:3,  footballFact:'Known as the "Lions of Teranga."',               nonFootballFact:'Features a bright pink lake (Lake Retba).' },
+  'no':     { pop:'5.6M',  wcApps:3,  footballFact:'Erling Haaland\'s first-ever World Cup.',        nonFootballFact:'Home to the world\'s longest road tunnel (24.5km).' },
+  'ar':     { pop:'46M',   wcApps:18, footballFact:'Entering as defending 2022 World Champions.',    nonFootballFact:'Invented the world\'s first animated feature film.' },
+  'dz':     { pop:'45M',   wcApps:4,  footballFact:'Part of the infamous "Disgrace of Gijon" (1982).', nonFootballFact:'The largest country in Africa by land area.' },
+  'at':     { pop:'9M',    wcApps:7,  footballFact:'8 qualifications, 7 appearances — missed 1938 due to the Anschluss.', nonFootballFact:'Home to the world\'s oldest zoo (Tiergarten Schönbrunn).' },
+  'jo':     { pop:'11M',   wcApps:0,  footballFact:'Debut — qualified through the AFC playoff.',     nonFootballFact:'Contains the Dead Sea (the lowest point on Earth).' },
+  'pt':     { pop:'10M',   wcApps:8,  footballFact:'Likely Cristiano Ronaldo\'s final World Cup.',   nonFootballFact:'The world\'s largest producer of natural cork.' },
+  'uz':     { pop:'36M',   wcApps:0,  footballFact:'Debut — one of the longest waits in Asian football.', nonFootballFact:'One of only two doubly landlocked countries in the world.' },
+  'co':     { pop:'52M',   wcApps:6,  footballFact:'Famous for Higuita\'s iconic "Scorpion Kick."',  nonFootballFact:'Second most biodiverse country on the planet.' },
+  'gb-eng': { pop:'69M',   wcApps:16, footballFact:'Won their only title on home soil in 1966.',    nonFootballFact:'The English language has over 170,000 words in use.' },
+  'hr':     { pop:'3.8M',  wcApps:6,  footballFact:"Reached the top 3 in '98, '18, and '22.",       nonFootballFact:'Invented the necktie (originally called cravat).' },
+  'gh':     { pop:'34M',   wcApps:4,  footballFact:'Cruelly denied a semi-final by Suarez in 2010.', nonFootballFact:'First sub-Saharan nation to gain independence.' },
+  'pa':     { pop:'4.5M',  wcApps:1,  footballFact:'Debuted in 2018; returning for 2026.',           nonFootballFact:'Only place on Earth to see the sun rise over the Pacific Ocean.' },
+};
+
+const flagUrl = (code, w=40) => `https://flagcdn.com/w${w}/${code}.png`;
+
+// ── RENDER ────────────────────────────────────────────────────
+(function() {
+  const params = new URLSearchParams(location.search);
+  const code   = params.get('code');
+  const team   = TEAMS.find(t => t.code === code);
+
+  if (!team) {
+    document.getElementById('page-body').innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:1rem;color:var(--muted)">' +
+      '<div style="font-size:3rem">🤷</div>' +
+      '<div>Team not found</div>' +
+      '<button class="btn btn-outline" onclick="history.back()">← Go back</button></div>';
+    return;
+  }
+
+  document.title = team.name + ' — WC2026';
+
+  const extra = TEAM_EXTRA[team.code] || {};
+
+  const mode = params.get('mode') === 'nation' ? 'nation' : 'stats';
+
+  const statsHtml = `
+    <div class="page-section">
+      <div class="page-section-title">Tournament Stats</div>
+      <div class="stat-grid-2">
+        <div class="stat-box">
+          <div class="stat-box-label">FIFA Rank</div>
+          <div class="stat-box-val gold">#${team.fifaRank}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Best Result</div>
+          <div class="stat-box-val">${team.best}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Times Achieved</div>
+          <div class="stat-box-val">${team.times}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Last Achieved</div>
+          <div class="stat-box-val">${team.lastAchieved}</div>
+        </div>
+        <div class="stat-box full">
+          <div class="stat-box-label">Last World Cup</div>
+          <div class="stat-box-val">${team.lastWC}</div>
+        </div>
+      </div>
+    </div>`;
+
+  const nationHtml = `
+    <div class="page-section">
+      <div class="page-section-title">About the Nation</div>
+      <div class="stat-grid-2">
+        <div class="stat-box">
+          <div class="stat-box-label">Population</div>
+          <div class="stat-box-val">${extra.pop || '—'}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">WC Appearances</div>
+          <div class="stat-box-val">${extra.wcApps != null ? extra.wcApps : '—'}</div>
+        </div>
+        <div class="stat-box full">
+          <div class="stat-box-label">⚽ Football Fact</div>
+          <div class="stat-box-val fact-text">${extra.footballFact || '—'}</div>
+        </div>
+        <div class="stat-box full">
+          <div class="stat-box-label">🌍 Fun Fact</div>
+          <div class="stat-box-val fact-text">${extra.nonFootballFact || '—'}</div>
+        </div>
+      </div>
+    </div>`;
+
+  document.getElementById('page-body').innerHTML = `
+    <div class="team-hero">
+      <img class="team-flag-lg" src="${flagUrl(team.code, 160)}" alt="${team.name}"
+           onerror="this.style.display='none'">
+      <div class="team-name-lg">${team.name}</div>
+      <div class="team-badges">
+        <span class="conf-tag">${team.conf}</span>
+        <span class="group-tag">Group ${team.group}</span>
+        ${team.host ? '<span class="team-host-badge">🏠 Host Nation</span>' : ''}
+      </div>
+    </div>
+    ${mode === 'nation' ? nationHtml : statsHtml}
+  `;
+})();
+</script>
+</body>
+</html>
