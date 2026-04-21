@@ -48,7 +48,24 @@
       "Bash(npx kill-port *)",
       "Bash(ls:*)",
       "mcp__supabase__apply_migration",
-      "mcp__supabase__deploy_edge_function"
+      "mcp__supabase__deploy_edge_function",
+      "Bash(python3 *)",
+      "WebSearch",
+      "Bash(curl -s -X POST https://ftryuvfdihmhlzvbpfeu.supabase.co/functions/v1/football-api-sync -H 'Authorization: Bearer sb_publishable_hNTtICDrKMNgAclh28BhrQ_bHTeeFB9' -H 'Content-Type: application/json' -d '{\"mode\":\"probe\",\"league_id\":140,\"season\":2025,\"limit\":400}')",
+      "Bash(supabase functions *)",
+      "Bash(where supabase *)",
+      "Read(//c/Users/yonatanam/AppData/Local/**)",
+      "Read(//c/Users/yonatanam/**)",
+      "mcp__supabase__get_publishable_keys",
+      "Bash(curl *)",
+      "Bash(grep -v \"^$\")",
+      "Bash(sort find *)",
+      "Bash(supabase status *)",
+      "Bash(supabase projects *)",
+      "Read(//mnt/c/Users/yonatanam/AppData/Roaming/supabase/**)",
+      "Read(//mnt/c/Users/yonatanam/AppData/**)",
+      "Bash(mkdir -p docs/memory-backup)",
+      "Bash(cp C:/Users/yonatanam/.claude/projects/C--Users-yonatanam-Desktop-World-Cup-APP/memory/*.md docs/memory-backup/)"
     ]
   }
 }
